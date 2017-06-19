@@ -8,6 +8,9 @@ var pgp = require('pg-promise')({
 });
 var db = pgp({database: 'postgres', user:'tanweer'});
 
+var apikey = require("apikeygen").apikey;
+
+
 app.set('view engine', 'hbs');
 
 app.use(body_parser.urlencoded({extended: false}));
@@ -18,5 +21,7 @@ app.listen(8000, function(){
 });
 
 app.get('/', function(request, response){
-  response.render('home.hbs')
+  var key = apikey(40);  // generates 40 char base64 encoded key
+  context = {key: key}
+  response.render('home.hbs', context)
 })
