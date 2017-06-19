@@ -1,0 +1,28 @@
+{
+  "name": "scorehoard",
+  "version": "1.0.0",
+  "description": "A scorekeeping API for video games",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/antweer/scorehoard.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/antweer/scorehoard/issues"
+  },
+  "homepage": "https://github.com/antweer/scorehoard#readme",
+  "dependencies": {
+    "bluebird": "^3.5.0",
+    "body-parser": "^1.17.2",
+    "express": "^4.15.3",
+    "express-session": "^1.15.3",
+    "hbs": "^4.0.1",
+    "nodemon": "^1.11.0",
+    "pg-promise": "^5.9.3"
+  }
+}
