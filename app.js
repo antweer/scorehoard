@@ -16,3 +16,7 @@ app.use('/static', express.static('public'));
 app.listen(8000, function(){
   console.log('Listening on port 8000')
 });
+
+app.get('/', function(request, response){
+  response.render('home.hbs')
+})
