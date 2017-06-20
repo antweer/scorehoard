@@ -84,14 +84,15 @@ app.get('/admin', function(request, response, next){
   console.log('account is ', account)
   if (account == null) {response.redirect('/login'); return}    // redirect to login if not logged in
   let context = {account: account};
-  console.log('context is ', context)
-  db.one("SELECT id FROM company WHERE login = $1;", account)
-    .then (function(account_id){
-      console.log('account id is ', account_id)
-      context['account_id'] = account_id;
-      db.any("SELECT * FROM game WHERE company_id = $1", account_id.id)
+
+  db.one("SELECT * FROM company WHERE login = $1;", account)
+    .then (function(company){
+      console.log('account id is ', company.id)
+      context['company'] = company;
+      db.any("SELECT * FROM game WHERE company_id = $1", company.id)
       .then (function(resultsArray){
         context['games'] = resultsArray;
+        console.log('context is ', context)
         response.render('admin.hbs', context)
       })
     })

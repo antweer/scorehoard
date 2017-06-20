@@ -1,3 +1,17 @@
+Logged in as: {{account}}
+<h1>Your Games</h1>
+<h2>{{company.name}}</h2>
+<hr>
+
 {{#each games}}
-  {{name}}
+  <div class='game'>
+    {{name}}
+    <br>
+    API key: {{api_key}}
+    <br>[[other stats]]
+  </div>
 {{/each}}
+
+<hr>
+
+<a href='/'>Back home</a>
