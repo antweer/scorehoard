@@ -1,30 +1,5 @@
-/*body {
-  background-image: url('images/bg1.jpg');
-}
-.title1{
-  display: flex;
-  justify-content: center;
-  color: white;
-  font-size: 60;
-}
-.user{
-  display: flex;
-  float: right;
-  margin-right: 60px;
-  color: wheat;
-}
-.title2{
-  display: flex;
-  justify-content: center;
-  font-size: 30;
-  background-color: white;
-  color: black;
-}*/
-
-/*bootstrap4*/
 body {
   padding-top: 20px;
-  background-image: url('images/bg1.jpg');
 }
 
 .footer {
@@ -51,6 +26,15 @@ body {
   background-image: linear-gradient(to bottom, #f7f7f7 0%,#eee 100%);
   border: 1px solid #e5e5e5;
 }
+
+@media (min-width: 768px) {
+  .navbar-nav {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+  }
+
   .navbar-nav .nav-item {
     -webkit-box-flex: 1;
     -webkit-flex: 1 0 auto;
@@ -58,7 +42,14 @@ body {
             flex: 1 0 auto;
   }
 }
-h2 .title1{
-  display: flex;
-  justify-content: center;
+
+/* Responsive: Portrait tablets and up */
+@media screen and (min-width: 768px) {
+  /* Remove the padding we set earlier */
+  .masthead,
+  .marketing,
+  .footer {
+    padding-right: 0;
+    padding-left: 0;
+  }
 }
