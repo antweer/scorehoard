@@ -36,25 +36,42 @@ app.use(session({
 app.get('/api/:name', function (request, response, next) {
   var dbname = request.params.name;
   var valid_names = ['scores'];
+  var scores = new Object;
   if (valid_names.indexOf(dbname) >= 0) {
     db.any(`SELECT player_name, score FROM ${dbname} WHERE game_id = 1 ORDER BY score DESC`)
       .then(function(resultsArray){
-        result1name = resultsArray[0].player_name;
-        result2 = resultsArray[1];
+        console.log(resultsArray)
+        for (let i = 0; i < resultsArray.length; i++){
+          scores[i+1] = {};
+          scores[i+1].name = resultsArray[i].player_name;
+          console.log('resultsArray[i] is ',resultsArray[i].player_name)
+          scores[i+1].score = resultsArray[i].score;
+        }
+        console.log('scores is ', scores)
         response.json(
-          {winner: result1name, second: result2}
+          scores
         );
       })
       .catch(next);
   }
 });
 
-//API for adding scores - modify to specify table through API and validate
-app.get('/add', function(request, response, next){
-  let user = request.query.user;
-  let score = request.query.score;
-  let query = 'INSERT INTO scores (player_name, score) VALUES ($1, $2)';
-  db.any(query, [user, score]);
+//API for adding scores - modify to validate and maybe remove url redirect since part of api
+app.get('/add/:key', function(request, response, next){
+  let key = request.params.key;
+  console.log(key);
+  let query_game = 'SELECT id, name, api_key_valid FROM game WHERE api_key = $1';
+  db.one(query_game, key)     // get game info from api key
+  .then (function(game){
+    console.log(game.name)
+    let user = request.query.user;
+    let score = request.query.score;
+    let game_id = game.id;
+    let query_scores = 'INSERT INTO scores (player_name, score, game_id) VALUES ($1, $2, $3)';
+    db.any(query_scores, [user, score, game_id]);
+  })
+
+  response.render('home.hbs')
 });
 
 //Passwords
