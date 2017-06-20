@@ -110,17 +110,17 @@ app.get('/login', function(request, response){
 
 //login mechanics
 app.post('/login', function(request, response) {
-  let username = request.body.username;
+  let login = request.body.login;
   let password = request.body.password;
-  let query = "SELECT password FROM company WHERE name = $1"
-  db.one(query, username)
+  let query = "SELECT password FROM company WHERE login = $1"
+  db.one(query, login)
     .then (function(stored_pass){
       // hash user input
       return check_pass(stored_pass.password, password)
     })
     .then (function(pass_success){
       if (pass_success) {
-        request.session.user = username;
+        request.session.user = login;
         response.redirect('/');
       }
       else if (!pass_success){
@@ -144,12 +144,18 @@ app.get('/create_account', function(request, response) {
 });
 
 app.post('/create_account', function(request, response, next){
-  let name = request.body.username;
+  let login = request.body.email;
   let password = request.body.password;
-  let email = request.body.email;
+  let name = request.body.name;
+  let pub = request.body.public;
+  if (pub == 'on') {
+    pub = true;
+  }
+  console.log(pub)
   let stored_pass = create_hash(password);
-  let query = 'INSERT INTO company VALUES (DEFAULT, $1, $2, 1, $3)'
-  db.none(query, [name, email, stored_pass])
+  // id, login, password, public (boolean), name
+  let query = 'INSERT INTO company VALUES (DEFAULT, $1, $2, $3, $4)'
+  db.none(query, [login, stored_pass, pub, name])
     .then(function(){
       request.session.user = name
       response.redirect('/');
