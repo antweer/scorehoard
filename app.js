@@ -7,7 +7,7 @@ var promise = require('bluebird');
 var pgp = require('pg-promise')({
   promiseLib: promise
 });
-var db = pgp({database: 'postgres', user:'tanweer'});   // TODO update database info
+var db = pgp({database: 'scorehoard', user:'postgres'});   // TODO update database info
 var apikey = require("apikeygen").apikey;
 
 // password
@@ -32,11 +32,24 @@ app.use(session({
   cookie: {maxAge: 600000}
 }));
 
-
-app.listen(8000, function(){
-  console.log('Listening on port 8000')
+//API Get requests - work in progress
+app.get('/api/:name', function (request, response, next) {
+  var dbname = request.params.name;
+  var valid_names = ['scores'];
+  if (valid_names.indexOf(dbname) >= 0) {
+    db.any(`SELECT player_name, score FROM ${dbname} WHERE game_id = 1 ORDER BY score DESC`)
+      .then(function(resultsArray){
+        result1name = resultsArray[0].player_name;
+        result2 = resultsArray[1];
+        response.json(
+          {winner: result1name, second: result2}
+        );
+      })
+      .catch(next);
+  }
 });
 
+//Passwords
 function create_hash (password) {
   var salt = crypto.randomBytes(20).toString('hex');
   var key = pbkdf2.pbkdf2Sync(
@@ -124,6 +137,7 @@ app.get('/logout', function(request, response, next) {
   });
 })
 
+//Creating an account - We'll have to add verification
 app.get('/create_account', function(request, response) {
   context = {title: 'Create account', user: request.session.user, anon: !request.session.user};
   response.render('create_account.hbs', context)
@@ -141,4 +155,8 @@ app.post('/create_account', function(request, response, next){
       response.redirect('/');
     })
     .catch(function(err){next(err)})
+});
+
+app.listen(8000, function(){
+  console.log('Listening on port 8000')
 });
