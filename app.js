@@ -63,16 +63,39 @@ app.get('/add/:key', function(request, response, next){
   let query_game = 'SELECT id, name, api_key_valid FROM game WHERE api_key = $1';
   db.one(query_game, key)     // get game info from api key
   .then (function(game){
-    console.log(game.name)
-    let user = request.query.user;
-    let score = request.query.score;
-    let game_id = game.id;
-    let query_scores = 'INSERT INTO scores (player_name, score, game_id) VALUES ($1, $2, $3)';
-    db.any(query_scores, [user, score, game_id]);
+    if (api_key_valid){
+      console.log(game.name)
+      let user = request.query.user;
+      let score = request.query.score;
+      let game_id = game.id;
+      let query_scores = 'INSERT INTO scores (player_name, score, game_id) VALUES ($1, $2, $3)';
+      db.any(query_scores, [user, score, game_id]);
+    }
+    else if (api_key_valid == false) {
+      console.warn('API key not valid')
+      return 0
+    }
   })
-
   response.render('home.hbs')
 });
+
+app.get('/admin', function(request, response, next){
+  let account = request.session.user || null;
+  console.log('account is ', account)
+  if (account == null) {response.redirect('/login'); return}    // redirect to login if not logged in
+  let context = {account: account};
+  console.log('context is ', context)
+  db.one("SELECT id FROM company WHERE login = $1;", account)
+    .then (function(account_id){
+      console.log('account id is ', account_id)
+      context['account_id'] = account_id;
+      db.any("SELECT * FROM game WHERE company_id = $1", account_id.id)
+      .then (function(resultsArray){
+        context['games'] = resultsArray;
+        response.render('admin.hbs', context)
+      })
+    })
+})
 
 //Passwords
 function create_hash (password) {
@@ -146,7 +169,8 @@ app.post('/login', function(request, response) {
     .then (function(pass_success){
       if (pass_success) {
         request.session.user = login;
-        response.redirect('/');
+        console.log(request.session)
+        response.redirect('/admin');
       }
       else if (!pass_success){
         context = {title: 'Login', fail: true}
@@ -164,12 +188,12 @@ app.get('/logout', function(request, response, next) {
 
 //Creating an account - We'll have to add verification
 app.get('/create_account', function(request, response) {
-  context = {title: 'Create account', user: request.session.user, anon: !request.session.user};
+  context = {title: 'Create account', login: request.session.user, anon: !request.session.user};
   response.render('create_account.hbs', context)
 });
 
 app.post('/create_account', function(request, response, next){
-  let login = request.body.email;
+  let login = request.body.login;
   let password = request.body.password;
   let name = request.body.name;
   let pub = request.body.public;
@@ -182,8 +206,8 @@ app.post('/create_account', function(request, response, next){
   let query = 'INSERT INTO company VALUES (DEFAULT, $1, $2, $3, $4)'
   db.none(query, [login, stored_pass, pub, name])
     .then(function(){
-      request.session.user = name
-      response.redirect('/');
+      request.session.user = login
+      response.redirect('/admin');
     })
     .catch(function(err){next(err)})
 });
