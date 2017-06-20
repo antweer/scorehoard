@@ -3,6 +3,7 @@ var app = express();
 var body_parser = require('body-parser');
 var session = require('express-session');
 var axios = require('axios');
+var nodemailer = require('nodemailer');
 var promise = require('bluebird');
 var pgp = require('pg-promise')({
   promiseLib: promise
@@ -20,6 +21,17 @@ var key = pbkdf2.pbkdf2Sync(
 );
 var hash = key.toString('hex');
 
+// email
+var transporter = nodemailer.createTransport({
+  host: process.env['SMTP_HOST'],
+  port: 465,
+  secure: true,
+  auth:{
+    user: process.env['SMTP_USER'],
+    pass: process.env['SMTP_PASSWORD']
+  }
+});
+
 app.set('view engine', 'hbs');
 
 app.use(body_parser.urlencoded({extended: false}));
@@ -31,6 +43,7 @@ app.use(session({
   saveUninitialized: false,
   cookie: {maxAge: 600000}
 }));
+
 
 //API Get requests - work in progress
 app.get('/api/:name', function (request, response, next) {
@@ -63,40 +76,16 @@ app.get('/add/:key', function(request, response, next){
   let query_game = 'SELECT id, name, api_key_valid FROM game WHERE api_key = $1';
   db.one(query_game, key)     // get game info from api key
   .then (function(game){
-    if (api_key_valid){
-      console.log(game.name)
-      let user = request.query.user;
-      let score = request.query.score;
-      let game_id = game.id;
-      let query_scores = 'INSERT INTO scores (player_name, score, game_id) VALUES ($1, $2, $3)';
-      db.any(query_scores, [user, score, game_id]);
-    }
-    else if (api_key_valid == false) {
-      console.warn('API key not valid')
-      return 0
-    }
+    console.log(game.name)
+    let user = request.query.user;
+    let score = request.query.score;
+    let game_id = game.id;
+    let query_scores = 'INSERT INTO scores (player_name, score, game_id) VALUES ($1, $2, $3)';
+    db.any(query_scores, [user, score, game_id]);
   })
+
   response.render('home.hbs')
 });
-
-app.get('/admin', function(request, response, next){
-  let account = request.session.user || null;
-  console.log('account is ', account)
-  if (account == null) {response.redirect('/login'); return}    // redirect to login if not logged in
-  let context = {account: account};
-
-  db.one("SELECT * FROM company WHERE login = $1;", account)
-    .then (function(company){
-      console.log('account id is ', company.id)
-      context['company'] = company;
-      db.any("SELECT * FROM game WHERE company_id = $1", company.id)
-      .then (function(resultsArray){
-        context['games'] = resultsArray;
-        console.log('context is ', context)
-        response.render('admin.hbs', context)
-      })
-    })
-})
 
 //Passwords
 function create_hash (password) {
@@ -170,8 +159,7 @@ app.post('/login', function(request, response) {
     .then (function(pass_success){
       if (pass_success) {
         request.session.user = login;
-        console.log(request.session)
-        response.redirect('/admin');
+        response.redirect('/');
       }
       else if (!pass_success){
         context = {title: 'Login', fail: true}
@@ -189,12 +177,12 @@ app.get('/logout', function(request, response, next) {
 
 //Creating an account - We'll have to add verification
 app.get('/create_account', function(request, response) {
-  context = {title: 'Create account', login: request.session.user, anon: !request.session.user};
+  context = {title: 'Create account', user: request.session.user, anon: !request.session.user};
   response.render('create_account.hbs', context)
 });
 
 app.post('/create_account', function(request, response, next){
-  let login = request.body.login;
+  let login = request.body.email;
   let password = request.body.password;
   let name = request.body.name;
   let pub = request.body.public;
@@ -202,13 +190,27 @@ app.post('/create_account', function(request, response, next){
     pub = true;
   }
   console.log(pub)
+  let mailOptions = {
+    from:'"ScoreHoard" <donotreply@scorehoard.com>',
+    to: 'donotreply@scorehoard.com',
+    subject: 'Confirmation Email',
+    text: 'Whatsup',
+    html: '<p>Whatsuppp</p>'
+  };
+  
   let stored_pass = create_hash(password);
   // id, login, password, public (boolean), name
   let query = 'INSERT INTO company VALUES (DEFAULT, $1, $2, $3, $4)'
   db.none(query, [login, stored_pass, pub, name])
     .then(function(){
-      request.session.user = login
-      response.redirect('/admin');
+      request.session.user = name
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          return console.log(error);
+        }
+        console.log('Message send: ', info.messageId, info.response);
+      });
+      response.redirect('/');
     })
     .catch(function(err){next(err)})
 });
