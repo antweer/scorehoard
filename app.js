@@ -49,6 +49,14 @@ app.get('/api/:name', function (request, response, next) {
   }
 });
 
+//API for adding scores - modify to specify table through API and validate
+app.get('/add', function(request, response, next){
+  let user = request.query.user;
+  let score = request.query.score;
+  let query = 'INSERT INTO scores (player_name, score) VALUES ($1, $2)';
+  db.any(query, [user, score]);
+});
+
 //Passwords
 function create_hash (password) {
   var salt = crypto.randomBytes(20).toString('hex');
