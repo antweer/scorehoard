@@ -51,22 +51,37 @@
         <input type='submit'>
       </form>
     </div>
-    <div class="container-fluid bg-2 text-center">    
-        <h3 class="margin">Your Games</h3><br>
-        {{#each games}}
-        <div class="row">
-          <div class="col-sm-2">
-            <p><strong>{{name}}</strong></p>
-          </div>
-          <div class="col-sm-6"> 
-            <p><strong>API Key: </strong>{{api_key}}</p>
-          </div>
-          <div class="col-sm-4"> 
-            <p><strong>Stats: </strong>[[other stats]]</p>
-          </div>
-        {{/each}}
-        </div>
-      </div>
+
+{{#each games}}
+  <div class='game'>
+    {{@index}}: {{name}}
+    <br>
+    {{#if key_present}}
+    API key: {{api_key}}
+    <br>
+    This game's API link is <a href="http://scorehoard.com/add/{{api_key}}?user=USERNAME&score=SCORE">here</a>. Only pass the username and score into the URL upon the player finishing the game to store the data.
+    <br>[[other stats]]
+    {{else}}
+    <form method="POST" action="/admin" name="new_api">
+      <input type='hidden' name='api_key_generate' value='true'>
+      <input type='hidden' name='game_id' value='{{id}}'>
+      <input type='submit' value='Generate API key'>
+    </form>
+    {{/if}}
+  </div>
+  <hr>
+{{/each}}
+  <hr>
+  <div class="game">
+    Add new game:
+    <form method="POST" action="/admin" name="new_game">
+      <input type='text' name='name'>
+      <input type='submit'>
+    </form>
+  </div>
+<hr>
+
+    <a href='/'>Main Page</a>
 
   </body>
 </html>

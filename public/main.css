@@ -1,27 +1,3 @@
-/*body {
-  background-image: url('images/bg1.jpg');
-}
-.title1{
-  display: flex;
-  justify-content: center;
-  color: white;
-  font-size: 60;
-}
-.user{
-  display: flex;
-  float: right;
-  margin-right: 60px;
-  color: wheat;
-}
-.title2{
-  display: flex;
-  justify-content: center;
-  font-size: 30;
-  background-color: white;
-  color: black;
-}*/
-
-/*bootstrap4*/
 body {
   padding-top: 20px;
 
@@ -29,8 +5,8 @@ body {
 }
 .masthead{
   z-index: 11;
-
 }
+
 
 .footer {
   display: flex;
@@ -44,19 +20,27 @@ body {
 }
 
 /* Main marketing message and sign up button */
-.jumbotron {
+.main-title {
   text-align: center;
   /*{background-color: rgb(29, 78, 113, 1);}*/
   background-color: #1D4E69;
   color: #fff;
   margin: 0;
+  padding: 70px;
 }
-.jumbotron .btn {
+.main-title .btn {
   padding: 14px 24px;
   font-size: 21px;
 }
 .form-buttons{
   display: flex:
+}
+.art-work{
+  display: flex;
+  justify-content: flex-end;
+}
+.mb-3{
+  margin:0 !important;
 }
 
 /* .navbar {
@@ -150,6 +134,12 @@ h2.title3{
   background-color: #b12828;
   border-color: #debd27;
   border-width: 3px;
+}
+
+.btn-success:hover{
+  color: #b12828;
+  background-color: #debd27;
+  border-color: #debd27;
 }
 
 /* STRIPE PAYMENT */
