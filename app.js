@@ -104,35 +104,33 @@ app.get('/admin', function(request, response, next){
       console.log('account id is ', company.id)
       context['company'] = company;
       request.session.company = company;
-      if(company.verified == true){
-        db.any("SELECT * FROM game WHERE company_id = $1 ORDER BY name", company.id)
-        .then (function(resultsArray){
-          console.log(resultsArray)
-          for (i = 0; i < resultsArray.length; i++){
-            if (resultsArray[i].api_key.length == 50){
-              resultsArray[i]['key_present'] = true;
-            }
-            else {
-              resultsArray[i]['key_present'] = false;
-            }
+      db.any("SELECT * FROM game WHERE company_id = $1 ORDER BY name", company.id)
+      .then (function(resultsArray){
+        console.log(resultsArray)
+        for (i = 0; i < resultsArray.length; i++){
+          if (resultsArray[i].api_key.length == 50){
+            resultsArray[i]['key_present'] = true;
           }
-          context['games'] = resultsArray;
-          console.log('context is ', context)
-          response.render('admin.hbs', context)
-        })
-        .catch (function(err){
-          console.error(err);
-        })
-      }
-     else{
-       response.render('notverified.hbs', {});
-     }
-})
+          else {
+            resultsArray[i]['key_present'] = false;
+          }
+        }
+        context['games'] = resultsArray;
+        console.log('context is ', context)
+        response.render('admin.hbs', context)
+      })
+      .catch (function(err){
+        console.error(err);
+      })
+    })
 })
 
 app.post('/admin', function(request, response, next){
   let company = request.session.company;
   let account = request.session.user || null;
+  if (company.verified){
+    context[verified = true]
+  }
   if (request.body.api_key_generate) {
     console.log('body is ',request.body)
     let key = apikey(50);
@@ -147,16 +145,19 @@ app.post('/admin', function(request, response, next){
   else {
     let name = request.body.name;
     let key = 'Pending';
-    let query = 'INSERT INTO game VALUES (DEFAULT, \'$1#\', $2, FALSE, $3)'
-    db.any(query, [name, key, company.id])
-    .then(function(){
-      if (account == null) {response.redirect('/login'); return}
-      response.redirect('/admin')
-    })
-
+    let query1 = 'INSERT INTO game VALUES (DEFAULT, \'$1#\', $2, FALSE, $3)'
+    let promise1 = db.any(query1, [name, key, company.id]) // adds game to game table
+    let query2 = 'CREATE TABLE \$1:value\(id SERIAL NOT NULL PRIMARY KEY, game_id INTEGER, player_name VARCHAR, score INTEGER);'
+    let promise2 = db.any(query2, name) // creates table from game name
+    return Promise.all([promise1, promise2])
+      .then(function(){
+        if (account == null) {response.redirect('/login'); return}
+        response.redirect('/admin')
+      })
+      .catch(function(err){
+        console.error(err)
+      })
   }
-
-
 })
 
 //Passwords
@@ -203,20 +204,20 @@ app.get('/payment', function(request, response){
   response.render('payment.hbs', context)
 })
 
-// NEW API KEY LOGIC
-app.post('/', function(request, response, next){
-  var key = apikey(50);  // generates 50 char base64 encoded key
-  var account = request.session.user;
-  db.one("SELECT id FROM company WHERE name = $1;", account)
-    .then(function(){
-      api_key = key
-    })
-    .catch(function(err){
-      next('Sorry, an error occurred: \n' + err);
-    })
-  context = {key: key}
-  response.render('home.hbs', context)
-})
+// // NEW API KEY LOGIC
+// app.post('/', function(request, response, next){
+//   var key = apikey(50);  // generates 50 char base64 encoded key
+//   var account = request.session.user;
+//   db.one("SELECT id FROM company WHERE name = $1;", account)
+//     .then(function(){
+//       api_key = key
+//     })
+//     .catch(function(err){
+//       next('Sorry, an error occurred: \n' + err);
+//     })
+//   context = {key: key}
+//   response.render('home.hbs', context)
+// })
 
 //login page
 app.get('/login', function(request, response){
@@ -240,7 +241,7 @@ app.post('/login', function(request, response) {
         response.redirect('/admin');
       }
       else if (!pass_success){
-        context = {title: 'Login', fail: true, }
+        context = {title: 'Login', fail: true}
         response.render('login.hbs', context)
       }
     })
@@ -311,18 +312,15 @@ app.post('/create_account', function(request, response, next){
 app.get('/verify/:key', function(request, response, next){
   let key = request.params.key;
   let query1 = 'UPDATE company SET verified = TRUE WHERE verify_key = $1';
-  //let query2 = 'SELECT login FROM company WHERE verify_key = $1';
+  let query2 = 'SELECT login FROM company WHERE verify_key = $1';
   db.none(query1, key)
   .then(function() {
-    let key = request.params.key;
-    let query2 = 'SELECT login FROM company WHERE verify_key = $1';
     db.one(query2, key)
     .then(function(login){
-      console.log(login.login)
       context = {verified: true};
       let mailOptions = {
         from:'"ScoreHoard" <donotreply@scorehoard.com>',
-        to: login.login,
+        to: login,
         subject: 'Thank you for verifying your account',
         text: 'Thank you',
         html: `<p>Thank you, your account has been verified. May we fulfill your ScoreHoarding needs!</p>`
@@ -333,7 +331,7 @@ app.get('/verify/:key', function(request, response, next){
         }
         console.log('Message send: ', info.messageId, info.response);
       });
-      response.redirect('/admin');
+      response.redirect('/', context)
     })
   })
 })
