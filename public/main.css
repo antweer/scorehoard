@@ -20,19 +20,24 @@ body {
 }
 
 /* Main marketing message and sign up button */
-.jumbotron {
+.main-title {
   text-align: center;
   /*{background-color: rgb(29, 78, 113, 1);}*/
   background-color: #1D4E69;
   color: #fff;
   margin: 0;
+  padding: 70px;
 }
-.jumbotron .btn {
+.main-title .btn {
   padding: 14px 24px;
   font-size: 21px;
 }
 .form-buttons{
   display: flex:
+}
+.art-work{
+  display: flex;
+  justify-content: flex-end;
 }
 .mb-3{
   margin:0 !important;
