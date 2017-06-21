@@ -24,7 +24,7 @@
 /*bootstrap4*/
 body {
   padding-top: 20px;
-  background-image: url('images/bg1.jpg');
+
   padding: 0;
 }
 .masthead{
@@ -40,7 +40,7 @@ body {
   margin-top: 40px;
   border-top: 1px solid #eee;
   margin: 0;
-  color: black;
+  color: #34495e;
 }
 
 /* Main marketing message and sign up button */
@@ -48,7 +48,7 @@ body {
   text-align: center;
   /*{background-color: rgb(29, 78, 113, 1);}*/
   background-color: #1D4E69;
-  color: white;
+  color: #fff;
   margin: 0;
 }
 .jumbotron .btn {
@@ -77,24 +77,24 @@ body {
   display: flex;
   justify-content: center;
   background-color: #273547;
-  color: white;
+  color: #fff;
   margin-top:
 }
 .C{
   background-color: #273547;
-  color: white;
+  color: #fff;
   text-align: center;
   padding: 70px;
 }
 h2.free{
   display: flex;
   justify-content: center;
-  background-color: black;
-  color: white;
+  background-color: #206F9C;
+  color: #fff;
 }
 #free {
-  background-color: black;
-  color: white;
+  background-color: #206F9C;
+  color: #fff;
   text-align: center;
   padding: 70px;
 }
@@ -105,12 +105,12 @@ h2.free{
 h2.premium{
   display: flex;
   justify-content: center;
-  background-color: black;
-  color: white;
+  background-color: #206F9C;
+  color: #fff;
 }
 #premium{
-  background-color: black;
-  color: white;
+  background-color: #206F9C;
+  color: #fff;
   text-align: center;
   padding: 70px;
 }
@@ -121,24 +121,32 @@ h2.premium{
 h2.title2{
   display: flex;
   justify-content: center;
-  background-color: white;
+  background-color: #fff;
   color: black;
 }
 .row2 > div{
   text-align: center;
-  background-color: white;
+  background-color: #fff;
   color: black;
   padding: 70px;
 }
 h2.title3{
   display: flex;
   justify-content: center;
-  background-color: black;
-  color: white;
+  background-color: #34495e;
+  color: #fff;
 }
 #used {
-  background-color: black;
-  color: white;
+  background-color: #34495e;
+  color: #fff;
   text-align: center;
   padding: 70px;
+}
+.floaty{
+  background-color: #206F9C;
+  z-index: 5;
+}
+.btn-success{
+  background-color: #b12828;
+  border-color: #debd27;
 }
