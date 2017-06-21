@@ -259,30 +259,31 @@ app.post('/create_account', function(request, response, next){
   let password = request.body.password;
   let name = request.body.name;
   let pub = request.body.public;
+  let verify_key = apikey(40);
   if (pub == 'on') {
     pub = true;
   }
-  console.log(pub)
   let mailOptions = {
     from:'"ScoreHoard" <donotreply@scorehoard.com>',
     to: login,
     subject: 'Confirmation Email',
     text: 'Thank you',
-    html: '<p>Thank you for registering an account with ScoreHoard. May we fulfill your ScoreHoarding needs!</p>'
+    html: `<p>Thank you for registering an account with ScoreHoard. May we fulfill your ScoreHoarding needs! Please click <a href="http://scorehoard.com/verify/${verify_key}">here</a> to verify your account with us!</p>`
   };
-
+  console.log('options set')
   let stored_pass = create_hash(password);
   // id, login, password, public (boolean), name
   let query = 'SELECT login FROM company WHERE login = $1';
   db.none(query, login)
   .then(function(){
-    let query = 'INSERT INTO company VALUES (DEFAULT, $1, $2, $3, $4)'
-    db.none(query, [login, stored_pass, pub, name])
+    let query = 'INSERT INTO company VALUES (DEFAULT, $1, $2, $3, $4, DEFAULT, $5)'
+    db.none(query, [login, stored_pass, pub, name, verify_key])
       .then(function(){
+        console.log('company inserted')
         request.session.user = name
         transporter.sendMail(mailOptions, (error, info) => {
           if (error) {
-            return console.log(error);
+            return console.error(error);
           }
           console.log('Message send: ', info.messageId, info.response);
         });
@@ -301,7 +302,33 @@ app.post('/create_account', function(request, response, next){
   })
 });
 
-
+// VERIFY ACCOUNT
+app.get('/verify/:key', function(request, response, next){
+  let key = request.params.key;
+  let query1 = 'UPDATE company SET verified = TRUE WHERE verify_key = $1';
+  let query2 = 'SELECT login FROM company WHERE verify_key = $1';
+  db.none(query1, key)
+  .then(function() {
+    db.one(query2, key)
+    .then(function(login){
+      context = {verified: true};
+      let mailOptions = {
+        from:'"ScoreHoard" <donotreply@scorehoard.com>',
+        to: login,
+        subject: 'Thank you for verifying your account',
+        text: 'Thank you',
+        html: `<p>Thank you, your account has been verified. May we fulfill your ScoreHoarding needs!</p>`
+      };
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          return console.error(error);
+        }
+        console.log('Message send: ', info.messageId, info.response);
+      });
+      response.redirect('/', context)
+    })
+  })
+})
 
 app.listen(8000, function(){
   console.log('Listening on port 8000')
