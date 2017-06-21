@@ -265,27 +265,40 @@ app.post('/create_account', function(request, response, next){
   console.log(pub)
   let mailOptions = {
     from:'"ScoreHoard" <donotreply@scorehoard.com>',
-    to: 'donotreply@scorehoard.com',
+    to: login,
     subject: 'Confirmation Email',
-    text: 'Whatsup',
-    html: '<p>Whatsuppp</p>'
+    text: 'Thank you',
+    html: '<p>Thank you for registering an account with ScoreHoard. May we fulfill your ScoreHoarding needs!</p>'
   };
 
   let stored_pass = create_hash(password);
   // id, login, password, public (boolean), name
-  let query = 'INSERT INTO company VALUES (DEFAULT, $1, $2, $3, $4)'
-  db.none(query, [login, stored_pass, pub, name])
-    .then(function(){
-      request.session.user = name
-      transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-          return console.log(error);
-        }
-        console.log('Message send: ', info.messageId, info.response);
-      });
-      response.redirect('/');
+  let query = 'SELECT login FROM company WHERE login = $1';
+  db.none(query, login)
+  .then(function(){
+    let query = 'INSERT INTO company VALUES (DEFAULT, $1, $2, $3, $4)'
+    db.none(query, [login, stored_pass, pub, name])
+      .then(function(){
+        request.session.user = name
+        transporter.sendMail(mailOptions, (error, info) => {
+          if (error) {
+            return console.log(error);
+          }
+          console.log('Message send: ', info.messageId, info.response);
+        });
+        response.redirect('/');
+      })
+      .catch(function(err){next(err)})
     })
-    .catch(function(err){next(err)})
+  .catch(function(err){
+    if(err.received > 0){
+      context.fail = true;
+      response.render('create_account.hbs', context);
+    }
+    else{
+      console.log(err);
+    }
+  })
 });
 
 
