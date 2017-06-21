@@ -1,85 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <title>ScoreHoard Admin</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
-
-    <title></title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="/static/css/justified-nav.css" rel="stylesheet">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link href="static/main.css" rel="stylesheet">
-    <link href="static/media.css" rel="stylesheet">
-    <style>
-      
-    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
   </head>
   <body>
-    <!--NAVIGATION -->
-    <div class="masthead">
-        <h3 class="text-muted">insert logo</h3>
+<!--MASTHEAD-->
 
-        <nav class="navbar navbar-light bg-faded rounded mb-3">
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <h1>ScoreHoard</h1>
-          <div class="collapse navbar-toggleable-md" id="navbarCollapse">
-            <ul class="nav navbar-nav text-md-center justify-content-md-between">
-              <li class="nav-item active">
-                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Projects</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Services</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Downloads</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">About</a>
-              </li>
-            </ul>
-          </div>
-        </nav>
+  <div class="masthead">
+  </div>
+<!--NAVIGATION -->
+  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>                        
+        </button>
+        <img src="static/images/monkey-47384_640.png" width="64" height="64" alt="scorehoard gorilla logo">
+        <a class="navbar-brand" href="#">ScoreHoard</a>
       </div>
-    <!--JUMBOTRON-->
-    <div class='jumbotron'>
-
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav"></ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="/">Main</a></li>
+            <li class="active"><a href="#">Services</a></li>
+            <li><a href="/downloads">Downloads</a></li>
+            <li><a href="/about">About</a></li>
+            <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+<!--JUMBOTRON-->
+  <div class='jumbotron'>
       <h1>{{company.name}}</h1>
-      <h3>Your Games</h3>
-    <p>Logged in as: {{account}}</p>
+      <p>Logged in as: {{account}}</p>
+  </div>
+    <div class="container-fluid bg-1 text-center">
+        
+      <form method='post'>
+        <label>Add new game:</label>
+        <input type='text' name='name'>
+        <input type='submit'>
+      </form>
     </div>
-
-    {{#each games}}
-      <div class='game'>
-        {{name}}
-        <br>
-        API key: {{api_key}}
-        <br>
-        This game's API link is <a href="http://scorehoard.com/add/{{api_key}}?user=USERNAME&score=SCORE">here</a>. Only pass the username and score into the URL upon the player finishing the game to store the data.
-        <br>[[other stats]]
+    <div class="container-fluid bg-2 text-center">    
+        <h3 class="margin">Your Games</h3><br>
+        {{#each games}}
+        <div class="row">
+          <div class="col-sm-2">
+            <p><strong>{{name}}</strong></p>
+          </div>
+          <div class="col-sm-6"> 
+            <p><strong>API Key: </strong>{{api_key}}</p>
+          </div>
+          <div class="col-sm-4"> 
+            <p><strong>Stats: </strong>[[other stats]]</p>
+          </div>
+        {{/each}}
+        </div>
       </div>
-    {{/each}}
-      <hr>
-      <div class="game">
-        Add new game:
-        <form method='post'>
-          <input type='text' name='name'>
-          <input type='submit'>
-        </form>
-      </div>
-    <hr>
 
-    <a href='/'>Main Page</a>
-
-</body>
+  </body>
+</html>
