@@ -1,0 +1,113 @@
+/*body {
+  background-image: url('images/bg1.jpg');
+}
+.title1{
+  display: flex;
+  justify-content: center;
+  color: white;
+  font-size: 60;
+}
+.user{
+  display: flex;
+  float: right;
+  margin-right: 60px;
+  color: wheat;
+}
+.title2{
+  display: flex;
+  justify-content: center;
+  font-size: 30;
+  background-color: white;
+  color: black;
+}*/
+
+/*bootstrap4*/
+body {
+  padding-top: 20px;
+  background-image: url('images/bg1.jpg');
+}
+
+.footer {
+  padding-top: 40px;
+  padding-bottom: 40px;
+  margin-top: 40px;
+  border-top: 1px solid #eee;
+}
+
+/* Main marketing message and sign up button */
+.jumbotron {
+  text-align: center;
+  background-color: black;
+  color: white;
+}
+.jumbotron .btn {
+  padding: 14px 24px;
+  font-size: 21px;
+}
+
+.navbar {
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#f7f7f7),to(#eee));
+  background-image: -webkit-linear-gradient(top, #f7f7f7 0%,#eee 100%);
+  background-image: -o-linear-gradient(top, #f7f7f7 0%,#eee 100%);
+  background-image: linear-gradient(to bottom, #f7f7f7 0%,#eee 100%);
+  border: 1px solid #e5e5e5;
+}
+  .navbar-nav .nav-item {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1 0 auto;
+        -ms-flex: 1 0 auto;
+            flex: 1 0 auto;
+  }
+
+ h2.master-plan{
+  display: flex;
+  justify-content: center;
+  background-color: white;
+  color: black;
+}
+.C{
+  background-color: white;
+  color: black;
+  text-align: center;
+}
+h2.free{
+  display: flex;
+  justify-content: center;
+  background-color: black;
+  color: white;
+}
+#free {
+  background-color: black;
+  color: white;
+  text-align: center;
+}
+#button1{
+  display: flex;
+  justify-content: center;
+}
+h2.premium{
+  display: flex;
+  justify-content: center;
+  background-color: black;
+  color: white;
+}
+#premium{
+  background-color: black;
+  color: white;
+  text-align: center;
+}
+#button2{
+  display: flex;
+  justify-content: center;
+}
+h2.title2{
+  display: flex;
+  justify-content: center;
+  background-color: white;
+  color: black;
+}
+.row2 > div{
+  text-align: center;
+  background-color: white;
+  color: black;
+}
