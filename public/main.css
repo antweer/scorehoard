@@ -43,7 +43,7 @@ body {
   margin:0 !important;
 }
 
-.navbar {
+/* .navbar {
   background-image: -webkit-gradient(linear, left top, left bottom, from(#f7f7f7),to(#eee));
   background-image: -webkit-linear-gradient(top, #f7f7f7 0%,#eee 100%);
   background-image: -o-linear-gradient(top, #f7f7f7 0%,#eee 100%);
@@ -55,7 +55,7 @@ body {
     -webkit-flex: 1 0 auto;
         -ms-flex: 1 0 auto;
             flex: 1 0 auto;
-  }
+  } */
 
  h2.master-plan{
   display: flex;
@@ -163,3 +163,30 @@ h2.title3{
 
 .StripeElement--webkit-autofill {
   background-color: #fefde5 !important;
+}
+
+/* NAVIGATION */
+.navbar {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  border: 0;
+  border-radius: 0;
+  margin-bottom: 0;
+  font-size: 12px;
+  letter-spacing: 2px
+}
+
+.navbar-nav li a:hover {
+  color: #1abc9c;
+}
+/* Admin Page */
+.bg-1 {
+  padding: 20px;
+}
+
+.bg-2 {
+  padding: 10px;
+}
+label {
+  padding: 10px;
+}
