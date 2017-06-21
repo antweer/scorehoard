@@ -1,150 +1,70 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
-  <link rel="icon" href="../../favicon.ico">
-
-  <title>Justified Nav Template for Bootstrap</title>
-
-  <!-- Bootstrap core CSS -->
-  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
-  <link href="/static/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- Custom styles for this template -->
-  <link href="/static/css/justified-nav.css" rel="stylesheet">
-
-  <link href="static/main.css" rel="stylesheet">
-  <link href="static/media.css" rel="stylesheet">
-
-</head>
-
-<body>
-
-
-
-  <div class="masthead">
-    <h3 class="text-muted"></h3>
-
-    <nav class="navbar navbar-inverse">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-          <!-- <img src="static/images/monkey-47384_640.png" width="64" height="64" alt="scorehoard gorilla logo"> -->
-          <a class="navbar-brand" href="#">ScoreHoard</a>
-        </div>
-        <div class="collapse navbar-collapse" id="myNavbar">
-          <ul class="nav navbar-nav"></ul>
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="/">Main</a></li>
-            <li class="active"><a href="#">Services</a></li>
-            <li><a href="/downloads">Downloads</a></li>
-            <li><a href="/about">About</a></li>
-            <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-  </div>
-
-  <!-- Jumbotron -->
-  <div class="main-title row row3">
-    <div class="col-lg-6 col-md-12">
-      <h1 class 'brand'>ScoreHoard</h1>
-      <p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet.</p>
-      <div class='form-buttons'>
-        <form method="POST" name="new_api">
-          <input value='Sign in' type="submit" class="btn btn-lg btn-success">
-        </form>
-        {{key}}
-      </div>
-    </div>
-
-    <div class="col-lg-6 col-md-12">
-      <img src='/static/images/monkey-text.png' class="test-img" alt='gorilla image' />
-    </div>
-
-  </div>
-
-
-  <!-- Example row of columns -->
-  <div class="row1">
-    <div class="C">
-      <h2 class='master-plan'>What we do</h2>
-      <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked
-        up one </p>
-    </div>
-
-  </div>
-  <div class="row row2">
-    <div class="col-lg-6 col-md-12" id='free'>
-      <h2 class='free'>Free</h2>
-      <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-      <!-- <p><a class="btn btn-primary" href="#" role="button" id='button1'>Sign up &raquo;</a></p> -->
+<!-- Jumbotron -->
+<div class="main-title row row3">
+  <div class="col-lg-6 col-md-12">
+    <h1 class 'brand'>ScoreHoard</h1>
+    <p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet.</p>
+    <div class='form-buttons'>
       <form method="POST" name="new_api">
-        <input value='Sign up' type="submit" class="btn btn-lg btn-success">
+        <input value='Sign in' type="submit" class="btn btn-lg btn-success">
       </form>
-
       {{key}}
-      <hr>
-      <!-- <a href="/login">Login here</a> -->
-    </div>
-    <div class="col-lg-6 col-md-12" id='premium'>
-      <h2 class='premium'>Premium</h2>
-      <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-      <!-- <p><a class="btn btn-primary" href="#" role="button" id='button2'>Sign up &raquo;</a></p> -->
-      <form method="POST" name="new_api">
-        <input value='Sign up' type="submit" class="btn btn-lg btn-success">
-      </form>
-
-      {{key}}
-      <hr>
-      <!-- <a href="/login">Login here</a> -->
     </div>
   </div>
-  <div class="row2">
-    <div class="col-md-12" id='demo'>
-      <h2 class="title2">Try Our Demo</h2>
-      <p>"Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit..."</p>
-    </div>
 
+  <div class="col-lg-6 col-md-12">
+    <img src='/static/images/monkey-text.png' class="test-img" alt='gorilla image' />
   </div>
-  <div class="row3">
-    <div class="col-md-12" id='used'>
-      <h2 class="title3">Used In</h2>
-      <p>"Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit..."</p>
-    </div>
 
+</div>
+
+
+<!-- Example row of columns -->
+<div class="row1">
+  <div class="C">
+    <h2 class='master-plan'>What we do</h2>
+    <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked
+      up one </p>
   </div>
-  <div class='floaty'></div>
 
-  <!-- Site footer -->
-  <footer class="footer">
-    <p>&copy; Company 2017</p>
-    <p>Powered buy....</p>
-  </footer>
+</div>
+<div class="row row2">
+  <div class="col-lg-6 col-md-12" id='free'>
+    <h2 class='free'>Free</h2>
+    <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+    <!-- <p><a class="btn btn-primary" href="#" role="button" id='button1'>Sign up &raquo;</a></p> -->
+    <form method="POST" name="new_api">
+      <input value='Sign up' type="submit" class="btn btn-lg btn-success">
+    </form>
 
-  <!-- /container -->
+    {{key}}
+    <hr>
+    <!-- <a href="/login">Login here</a> -->
+  </div>
+  <div class="col-lg-6 col-md-12" id='premium'>
+    <h2 class='premium'>Premium</h2>
+    <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+    <!-- <p><a class="btn btn-primary" href="#" role="button" id='button2'>Sign up &raquo;</a></p> -->
+    <form method="POST" name="new_api">
+      <input value='Sign up' type="submit" class="btn btn-lg btn-success">
+    </form>
 
+    {{key}}
+    <hr>
+    <!-- <a href="/login">Login here</a> -->
+  </div>
+</div>
+<div class="row2">
+  <div class="col-md-12" id='demo'>
+    <h2 class="title2">Try Our Demo</h2>
+    <p>"Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit..."</p>
+  </div>
 
-  <!-- Bootstrap core JavaScript
-    ================================================== -->
-  <!-- Placed at the end of the document so the pages load faster -->
-  <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
-  <script>
-    window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')
-  </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-  <script src="/static/js/bootstrap.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-</body>
+</div>
+<div class="row3">
+  <div class="col-md-12" id='used'>
+    <h2 class="title3">Used In</h2>
+    <p>"Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit..."</p>
+  </div>
 
-</html>
+</div>
+<div class='floaty'></div>
