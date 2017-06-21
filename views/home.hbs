@@ -1,122 +1,144 @@
-
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
 
-    <title>Justified Nav Template for Bootstrap</title>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="../../favicon.ico">
 
-    <!-- Bootstrap core CSS -->
-    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+  <title>Justified Nav Template for Bootstrap</title>
 
-    <!-- Custom styles for this template -->
-    <link href="/static/css/justified-nav.css" rel="stylesheet">
+  <!-- Bootstrap core CSS -->
+  <link href="/static/css/bootstrap.min.css" rel="stylesheet">
 
-    <link href="static/main.css" rel="stylesheet">
-    <link href="static/media.css" rel="stylesheet">
-  </head>
+  <!-- Custom styles for this template -->
+  <link href="/static/css/justified-nav.css" rel="stylesheet">
 
-  <body>
+  <link href="static/main.css" rel="stylesheet">
+  <link href="static/media.css" rel="stylesheet">
+</head>
 
-  
+<body>
 
-      <div class="masthead">
-        <h3 class="text-muted">insert logo</h3>
 
-        <nav class="navbar navbar-light bg-faded rounded mb-3">
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+
+  <div class="masthead">
+    <h3 class="text-muted">insert logo</h3>
+
+    <nav class="navbar navbar-light bg-faded rounded mb-3">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
-          <div class="collapse navbar-toggleable-md" id="navbarCollapse">
-            <ul class="nav navbar-nav text-md-center justify-content-md-between">
-              <li class="nav-item active">
-                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Projects</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Services</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Downloads</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">About</a>
-              </li>
-            </ul>
-          </div>
-        </nav>
+      <div class="collapse navbar-toggleable-md" id="navbarCollapse">
+        <ul class="nav navbar-nav text-md-center justify-content-md-between">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Projects</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Services</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Downloads</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">About</a>
+          </li>
+        </ul>
       </div>
+    </nav>
+  </div>
 
-      <!-- Jumbotron -->
-      <div class="jumbotron">
-        <h1>ScoreHoard</h1>
-        <p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet.</p>
-        <p><a class="btn btn-lg btn-success" href="#" role="button">Sign in</a></p>
-        <form method="POST" name="new_api">
-          <input type='submit'>
-        </form>
+  <!-- Jumbotron -->
+  <div class="jumbotron">
+    <h1>ScoreHoard</h1>
+    <p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet.</p>
 
-        {{key}}
-        <hr>
-        <a href="/login">Login here</a>
-      </div>
+    <div class='form-buttons'>
 
-      <!-- Example row of columns -->
-      <div class="row1">
-        <div class="C">
-          <h2 class='master-plan'>What we do</h2>
-          <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one </p>
-        </div>
+      <form method="POST" name="new_api">
+        <input value='Sign in' type="submit" class="btn btn-lg btn-success">
+      </form>
 
-      </div>
-      <div class="row">
-        <div class="col-lg-6 col-md-12" id='free'>
-          <h2 class='free'>Free</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn btn-primary" href="#" role="button" id='button1'>Sign up &raquo;</a></p>
-        </div>
-        <div class="col-lg-6 col-md-12" id='premium'>
-          <h2 class='premium'>Premium</h2>
-          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-          <p><a class="btn btn-primary" href="#" role="button" id='button2'>Sign up &raquo;</a></p>
-       </div>
-      </div>
-      <div class="row2">
-        <div class="col-md-12" id='demo'>
-          <h2 class="title2">Try Our Demo</h2>
-          <p>"Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit..."</p>
-        </div>
+      {{key}}
+      <hr>
+      <a class="btn btn-lg btn-success" href="/login" role="button">Log in</a>
+    </div>
+  </div>
 
-      </div>
-      <div class="row3">
-        <div class="col-md-12">
-          <h2 class="title3">Used In</h2>
-          <p>"Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit..."</p>
-        </div>
+  <!-- Example row of columns -->
+  <div class="row1">
+    <div class="C">
+      <h2 class='master-plan'>What we do</h2>
+      <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked
+        up one </p>
+    </div>
 
-      </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-6 col-md-12" id='free'>
+      <h2 class='free'>Free</h2>
+      <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+      <!-- <p><a class="btn btn-primary" href="#" role="button" id='button1'>Sign up &raquo;</a></p> -->
+      <form method="POST" name="new_api">
+        <input value='Sign up' type="submit" class="btn btn-lg btn-success">
+      </form>
 
-      <!-- Site footer -->
-      <footer class="footer">
-        <p>&copy; Company 2017</p>
-        <p>Powered buy....</p>
-      </footer>
+      {{key}}
+      <hr>
+      <!-- <a href="/login">Login here</a> -->
+    </div>
+    <div class="col-lg-6 col-md-12" id='premium'>
+      <h2 class='premium'>Premium</h2>
+      <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+      <!-- <p><a class="btn btn-primary" href="#" role="button" id='button2'>Sign up &raquo;</a></p> -->
+      <form method="POST" name="new_api">
+        <input value='Sign up' type="submit" class="btn btn-lg btn-success">
+      </form>
 
-     <!-- /container -->
+      {{key}}
+      <hr>
+      <!-- <a href="/login">Login here</a> -->
+    </div>
+  </div>
+  <div class="row2">
+    <div class="col-md-12" id='demo'>
+      <h2 class="title2">Try Our Demo</h2>
+      <p>"Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit..."</p>
+    </div>
+
+  </div>
+  <div class="row3">
+    <div class="col-md-12" id='used'>
+      <h2 class="title3">Used In</h2>
+      <p>"Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit..."</p>
+    </div>
+
+  </div>
+  <div class='floaty'></div>
+
+  <!-- Site footer -->
+  <footer class="footer">
+    <p>&copy; Company 2017</p>
+    <p>Powered buy....</p>
+  </footer>
+
+  <!-- /container -->
 
 
-    <!-- Bootstrap core JavaScript
+  <!-- Bootstrap core JavaScript
     ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
-    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-    <script src="/static/js/bootstrap.min.js"></script>
-  </body>
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+  <script>
+    window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+  <script src="/static/js/bootstrap.min.js"></script>
+</body>
+
 </html>

@@ -32,6 +32,7 @@ var transporter = nodemailer.createTransport({
   }
 });
 
+
 app.set('view engine', 'hbs');
 
 app.use(body_parser.urlencoded({extended: false}));
@@ -191,6 +192,12 @@ app.get('/', function(request, response){
   response.render('home.hbs', context)
 })
 
+ // PAYMENT
+app.get('/paymnet', function(request, response){
+  context = {title: 'ScoreHoard Payment'};
+  response.render('paymnet.hbs', context)
+})
+
 // NEW API KEY LOGIC
 app.post('/', function(request, response, next){
   var key = apikey(50);  // generates 50 char base64 encoded key
@@ -280,6 +287,8 @@ app.post('/create_account', function(request, response, next){
     })
     .catch(function(err){next(err)})
 });
+
+
 
 app.listen(8000, function(){
   console.log('Listening on port 8000')
