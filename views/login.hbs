@@ -1,5 +1,6 @@
 <div class='box'>
   {{#if fail}}<p class='fail'>Username and password did not match. Please try again.</p>{{/if}}
+  {{#if not_email}}<p>Please enter a valid email address</p>{{/if}}
   <form action="/login" method="POST">
     <label>Username:</label>
     <input type="text" name="login">
