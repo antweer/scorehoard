@@ -32,6 +32,7 @@ var transporter = nodemailer.createTransport({
   }
 });
 
+
 app.set('view engine', 'hbs');
 
 app.use(body_parser.urlencoded({extended: false}));
@@ -41,7 +42,7 @@ app.use(session({
   secret: process.env.SECRET_KEY || 'dev',
   resave: true,
   saveUninitialized: false,
-  cookie: {maxAge: 600000}
+  cookie: {maxAge: 6000000}
 }));
 
 
@@ -102,13 +103,55 @@ app.get('/admin', function(request, response, next){
     .then (function(company){
       console.log('account id is ', company.id)
       context['company'] = company;
-      db.any("SELECT * FROM game WHERE company_id = $1", company.id)
+      request.session.company = company;
+      db.any("SELECT * FROM game WHERE company_id = $1 ORDER BY name", company.id)
       .then (function(resultsArray){
+        console.log(resultsArray)
+        for (i = 0; i < resultsArray.length; i++){
+          if (resultsArray[i].api_key.length == 50){
+            resultsArray[i]['key_present'] = true;
+          }
+          else {
+            resultsArray[i]['key_present'] = false;
+          }
+        }
         context['games'] = resultsArray;
         console.log('context is ', context)
         response.render('admin.hbs', context)
       })
+      .catch (function(err){
+        console.error(err);
+      })
     })
+})
+
+app.post('/admin', function(request, response, next){
+  let company = request.session.company;
+  let account = request.session.user || null;
+  if (request.body.api_key_generate) {
+    console.log('body is ',request.body)
+    let key = apikey(50);
+    let id = request.session.company.id;
+    let game_id = request.body.game_id;
+    let query = "UPDATE game SET api_key = $1 WHERE id = $2"
+    db.none(query, [key, game_id])
+    response.redirect('/admin')
+    // put key in db
+
+  }
+  else {
+    let name = request.body.name;
+    let key = 'Pending';
+    let query = 'INSERT INTO game VALUES (DEFAULT, \'$1#\', $2, FALSE, $3)'
+    db.any(query, [name, key, company.id])
+    .then(function(){
+      if (account == null) {response.redirect('/login'); return}
+      response.redirect('/admin')
+    })
+
+  }
+
+
 })
 
 //Passwords
@@ -149,9 +192,15 @@ app.get('/', function(request, response){
   response.render('home.hbs', context)
 })
 
+ // PAYMENT
+app.get('/paymnet', function(request, response){
+  context = {title: 'ScoreHoard Payment'};
+  response.render('paymnet.hbs', context)
+})
+
 // NEW API KEY LOGIC
 app.post('/', function(request, response, next){
-  var key = apikey(50);  // generates 40 char base64 encoded key
+  var key = apikey(50);  // generates 50 char base64 encoded key
   var account = request.session.user;
   db.one("SELECT id FROM company WHERE name = $1;", account)
     .then(function(){
@@ -216,28 +265,43 @@ app.post('/create_account', function(request, response, next){
   console.log(pub)
   let mailOptions = {
     from:'"ScoreHoard" <donotreply@scorehoard.com>',
-    to: 'donotreply@scorehoard.com',
+    to: login,
     subject: 'Confirmation Email',
-    text: 'Whatsup',
-    html: '<p>Whatsuppp</p>'
+    text: 'Thank you',
+    html: '<p>Thank you for registering an account with ScoreHoard. May we fulfill your ScoreHoarding needs!</p>'
   };
-  
+
   let stored_pass = create_hash(password);
   // id, login, password, public (boolean), name
-  let query = 'INSERT INTO company VALUES (DEFAULT, $1, $2, $3, $4)'
-  db.none(query, [login, stored_pass, pub, name])
-    .then(function(){
-      request.session.user = name
-      transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-          return console.log(error);
-        }
-        console.log('Message send: ', info.messageId, info.response);
-      });
-      response.redirect('/');
+  let query = 'SELECT login FROM company WHERE login = $1';
+  db.none(query, login)
+  .then(function(){
+    let query = 'INSERT INTO company VALUES (DEFAULT, $1, $2, $3, $4)'
+    db.none(query, [login, stored_pass, pub, name])
+      .then(function(){
+        request.session.user = name
+        transporter.sendMail(mailOptions, (error, info) => {
+          if (error) {
+            return console.log(error);
+          }
+          console.log('Message send: ', info.messageId, info.response);
+        });
+        response.redirect('/');
+      })
+      .catch(function(err){next(err)})
     })
-    .catch(function(err){next(err)})
+  .catch(function(err){
+    if(err.received > 0){
+      context.fail = true;
+      response.render('create_account.hbs', context);
+    }
+    else{
+      console.log(err);
+    }
+  })
 });
+
+
 
 app.listen(8000, function(){
   console.log('Listening on port 8000')
