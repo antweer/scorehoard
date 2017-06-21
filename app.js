@@ -128,6 +128,9 @@ app.get('/admin', function(request, response, next){
 app.post('/admin', function(request, response, next){
   let company = request.session.company;
   let account = request.session.user || null;
+  if (company.verified){
+    context[verified = true]
+  }
   if (request.body.api_key_generate) {
     console.log('body is ',request.body)
     let key = apikey(50);
@@ -142,16 +145,19 @@ app.post('/admin', function(request, response, next){
   else {
     let name = request.body.name;
     let key = 'Pending';
-    let query = 'INSERT INTO game VALUES (DEFAULT, \'$1#\', $2, FALSE, $3)'
-    db.any(query, [name, key, company.id])
-    .then(function(){
-      if (account == null) {response.redirect('/login'); return}
-      response.redirect('/admin')
-    })
-
+    let query1 = 'INSERT INTO game VALUES (DEFAULT, \'$1#\', $2, FALSE, $3)'
+    let promise1 = db.any(query1, [name, key, company.id]) // adds game to game table
+    let query2 = 'CREATE TABLE \$1:value\(id SERIAL NOT NULL PRIMARY KEY, game_id INTEGER, player_name VARCHAR, score INTEGER);'
+    let promise2 = db.any(query2, name) // creates table from game name
+    return Promise.all([promise1, promise2])
+      .then(function(){
+        if (account == null) {response.redirect('/login'); return}
+        response.redirect('/admin')
+      })
+      .catch(function(err){
+        console.error(err)
+      })
   }
-
-
 })
 
 //Passwords
@@ -193,25 +199,25 @@ app.get('/', function(request, response){
 })
 
  // PAYMENT
-app.get('/paymnet', function(request, response){
+app.get('/payment', function(request, response){
   context = {title: 'ScoreHoard Payment'};
-  response.render('paymnet.hbs', context)
+  response.render('payment.hbs', context)
 })
 
-// NEW API KEY LOGIC
-app.post('/', function(request, response, next){
-  var key = apikey(50);  // generates 50 char base64 encoded key
-  var account = request.session.user;
-  db.one("SELECT id FROM company WHERE name = $1;", account)
-    .then(function(){
-      api_key = key
-    })
-    .catch(function(err){
-      next('Sorry, an error occurred: \n' + err);
-    })
-  context = {key: key}
-  response.render('home.hbs', context)
-})
+// // NEW API KEY LOGIC
+// app.post('/', function(request, response, next){
+//   var key = apikey(50);  // generates 50 char base64 encoded key
+//   var account = request.session.user;
+//   db.one("SELECT id FROM company WHERE name = $1;", account)
+//     .then(function(){
+//       api_key = key
+//     })
+//     .catch(function(err){
+//       next('Sorry, an error occurred: \n' + err);
+//     })
+//   context = {key: key}
+//   response.render('home.hbs', context)
+// })
 
 //login page
 app.get('/login', function(request, response){
@@ -259,30 +265,31 @@ app.post('/create_account', function(request, response, next){
   let password = request.body.password;
   let name = request.body.name;
   let pub = request.body.public;
+  let verify_key = apikey(40);
   if (pub == 'on') {
     pub = true;
   }
-  console.log(pub)
   let mailOptions = {
     from:'"ScoreHoard" <donotreply@scorehoard.com>',
     to: login,
     subject: 'Confirmation Email',
     text: 'Thank you',
-    html: '<p>Thank you for registering an account with ScoreHoard. May we fulfill your ScoreHoarding needs!</p>'
+    html: `<p>Thank you for registering an account with ScoreHoard. May we fulfill your ScoreHoarding needs! Please click <a href="http://scorehoard.com/verify/${verify_key}">here</a> to verify your account with us!</p>`
   };
-
+  console.log('options set')
   let stored_pass = create_hash(password);
   // id, login, password, public (boolean), name
   let query = 'SELECT login FROM company WHERE login = $1';
   db.none(query, login)
   .then(function(){
-    let query = 'INSERT INTO company VALUES (DEFAULT, $1, $2, $3, $4)'
-    db.none(query, [login, stored_pass, pub, name])
+    let query = 'INSERT INTO company VALUES (DEFAULT, $1, $2, $3, $4, DEFAULT, $5)'
+    db.none(query, [login, stored_pass, pub, name, verify_key])
       .then(function(){
+        console.log('company inserted')
         request.session.user = name
         transporter.sendMail(mailOptions, (error, info) => {
           if (error) {
-            return console.log(error);
+            return console.error(error);
           }
           console.log('Message send: ', info.messageId, info.response);
         });
@@ -301,7 +308,33 @@ app.post('/create_account', function(request, response, next){
   })
 });
 
-
+// VERIFY ACCOUNT
+app.get('/verify/:key', function(request, response, next){
+  let key = request.params.key;
+  let query1 = 'UPDATE company SET verified = TRUE WHERE verify_key = $1';
+  let query2 = 'SELECT login FROM company WHERE verify_key = $1';
+  db.none(query1, key)
+  .then(function() {
+    db.one(query2, key)
+    .then(function(login){
+      context = {verified: true};
+      let mailOptions = {
+        from:'"ScoreHoard" <donotreply@scorehoard.com>',
+        to: login,
+        subject: 'Thank you for verifying your account',
+        text: 'Thank you',
+        html: `<p>Thank you, your account has been verified. May we fulfill your ScoreHoarding needs!</p>`
+      };
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          return console.error(error);
+        }
+        console.log('Message send: ', info.messageId, info.response);
+      });
+      response.redirect('/', context)
+    })
+  })
+})
 
 app.listen(8000, function(){
   console.log('Listening on port 8000')

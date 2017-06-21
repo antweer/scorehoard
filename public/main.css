@@ -26,7 +26,6 @@ body {
   background: -moz-linear-gradient(top, rgba(29,78,105,1) 73%, rgba(29,78,105,1) 73%, rgba(63,76,107,1) 99%, rgba(63,76,107,1) 100%, rgba(63,76,107,1) 100%); /* FF3.6-15 */
   background: -webkit-linear-gradient(top, rgba(29,78,105,1) 73%,rgba(29,78,105,1) 73%,rgba(63,76,107,1) 99%,rgba(63,76,107,1) 100%,rgba(63,76,107,1) 100%); /* Chrome10-25,Safari5.1-6 */
   background: linear-gradient(to bottom, rgba(29,78,105,1) 73%,rgba(29,78,105,1) 73%,rgba(63,76,107,1) 99%,rgba(63,76,107,1) 100%,rgba(63,76,107,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1d4e69', endColorstr='#3f4c6b',GradientType=0 ); /* IE6-9 */
   /*background-color: #1D4E69;*/
   color: #fff;
   margin: 0;
@@ -46,7 +45,7 @@ p.lead{
   font-size: 21px;
 }
 .form-buttons{
-  display: flex:
+  display: flex;
 }
 .art-work{
   display: flex;
@@ -56,7 +55,7 @@ p.lead{
   margin:0 !important;
 }
 
-/*.navbar {
+/* .navbar {
   background-image: -webkit-gradient(linear, left top, left bottom, from(#f7f7f7),to(#eee));
   background-image: -webkit-linear-gradient(top, #f7f7f7 0%,#eee 100%);
   background-image: -o-linear-gradient(top, #f7f7f7 0%,#eee 100%);
@@ -186,6 +185,7 @@ h2.title3{
   color: #b12828;
   background-color: #debd27;
   border-color: #debd27;
+}
 
 /* STRIPE PAYMENT */
 .StripeElement {
@@ -213,3 +213,30 @@ h2.title3{
 
 .StripeElement--webkit-autofill {
   background-color: #fefde5 !important;
+}
+
+/* NAVIGATION */
+.navbar {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  border: 0;
+  border-radius: 0;
+  margin-bottom: 0;
+  font-size: 12px;
+  letter-spacing: 2px
+}
+
+.navbar-nav li a:hover {
+  color: #1abc9c;
+}
+/* Admin Page */
+.bg-1 {
+  padding: 20px;
+}
+
+.bg-2 {
+  padding: 10px;
+}
+label {
+  padding: 10px;
+}
