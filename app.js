@@ -193,9 +193,9 @@ app.get('/', function(request, response){
 })
 
  // PAYMENT
-app.get('/paymnet', function(request, response){
+app.get('/payment', function(request, response){
   context = {title: 'ScoreHoard Payment'};
-  response.render('paymnet.hbs', context)
+  response.render('payment.hbs', context)
 })
 
 // NEW API KEY LOGIC
