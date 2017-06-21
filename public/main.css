@@ -22,11 +22,24 @@ body {
 /* Main marketing message and sign up button */
 .main-title {
   text-align: center;
-  /*{background-color: rgb(29, 78, 113, 1);}*/
-  background-color: #1D4E69;
+  background: rgb(29,78,105); /* Old browsers */
+  background: -moz-linear-gradient(top, rgba(29,78,105,1) 73%, rgba(29,78,105,1) 73%, rgba(63,76,107,1) 99%, rgba(63,76,107,1) 100%, rgba(63,76,107,1) 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, rgba(29,78,105,1) 73%,rgba(29,78,105,1) 73%,rgba(63,76,107,1) 99%,rgba(63,76,107,1) 100%,rgba(63,76,107,1) 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, rgba(29,78,105,1) 73%,rgba(29,78,105,1) 73%,rgba(63,76,107,1) 99%,rgba(63,76,107,1) 100%,rgba(63,76,107,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#1d4e69', endColorstr='#3f4c6b',GradientType=0 ); /* IE6-9 */
+  /*background-color: #1D4E69;*/
   color: #fff;
   margin: 0;
   padding: 70px;
+}
+h1{
+  color:#fff;
+  margin-bottom: 60px;
+  margin-right: 165px;
+}
+p.lead{
+  color:#fff;
+  margin-bottom: 60px;
 }
 .main-title .btn {
   padding: 14px 24px;
@@ -62,7 +75,7 @@ body {
   justify-content: center;
   background-color: #273547;
   color: #fff;
-  margin-top:
+  margin-bottom: 60px;
 }
 .C{
   background-color: #273547;
@@ -75,12 +88,14 @@ h2.free{
   justify-content: center;
   background-color: #206F9C;
   color: #fff;
+  margin-bottom: 60px;
 }
 #free {
   background-color: #206F9C;
   color: #fff;
   text-align: center;
   padding: 70px;
+
 }
 #button1{
   display: flex;
@@ -91,6 +106,7 @@ h2.premium{
   justify-content: center;
   background-color: #206F9C;
   color: #fff;
+  margin-bottom: 60px;
 }
 #premium{
   background-color: #206F9C;
@@ -107,6 +123,10 @@ h2.title2{
   justify-content: center;
   background-color: #fff;
   color: #34495e;
+}
+
+.row.row2 {
+  margin: 0;
 }
 .row2 > div{
   text-align: center;
@@ -139,4 +159,8 @@ h2.title3{
   color: #b12828;
   background-color: #debd27;
   border-color: #debd27;
+}
+
+.row2 p {
+  margin-bottom: 60px;
 }
