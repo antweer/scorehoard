@@ -58,10 +58,29 @@ body {
         -ms-flex: 1 0 auto;
             flex: 1 0 auto;
   }
-}
- h2 .master-plan{
+
+ h2.master-plan{
   display: flex;
   justify-content: center;
   background-color: white;
   color: black;
+}
+.C{
+  background-color: white;
+  color: black;
+}
+h2.free{
+  display: flex;
+  justify-content: center;
+  background-color: black;
+  color: white;
+}
+#free {
+  background-color: black;
+  color: white;
+}
+#button1{
+  display: flex;
+  justify-content: center;
+
 }
