@@ -68,6 +68,7 @@ body {
 .C{
   background-color: white;
   color: black;
+  text-align: center;
 }
 h2.free{
   display: flex;
@@ -78,9 +79,35 @@ h2.free{
 #free {
   background-color: black;
   color: white;
+  text-align: center;
 }
 #button1{
   display: flex;
   justify-content: center;
-
+}
+h2.premium{
+  display: flex;
+  justify-content: center;
+  background-color: black;
+  color: white;
+}
+#premium{
+  background-color: black;
+  color: white;
+  text-align: center;
+}
+#button2{
+  display: flex;
+  justify-content: center;
+}
+h2.title2{
+  display: flex;
+  justify-content: center;
+  background-color: white;
+  color: black;
+}
+.row2 > div{
+  text-align: center;
+  background-color: white;
+  color: black;
 }
