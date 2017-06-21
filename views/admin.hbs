@@ -1,0 +1,26 @@
+Logged in as: {{account}}
+<h1>Your Games</h1>
+<h2>{{company.name}}</h2>
+<hr>
+
+{{#each games}}
+  <div class='game'>
+    {{name}}
+    <br>
+    API key: {{api_key}}
+    <br>
+    This game's API link is <a href="http://scorehoard.com/add/{{api_key}}?user=USERNAME&score=SCORE">here</a>. Only pass the username and score into the URL upon the player finishing the game to store the data.
+    <br>[[other stats]]
+  </div>
+{{/each}}
+  <hr>
+  <div class="game">
+    Add new game:
+    <form method='post'>
+      <input type='text' name='name'>
+      <input type='submit'>
+    </form>
+  </div>
+<hr>
+
+<a href='/'>Back home</a>

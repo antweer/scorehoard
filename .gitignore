@@ -1,1 +1,4 @@
 node_modules
+scorehoard.sql
+SECRETS.ENV
+
