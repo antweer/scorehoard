@@ -104,25 +104,30 @@ app.get('/admin', function(request, response, next){
       console.log('account id is ', company.id)
       context['company'] = company;
       request.session.company = company;
-      db.any("SELECT * FROM game WHERE company_id = $1 ORDER BY name", company.id)
-      .then (function(resultsArray){
-        console.log(resultsArray)
-        for (i = 0; i < resultsArray.length; i++){
-          if (resultsArray[i].api_key.length == 50){
-            resultsArray[i]['key_present'] = true;
+      if(company.verified == true){
+        db.any("SELECT * FROM game WHERE company_id = $1 ORDER BY name", company.id)
+        .then (function(resultsArray){
+          console.log(resultsArray)
+          for (i = 0; i < resultsArray.length; i++){
+            if (resultsArray[i].api_key.length == 50){
+              resultsArray[i]['key_present'] = true;
+            }
+            else {
+              resultsArray[i]['key_present'] = false;
+            }
           }
-          else {
-            resultsArray[i]['key_present'] = false;
-          }
-        }
-        context['games'] = resultsArray;
-        console.log('context is ', context)
-        response.render('admin.hbs', context)
-      })
-      .catch (function(err){
-        console.error(err);
-      })
-    })
+          context['games'] = resultsArray;
+          console.log('context is ', context)
+          response.render('admin.hbs', context)
+        })
+        .catch (function(err){
+          console.error(err);
+        })
+      }
+     else{
+       response.render('notverified.hbs', {});
+     }
+})
 })
 
 app.post('/admin', function(request, response, next){
@@ -235,7 +240,7 @@ app.post('/login', function(request, response) {
         response.redirect('/admin');
       }
       else if (!pass_success){
-        context = {title: 'Login', fail: true}
+        context = {title: 'Login', fail: true, }
         response.render('login.hbs', context)
       }
     })
@@ -306,15 +311,18 @@ app.post('/create_account', function(request, response, next){
 app.get('/verify/:key', function(request, response, next){
   let key = request.params.key;
   let query1 = 'UPDATE company SET verified = TRUE WHERE verify_key = $1';
-  let query2 = 'SELECT login FROM company WHERE verify_key = $1';
+  //let query2 = 'SELECT login FROM company WHERE verify_key = $1';
   db.none(query1, key)
   .then(function() {
+    let key = request.params.key;
+    let query2 = 'SELECT login FROM company WHERE verify_key = $1';
     db.one(query2, key)
     .then(function(login){
+      console.log(login.login)
       context = {verified: true};
       let mailOptions = {
         from:'"ScoreHoard" <donotreply@scorehoard.com>',
-        to: login,
+        to: login.login,
         subject: 'Thank you for verifying your account',
         text: 'Thank you',
         html: `<p>Thank you, your account has been verified. May we fulfill your ScoreHoarding needs!</p>`
@@ -325,7 +333,7 @@ app.get('/verify/:key', function(request, response, next){
         }
         console.log('Message send: ', info.messageId, info.response);
       });
-      response.redirect('/', context)
+      response.redirect('/admin');
     })
   })
 })
