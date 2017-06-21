@@ -122,12 +122,12 @@ h2.title2{
   display: flex;
   justify-content: center;
   background-color: #fff;
-  color: black;
+  color: #34495e;
 }
 .row2 > div{
   text-align: center;
   background-color: #fff;
-  color: black;
+  color: #34495e;
   padding: 70px;
 }
 h2.title3{
@@ -149,4 +149,5 @@ h2.title3{
 .btn-success{
   background-color: #b12828;
   border-color: #debd27;
+  border-width: 3px;
 }
