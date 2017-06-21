@@ -28,10 +28,13 @@ body {
 }
 
 .footer {
+  display: flex;
+  justify-content: center;
   padding-top: 40px;
   padding-bottom: 40px;
   margin-top: 40px;
   border-top: 1px solid #eee;
+  margin: 0;
 }
 
 /* Main marketing message and sign up button */
@@ -71,7 +74,7 @@ body {
   background-color: white;
   color: black;
   text-align: center;
-  padding: 30px;
+  padding: 70px;
 }
 h2.free{
   display: flex;
@@ -83,7 +86,7 @@ h2.free{
   background-color: black;
   color: white;
   text-align: center;
-  padding: 30px;
+  padding: 70px;
 }
 #button1{
   display: flex;
@@ -99,7 +102,7 @@ h2.premium{
   background-color: black;
   color: white;
   text-align: center;
-  padding: 30px;
+  padding: 70px;
 }
 #button2{
   display: flex;
@@ -115,6 +118,7 @@ h2.title2{
   text-align: center;
   background-color: white;
   color: black;
+  padding: 70px;
 }
 h2.title3{
   display: flex;
@@ -126,4 +130,5 @@ h2.title3{
   background-color: black;
   color: white;
   text-align: center;
+  padding: 70px;
 }
