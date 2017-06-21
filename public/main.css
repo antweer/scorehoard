@@ -5,8 +5,8 @@ body {
 }
 .masthead{
   z-index: 11;
-
 }
+
 
 .footer {
   display: flex;
@@ -33,6 +33,9 @@ body {
 }
 .form-buttons{
   display: flex:
+}
+.mb-3{
+  margin:0 !important;
 }
 
 .navbar {
