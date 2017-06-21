@@ -22,18 +22,30 @@ body {
 /* Main marketing message and sign up button */
 .main-title {
   text-align: center;
-  /*{background-color: rgb(29, 78, 113, 1);}*/
-  background-color: #1D4E69;
+  background: rgb(29,78,105); /* Old browsers */
+  background: -moz-linear-gradient(top, rgba(29,78,105,1) 73%, rgba(29,78,105,1) 73%, rgba(63,76,107,1) 99%, rgba(63,76,107,1) 100%, rgba(63,76,107,1) 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, rgba(29,78,105,1) 73%,rgba(29,78,105,1) 73%,rgba(63,76,107,1) 99%,rgba(63,76,107,1) 100%,rgba(63,76,107,1) 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, rgba(29,78,105,1) 73%,rgba(29,78,105,1) 73%,rgba(63,76,107,1) 99%,rgba(63,76,107,1) 100%,rgba(63,76,107,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  /*background-color: #1D4E69;*/
   color: #fff;
   margin: 0;
   padding: 70px;
+}
+h1{
+  color:#fff;
+  margin-bottom: 60px;
+  margin-right: 165px;
+}
+p.lead{
+  color:#fff;
+  margin-bottom: 60px;
 }
 .main-title .btn {
   padding: 14px 24px;
   font-size: 21px;
 }
 .form-buttons{
-  display: flex:
+  display: flex;
 }
 .art-work{
   display: flex;
@@ -55,14 +67,40 @@ body {
     -webkit-flex: 1 0 auto;
         -ms-flex: 1 0 auto;
             flex: 1 0 auto;
-  } */
+  }*/
+  /* NAVIGATION */
+.navbar{
+  display: flex;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  border: 0;
+  border-radius: 0;
+  margin-bottom: 0;
+  font-size: 12px;
+  letter-spacing: 2px
+}
+
+.navbar-nav li a:hover {
+  color: #1abc9c;
+}
+/* Admin Page */
+.bg-1 {
+  padding: 20px;
+}
+
+.bg-2 {
+  padding: 10px;
+}
+label {
+  padding: 10px;
+}
 
  h2.master-plan{
   display: flex;
   justify-content: center;
   background-color: #273547;
   color: #fff;
-  margin-top:
+  margin-bottom: 60px;
 }
 .C{
   background-color: #273547;
@@ -75,12 +113,14 @@ h2.free{
   justify-content: center;
   background-color: #206F9C;
   color: #fff;
+  margin-bottom: 60px;
 }
 #free {
   background-color: #206F9C;
   color: #fff;
   text-align: center;
   padding: 70px;
+
 }
 #button1{
   display: flex;
@@ -91,6 +131,7 @@ h2.premium{
   justify-content: center;
   background-color: #206F9C;
   color: #fff;
+  margin-bottom: 60px;
 }
 #premium{
   background-color: #206F9C;
@@ -107,6 +148,10 @@ h2.title2{
   justify-content: center;
   background-color: #fff;
   color: #34495e;
+}
+
+.row.row2 {
+  margin: 0;
 }
 .row2 > div{
   text-align: center;
@@ -155,6 +200,11 @@ h2.title3{
 
 .StripeElement--focus {
   box-shadow: 0 1px 3px 0 #cfd7df;
+}
+
+
+.row2 p {
+  margin-bottom: 60px;
 }
 
 .StripeElement--invalid {

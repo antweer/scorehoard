@@ -23,3 +23,9 @@
     background-color: #1D4E69;
   }
 }
+
+@media (max-width: 991px){
+  .test-img{
+    display:none
+  }
+}
