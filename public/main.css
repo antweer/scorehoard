@@ -39,6 +39,7 @@ body {
   text-align: center;
   background-color: black;
   color: white;
+  margin: 0;
 }
 .jumbotron .btn {
   padding: 14px 24px;
@@ -64,11 +65,13 @@ body {
   justify-content: center;
   background-color: white;
   color: black;
+  margin-top:
 }
 .C{
   background-color: white;
   color: black;
   text-align: center;
+  padding: 30px;
 }
 h2.free{
   display: flex;
@@ -80,6 +83,7 @@ h2.free{
   background-color: black;
   color: white;
   text-align: center;
+  padding: 30px;
 }
 #button1{
   display: flex;
@@ -95,6 +99,7 @@ h2.premium{
   background-color: black;
   color: white;
   text-align: center;
+  padding: 30px;
 }
 #button2{
   display: flex;
@@ -110,4 +115,15 @@ h2.title2{
   text-align: center;
   background-color: white;
   color: black;
+}
+h2.title3{
+  display: flex;
+  justify-content: center;
+  background-color: black;
+  color: white;
+}
+#used {
+  background-color: black;
+  color: white;
+  text-align: center;
 }
