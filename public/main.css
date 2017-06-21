@@ -25,6 +25,11 @@
 body {
   padding-top: 20px;
   background-image: url('images/bg1.jpg');
+  padding: 0;
+}
+.masthead{
+  z-index: 11;
+
 }
 
 .footer {
@@ -41,7 +46,8 @@ body {
 /* Main marketing message and sign up button */
 .jumbotron {
   text-align: center;
-  background-color: black;
+  /*{background-color: rgb(29, 78, 113, 1);}*/
+  background-color: #1D4E69;
   color: white;
   margin: 0;
 }
@@ -70,13 +76,13 @@ body {
  h2.master-plan{
   display: flex;
   justify-content: center;
-  background-color: white;
-  color: black;
+  background-color: #273547;
+  color: white;
   margin-top:
 }
 .C{
-  background-color: white;
-  color: black;
+  background-color: #273547;
+  color: white;
   text-align: center;
   padding: 70px;
 }
