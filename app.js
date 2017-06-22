@@ -92,7 +92,7 @@ app.get('/add/:key', function(request, response, next){
   response.redirect('/')
 });
 
-app.get('/admin', function(request, response, next){
+app.get('/console', function(request, response, next){
   let account = request.session.user || null;
   if (account == null) {response.redirect('/login'); return}    // redirect to login if not logged in
   let context = {account: account};
@@ -112,7 +112,7 @@ app.get('/admin', function(request, response, next){
           }
         }
         context['games'] = resultsArray;
-        response.render('admin.hbs', context)
+        response.render('console.hbs', context)
       })
       .catch (function(err){
         console.error(err);
@@ -122,7 +122,7 @@ app.get('/admin', function(request, response, next){
 
 // TODO rearchitect database using postgres jsonb format
 
-app.post('/admin', function(request, response, next){
+app.post('/console', function(request, response, next){
   let company = request.session.company;
   let account = request.session.user || null;
   if (company.verified){
@@ -153,7 +153,7 @@ app.post('/admin', function(request, response, next){
               }
               console.log('Message send: ', info.messageId, info.response);
             });
-            response.redirect('/admin');
+            response.redirect('/console');
         })
       })
 
@@ -169,11 +169,11 @@ app.post('/admin', function(request, response, next){
     return Promise.all([promise1, promise2])
       .then (function(){
         if (account == null) {response.redirect('/login'); return}
-        response.redirect('/admin')
+        response.redirect('/console')
       })
       .catch(function(err){
         console.error(err);
-        response.redirect('/admin');
+        response.redirect('/console');
       })
   }
   else {
@@ -188,7 +188,7 @@ app.post('/admin', function(request, response, next){
     return Promise.all([promise1, promise2])
       .then(function(promises){
         if (account == null) {response.redirect('/login'); return}
-        response.redirect('/admin')
+        response.redirect('/console')
       })
       .catch(function(err){
         console.error(err)
@@ -317,7 +317,7 @@ app.post('/login', function(request, response) {
     .then (function(pass_success){
       if (pass_success) {
         request.session.user = login;
-        response.redirect('/admin');
+        response.redirect('/console');
       }
       else if (!pass_success){
         context = {title: 'Login', fail: true}
