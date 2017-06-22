@@ -4,7 +4,7 @@
 <body>
   <div class="container-fluid bg-1">
       <h1>{{company.name}}</h1>
-      <p>Active Keys: {{account}}</p>
+      <p>Active Keys: {{keys}}</p>
   </div>
   <div class="container-fluid bg-2 text-center">
       <form method='post'>
@@ -15,36 +15,35 @@
    </div>
   <div class="bg-3a">
   {{#each games}}
-  <div class="container-fluid bg-3 text-center"
-   <ul>
-      <l1>
+  <div class="container-fluid bg-3 text-center">
         <div class="row">
          <div class="col-md-6 text-left">
           <h2 id="adminName">{{name}}</h2>
         </div>
+
         <div class="col-md-6 text-right">
           <h5>Active</h5>
-           <i class="fa fa-thumbs-o-up fa-lg"></i>
-           <span class="fa-stack fa-lg">
+           {{#unless api_key_valid}}<i class="fa fa-thumbs-o-up fa-lg"></i>{{/unless}}
+           {{#if api_key_valid}}<span class="fa-stack fa-lg">
            <i class="fa fa-thumbs-o-up fa-stack-1x"></i>
            <i class="fa fa-ban fa-stack-2x text-danger"></i>
-           </span>
-        </div>
-       </div>
+           </span>{{/if}}
+
        <div class="row">
          <div class="col-md-12">
-          <h3>{{api_key}}</h3>
-          <form method="POST" action="/admin" name="new_api">
+          {{#if key_present}}<h3><span style='color:lightgrey'>API Key: </span>{{api_key}}</h3>{{/if}}
+          {{#unless key_present}}
+          <form method="POST" action="/console" name="new_api">
             <input type='hidden' name='api_key_generate' value='true'>
             <input type='hidden' name='game_id' value='{{id}}'>
-            <input type='submit' class="btn btn-sm btn-success"
-             value='Generate API key'>
+            <input type='submit' class="btn btn-sm btn-success" value='Generate API key'>
            </form>
+           {{/unless}}
         </div>
       </div>
       <div class="row delete">
-          <div class="col-md-12">  
-            <form method="POST" action="/admin" name="delete_game">
+          <div class="col-md-12">
+            <form method="POST" action="/console" name="delete_game">
               <input type='hidden' name='delete_game' value='true'>
               <input type="hidden" value="{{name}}" name="name">
               <input type="hidden" value="{{id}}" name="game_id">
@@ -52,8 +51,6 @@
             </form>
            </div>
           </div>
-      </li>
-   </ul>
   </div>
   {{/each}}
 </div>
