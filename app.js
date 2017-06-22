@@ -8,7 +8,7 @@ var promise = require('bluebird');
 var pgp = require('pg-promise')({
   promiseLib: promise
 });
-var db = pgp({database: 'scorehoard', user:'postgres'});   
+var db = pgp({database: 'scorehoard', user:'postgres'});
 var apikey = require("apikeygen").apikey;
 
 // Crypto configuration
@@ -46,7 +46,7 @@ app.use(session({
 }));
 
 
-// API Get requests 
+// API Get requests
 app.get('/api/:name', function (request, response, next) {
   var dbname = request.params.name;
   var valid_names = ['scores'];
@@ -305,7 +305,7 @@ app.get('/', function(request, response){
   response.render('home.hbs', context)
 })
 
- // Payment view -- Work in Progress 
+ // Payment view -- Work in Progress
 app.get('/payment', function(request, response){
   account = request.session.user || null;
   context = {account: account, title: 'ScoreHoard Payment'};
@@ -404,17 +404,16 @@ app.post('/create_account', function(request, response, next){
         .catch(function(err){next(err)})
       })
     .catch(function(err){
-      if(err.received > 0){
-        context.fail = true;
-        response.render('create_account.hbs', context);
+      if (err.name == "QueryResultError"){
+        context = {title: "Create Account", fail: true}
+        response.render('create_account.hbs', context)
       }
-      else{
-        console.log(err);
-      }
+      else {
+        console.error(err);
+      };
     })
   })
 });
-
 // Verify account via verify key
 app.get('/verify/:key', function(request, response, next){
   let key = request.params.key;
