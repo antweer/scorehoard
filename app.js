@@ -94,18 +94,15 @@ app.get('/add/:key', function(request, response, next){
 
 app.get('/admin', function(request, response, next){
   let account = request.session.user || null;
-  console.log('account is ', account)
   if (account == null) {response.redirect('/login'); return}    // redirect to login if not logged in
   let context = {account: account};
 
   db.one("SELECT * FROM company WHERE login = $1;", account)
     .then (function(company){
-      console.log('account id is ', company.id)
       context['company'] = company;
       request.session.company = company;
       db.any("SELECT * FROM game WHERE company_id = $1 ORDER BY name", company.id)
       .then (function(resultsArray){
-        console.log(resultsArray)
         for (i = 0; i < resultsArray.length; i++){
           if (resultsArray[i].api_key.length == 50){
             resultsArray[i]['key_present'] = true;
@@ -115,7 +112,6 @@ app.get('/admin', function(request, response, next){
           }
         }
         context['games'] = resultsArray;
-        console.log('context is ', context)
         response.render('admin.hbs', context)
       })
       .catch (function(err){
@@ -123,6 +119,8 @@ app.get('/admin', function(request, response, next){
       })
     })
 })
+
+// TODO rearchitect database using postgres jsonb format
 
 app.post('/admin', function(request, response, next){
   let company = request.session.company;
@@ -160,15 +158,35 @@ app.post('/admin', function(request, response, next){
       })
   
   }
+  else if (request.body.delete_game) {
+    let name = request.body.name
+    let slug = slugify(name)
+    let game_id = request.body.game_id
+    let query1 = "DROP TABLE $1:value;"
+    let promise1 = db.any(query1, slug)
+    let query2 = "DELETE FROM game WHERE id = \'$1:value\';"
+    let promise2 = db.any(query2, game_id)
+    return Promise.all([promise1, promise2])
+      .then (function(){
+        if (account == null) {response.redirect('/login'); return}
+        response.redirect('/admin')
+      })
+      .catch(function(err){
+        console.error(err);
+        response.redirect('/admin');
+      })
+  }
   else {
     let name = request.body.name;
     let key = 'Pending';
+    let slug = slugify(name);
+    console.log(slug)
     let query1 = 'INSERT INTO game VALUES (DEFAULT, \'$1#\', $2, FALSE, $3)'
     let promise1 = db.any(query1, [name, key, company.id]) // adds game to game table
     let query2 = 'CREATE TABLE \$1:value\(id SERIAL NOT NULL PRIMARY KEY, game_id INTEGER, player_name VARCHAR, score INTEGER);'
-    let promise2 = db.any(query2, name) // creates table from game name
+    let promise2 = db.any(query2, slug) // creates table from game name slug
     return Promise.all([promise1, promise2])
-      .then(function(){
+      .then(function(promises){
         if (account == null) {response.redirect('/login'); return}
         response.redirect('/admin')
       })
@@ -177,6 +195,7 @@ app.post('/admin', function(request, response, next){
     })
   }
 })
+
 
 //Generates a unique API key
 function unique_api_key(){
@@ -205,6 +224,18 @@ function unique_api_key(){
   });
   return p;
 }
+
+function slugify(text) {
+  return text.toString().toLowerCase()
+    .replace(/\s+/g, '_')           // Replace spaces with _
+    .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+    .replace(/\-\-+/g, '_')         // Replace multiple - with single _
+    .replace(/^-+/, '')             // Trim - from start of text
+    .replace(/-+$/, '')             // Trim - from end of text
+    .replace(/^_+/, '')             // Trim _ from start of text
+    .replace(/_+$/, '');            // Trim _ from end of text
+};
+
 
 //Passwords
 function create_hash (password) {
