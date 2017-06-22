@@ -34,6 +34,7 @@ h1{
   color:#fff;
   margin-bottom: 60px;
   margin-right: 165px;
+  padding-top: 50px
 }
 p.lead{
   color:#fff;
@@ -65,6 +66,10 @@ p.lead{
   margin-bottom: 0;
   font-size: 12px;
   letter-spacing: 2px;
+}
+.navbar-collapse#navbar-main{
+  display: flex;
+  justify-content: flex-end;
 }
 
 .navbar-nav li a:hover {
@@ -105,7 +110,7 @@ h2.free {
 #button1 {
   display: flex;
   justify-content: center;
-} 
+}
 
 h2.premium {
   display: flex;
@@ -202,6 +207,22 @@ h2.title3 {
 
 .StripeElement--webkit-autofill {
   background-color: #fefde5 !important;
+}
+
+/* NAVIGATION */
+.navbar {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  border: 0;
+  border-radius: 0;
+  margin-bottom: 0;
+  font-size: 12px;
+  letter-spacing: 2px;
+
+}
+
+.navbar-nav li a:hover {
+  color: #1abc9c;
 }
 
 /* Admin Page */
