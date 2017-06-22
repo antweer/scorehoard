@@ -1,5 +1,5 @@
-<head>
-  <title>Console - ScoreHoard</title>
+<<head>
+  <title>Console -ScoreHoard</title>
 </head>
 <body>
   <div class="container-fluid bg-1">
@@ -10,36 +10,47 @@
       <form method='post'>
         <label>Add new game:</label>
         <input type='text' name='name'>
-        <input type='submit'>
+        <input type='submit' class="btn btn-sm btn-success" >
       </form>
    </div>
+  <div class="bg-3a">
   {{#each games}}
-  <div class="container">
-   <div class="row">
-    <div class="col-md-8">
-      <h2>{{name}}</h2>
-    </div>
-    <div class="col-md-4">
-      <i class="fa-window-close-o">Inactive</i>
-      <i class="fa-check-square-o">Active</i>
-    </div>
-   </div>
-   <div class ="row">
-    <div class="col-md-12">
-      <h3>{{api_key}}</h3>
-      <form method="POST" action="/admin" name="new_api">
-        <input type='hidden' name='api_key_generate' value='true'>
-        <input type='hidden' name='game_id' value='{{id}}'>
-        <input type='submit' value='Generate API key'>
-      </form>
-      <form method="POST" action="/admin" name="delete_game">
-        <input type='hidden' name='delete_game' value='true'>
-        <input type="hidden" value="{{name}}" name="name">
-        <input type="hidden" value="{{id}}" name="game_id">
-        <input type="submit" value="DELETE GAME">
-      </form>
+  <div class="container-fluid bg-3 text-center"
+   <ul>
+      <l1>
+        <div class="row">
+         <div class="col-md-6 text-left">
+          <h2 id="adminName">{{name}}</h2>
+        </div>
+        <div class="col-md-6">
+          <i class="fa-window-close-o">Inactive</i>
+          <i class="fa-check-square-o">Active</i>
+        </div>
+       </div>
+       <div class="row">
+         <div class="col-md-12">
+          <h3>{{api_key}}</h3>
+          <form method="POST" action="/admin" name="new_api">
+            <input type='hidden' name='api_key_generate' value='true'>
+            <input type='hidden' name='game_id' value='{{id}}'>
+            <input type='submit' class="btn btn-sm btn-success"
+             value='Generate API key'>
+           </form>
+        </div>
       </div>
-    </div>
+      <div class="row delete">
+          <div class="col-md-12">  
+            <form method="POST" action="/admin" name="delete_game">
+              <input type='hidden' name='delete_game' value='true'>
+              <input type="hidden" value="{{name}}" name="name">
+              <input type="hidden" value="{{id}}" name="game_id">
+              <input type="submit" class="btn btn-sm btn-success" value="DELETE GAME">
+            </form>
+           </div>
+          </div>
+      </li>
+   </ul>
   </div>
   {{/each}}
+</div>
 </body>
