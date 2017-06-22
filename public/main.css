@@ -50,6 +50,7 @@ p.lead{
 .form-buttons{
   display: flex;
   font-family: 'Roboto', sans-serif;
+  justify-content: center;
 }
 .art-work{
   display: flex;
