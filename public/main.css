@@ -50,6 +50,7 @@ p.lead{
   display: flex;
   font-family: 'Roboto', sans-serif;
   justify-content: center;
+  margin-left: 40px;
 }
 .art-work{
   display: flex;
@@ -118,7 +119,7 @@ h2.free {
 }
 #free ul{
 display: inline-block;
-line-height: 3em;
+line-height: 4em;
 margin-bottom: 3em;
 }
 /*buttons*/
@@ -181,7 +182,6 @@ p{
   border-color: #debd27;
   border-width: 3px;
   margin-right: 50px;
-
 }
 
 .btn-success:hover {
@@ -189,6 +189,20 @@ p{
   background-color: #debd27;
   border-color: #b12828;
 }
+
+.btn-success.btn-success2 {
+  background-color: #b12828;
+  border-color: #debd27;
+  border-width: 3px;
+  margin: auto;
+}
+
+.btn-success.btn-success2:hover {
+  color: #b12828;
+  background-color: #debd27;
+  border-color: #b12828;
+}
+
 
 /* STRIPE PAYMENT */
 .StripeElement {
@@ -276,4 +290,6 @@ p{
 .delete {
   margin: 20px;
 }
-
+.red {
+  color: red;
+}
