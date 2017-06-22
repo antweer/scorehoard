@@ -49,6 +49,7 @@ p.lead{
 .form-buttons{
   display: flex;
   font-family: 'Roboto', sans-serif;
+  justify-content: center;
 }
 .art-work{
   display: flex;
@@ -120,6 +121,7 @@ display: inline-block;
 line-height: 3em;
 margin-bottom: 3em;
 }
+/*buttons*/
 
 #button1 {
   display: flex;
@@ -178,6 +180,8 @@ p{
   background-color: #b12828;
   border-color: #debd27;
   border-width: 3px;
+  margin-right: 50px;
+
 }
 
 .btn-success:hover {
