@@ -1,5 +1,5 @@
 <div class='box'>
-  {{#if fail}}<p>Your email address is already in the system. Please use a different email.</p>{{/if}}
+  {{#if fail}}<div class="alert alert-danger">Your email address is already in the system. Please use a different email.</div>{{/if}}
   <form action="/create_account" method="POST">
     <label>Email address:</label>
     <input type="email" name="login">
