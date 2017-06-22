@@ -21,8 +21,8 @@
           <h2 id="adminName">{{name}}</h2>
         </div>
         <div class="col-md-6">
-          {{#unless api_key_valid}}Key Inactive<i class="fa fa-window-close-o fa-stack-2x"></i>{{/unless}}
-          {{#if api_key_valid}}Key Active<i class="fa fa-check-square-o fa-stack-2x"></i>{{/if}}
+          {{#unless api_key_valid}}<i class="fa fa-window-close-o fa-stack-2x">Inactive</i>{{/unless}}
+          {{#if api_key_valid}}<i class="fa fa-check-square-o fa-stack-2x">Active</i>{{/if}}
         </div>
        </div>
        <div class="row">
