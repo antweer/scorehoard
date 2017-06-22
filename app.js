@@ -133,7 +133,6 @@ app.post('/console', function(request, response, next){
     let id = request.session.company.id;
     let game_id = request.body.game_id;
     let query = "UPDATE game SET api_key = $1 WHERE id = $2";
-
     unique_api_key()
       .then(function(key){
         db.none(query, [key, game_id])
@@ -210,6 +209,34 @@ function unique_api_key(){
       }
       else{
         unique_api_key()
+         .then(function (key) {
+           resolve(key);
+         })
+         .catch(function (err) {
+           reject(err);
+         });
+      }
+    })
+    .catch(function(err){
+      reject(err);
+    });
+  });
+  return p;
+}
+
+//Generates a unique verification keyfunction unique_api_key(){
+function unique_ver_key(){
+  let verKey = apikey(40);
+  console.log(verKey);
+  var p = new Promise(function (resolve, reject) {
+    db.query('SELECT count(verify_key) FROM company WHERE verify_key = $1', verKey)
+    .then(function(count){
+      console.log(count[0].count);
+      if(count[0].count == 0){
+        resolve(verKey);
+      }
+      else{
+        unique_ver_key()
          .then(function (key) {
            resolve(key);
          })
@@ -344,46 +371,48 @@ app.post('/create_account', function(request, response, next){
   let password = request.body.password;
   let name = request.body.name;
   let pub = request.body.public;
-  let verify_key = apikey(40);
   if (pub == 'on') {
     pub = true;
   }
-  let mailOptions = {
-    from:'"ScoreHoard" <donotreply@scorehoard.com>',
-    to: login,
-    subject: 'Confirmation Email',
-    text: 'Thank you',
-    html: `<p>Thank you for registering an account with ScoreHoard. May we fulfill your ScoreHoarding needs! Please click <a href="http://scorehoard.com/verify/${verify_key}">here</a> to verify your account with us!</p>`
-  };
-  console.log('options set')
-  let stored_pass = create_hash(password);
-  // id, login, password, public (boolean), name
-  let query = 'SELECT login FROM company WHERE login = $1';
-  db.none(query, login)
-  .then(function(){
-    let query = 'INSERT INTO company VALUES (DEFAULT, $1, $2, $3, $4, DEFAULT, $5)'
-    db.none(query, [login, stored_pass, pub, name, verify_key])
-      .then(function(){
-        console.log('company inserted')
-        request.session.user = name
-        transporter.sendMail(mailOptions, (error, info) => {
-          if (error) {
-            return console.error(error);
-          }
-          console.log('Message send: ', info.messageId, info.response);
-        });
-        response.redirect('/');
+  unique_ver_key()
+  .then(function(verify_key){
+    let mailOptions = {
+      from:'"ScoreHoard" <donotreply@scorehoard.com>',
+      to: login,
+      subject: 'Confirmation Email',
+      text: 'Thank you',
+      html: `<p>Thank you for registering an account with ScoreHoard. May we fulfill your ScoreHoarding needs! Please click <a href="http://scorehoard.com/verify/${verify_key}">here</a> to verify your account with us!</p>`
+    };
+    console.log('options set')
+    let stored_pass = create_hash(password);
+    // id, login, password, public (boolean), name
+    let query = 'SELECT login FROM company WHERE login = $1';
+    db.none(query, login)
+    .then(function(){
+      let query = 'INSERT INTO company VALUES (DEFAULT, $1, $2, $3, $4, DEFAULT, $5)'
+      db.none(query, [login, stored_pass, pub, name, verify_key])
+        .then(function(){
+          console.log('company inserted')
+          request.session.user = name
+          transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+              return console.error(error);
+            }
+            console.log('Message send: ', info.messageId, info.response);
+          });
+          response.redirect('/');
+        })
+        .catch(function(err){next(err)})
       })
-      .catch(function(err){next(err)})
+    .catch(function(err){
+      if(err.received > 0){
+        context.fail = true;
+        response.render('create_account.hbs', context);
+      }
+      else{
+        console.log(err);
+      }
     })
-  .catch(function(err){
-    if(err.received > 0){
-      context.fail = true;
-      response.render('create_account.hbs', context);
-    }
-    else{
-      console.log(err);
-    }
   })
 });
 
