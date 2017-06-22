@@ -9,17 +9,23 @@
         <input type='submit'>
       </form>
     </div>
-    <div class="container-fluid bg-2 text-center">    
-      <ul class="admin">  
+    <div class="container-fluid bg-2 text-center">
+      <ul class="admin">
         {{#each games}}
           <li>INDEX: {{@index}}<br>
           NAME: {{name}}<br>
-          API KEY: {{api_key}}<br> 
+          API KEY: {{api_key}}<br>
           STATS: [[other stats]]<br>
           <form method="POST" action="/admin" name="new_api">
               <input type='hidden' name='api_key_generate' value='true'>
               <input type='hidden' name='game_id' value='{{id}}'>
               <input type='submit' value='Generate API key'>
+            </form>
+            <form method="POST" action="/admin" name="delete_game">
+              <input type='hidden' name='delete_game' value='true'>
+              <input type="hidden" value="{{name}}" name="name">
+              <input type="hidden" value="{{id}}" name="game_id">
+              <input type="submit" value="DELETE GAME">
             </form></li>
         {{/each}}
       </ul>
