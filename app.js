@@ -8,10 +8,10 @@ var promise = require('bluebird');
 var pgp = require('pg-promise')({
   promiseLib: promise
 });
-var db = pgp({database: 'scorehoard', user:'postgres'});   // TODO update database info
+var db = pgp({database: 'scorehoard', user:'postgres'});   
 var apikey = require("apikeygen").apikey;
 
-// password
+// Crypto configuration
 var pbkdf2 = require('pbkdf2');
 var crypto = require('crypto');
 var salt = crypto.randomBytes(20).toString('hex');
@@ -21,7 +21,7 @@ var key = pbkdf2.pbkdf2Sync(
 );
 var hash = key.toString('hex');
 
-// email
+// Email send function
 var transporter = nodemailer.createTransport({
   host: process.env['SMTP_HOST'],
   port: 465,
@@ -46,7 +46,7 @@ app.use(session({
 }));
 
 
-//API Get requests - work in progress
+// API Get requests 
 app.get('/api/:name', function (request, response, next) {
   var dbname = request.params.name;
   var valid_names = ['scores'];
@@ -70,7 +70,7 @@ app.get('/api/:name', function (request, response, next) {
   }
 });
 
-//API for adding scores - modify to validate and maybe remove url redirect since part of api
+// API for adding scores - Test this with new table creation logic
 app.get('/add/:key', function(request, response, next){
   let key = request.params.key;
   let query_game = 'SELECT id, name, api_key_valid FROM game WHERE api_key = $1';
@@ -92,6 +92,7 @@ app.get('/add/:key', function(request, response, next){
   response.redirect('/')
 });
 
+// Console view
 app.get('/console', function(request, response, next){
   let account = request.session.user || null;
   if (account == null) {response.redirect('/login'); return}    // redirect to login if not logged in
@@ -224,7 +225,7 @@ function unique_api_key(){
   return p;
 }
 
-//Generates a unique verification keyfunction unique_api_key(){
+//Generates a unique verification key -- Can this be combined with api_key function?
 function unique_ver_key(){
   let verKey = apikey(40);
   console.log(verKey);
@@ -252,6 +253,7 @@ function unique_ver_key(){
   return p;
 }
 
+// Slugifies text
 function slugify(text) {
   return text.toString().toLowerCase()
     .replace(/\s+/g, '_')           // Replace spaces with _
@@ -264,7 +266,7 @@ function slugify(text) {
 };
 
 
-//Passwords
+// Password creation and verification
 function create_hash (password) {
   var salt = crypto.randomBytes(20).toString('hex');
   var key = pbkdf2.pbkdf2Sync(
@@ -296,42 +298,27 @@ function check_pass (stored_pass, password){
   return false;
 }
 
-// HOME
+// Home view
 app.get('/', function(request, response){
   account = request.session.user || null;
   context = {account: account};
   response.render('home.hbs', context)
 })
 
- // PAYMENT
+ // Payment view -- Work in Progress 
 app.get('/payment', function(request, response){
   account = request.session.user || null;
   context = {account: account, title: 'ScoreHoard Payment'};
   response.render('payment.hbs', context)
 })
 
-// // NEW API KEY LOGIC
-// app.post('/', function(request, response, next){
-//   var key = apikey(50);  // generates 50 char base64 encoded key
-//   var account = request.session.user;
-//   db.one("SELECT id FROM company WHERE name = $1;", account)
-//     .then(function(){
-//       api_key = key
-//     })
-//     .catch(function(err){
-//       next('Sorry, an error occurred: \n' + err);
-//     })
-//   context = {key: key}
-//   response.render('home.hbs', context)
-// })
-
-//login page
+// Log in View
 app.get('/login', function(request, response){
   context = {title: 'Login'}
   response.render('login.hbs', context)
 });
 
-//login mechanics
+// Log in mechanics
 app.post('/login', function(request, response) {
   let login = request.body.login;
   let password = request.body.password;
@@ -372,7 +359,7 @@ app.get('/logout', function(request, response, next) {
   });
 })
 
-//Creating an account - We'll have to add verification
+// Creating an account - We'll have to add verification
 app.get('/create_account', function(request, response) {
   context = {title: 'Create account', login: request.session.user, anon: !request.session.user};
   response.render('create_account.hbs', context)
@@ -428,7 +415,7 @@ app.post('/create_account', function(request, response, next){
   })
 });
 
-// VERIFY ACCOUNT
+// Verify account via verify key
 app.get('/verify/:key', function(request, response, next){
   let key = request.params.key;
   if (key.length == 40) {     // company verification
@@ -485,7 +472,7 @@ app.get('/verify/:key', function(request, response, next){
   }
 })
 
-
+//Listener -- Change for production
 app.listen(8000, function(){
   console.log('Listening on port 8000')
 });
