@@ -132,29 +132,33 @@ app.post('/admin', function(request, response, next){
   }
   if (request.body.api_key_generate) {
     // console.log('body is ',request.body)
-    let key = apikey(50);
     let id = request.session.company.id;
     let game_id = request.body.game_id;
-    let query = "UPDATE game SET api_key = $1 WHERE id = $2"
-    db.none(query, [key, game_id])
-      .then(function(){
-        let login = request.session.user
-        console.log('LOGIN IS ' +login);
-        let mailOptions = {
-          from:'"ScoreHoard" <donotreply@scorehoard.com>',
-          to: login,
-          subject: 'Confirmation Email',
-          text: 'Thank you',
-          html: `<p>Thank you for registering a game with ScoreHoard. May we fulfill your ScoreHoarding needs! Please click <a href="http://scorehoard.com/verify/${key}">here</a> to verify your game with us!</p>`
-        };
-        transporter.sendMail(mailOptions, (error, info) => {
-          if (error) {
-            return console.error(error);
-          }
-          console.log('Message send: ', info.messageId, info.response);
-        });
-        response.redirect('/admin');
-    })
+    let query = "UPDATE game SET api_key = $1 WHERE id = $2";
+    
+    unique_api_key()
+      .then(function(key){
+        db.none(query, [key, game_id])
+          .then(function(){
+            let login = request.session.user
+            console.log('LOGIN IS ' +login);
+            let mailOptions = {
+              from:'"ScoreHoard" <donotreply@scorehoard.com>',
+              to: login,
+              subject: 'Confirmation Email',
+              text: 'Thank you',
+              html: `<p>Thank you for registering a game with ScoreHoard. May we fulfill your ScoreHoarding needs! Please click <a href="http://scorehoard.com/verify/${key}">here</a> to verify your game with us!</p>`
+            };
+            transporter.sendMail(mailOptions, (error, info) => {
+              if (error) {
+                return console.error(error);
+              }
+              console.log('Message send: ', info.messageId, info.response);
+            });
+            response.redirect('/admin');
+        })
+      })
+  
   }
   else {
     let name = request.body.name;
@@ -170,9 +174,37 @@ app.post('/admin', function(request, response, next){
       })
       .catch(function(err){
         console.error(err)
-      })
+    })
   }
 })
+
+//Generates a unique API key
+function unique_api_key(){
+  let apiKey = apikey(50);
+  console.log(apiKey);
+  var p = new Promise(function (resolve, reject) {
+    db.query('SELECT count(api_key) FROM game WHERE api_key = $1', apiKey)
+    .then(function(count){
+      console.log(count[0].count);
+      if(count[0].count == 0){
+        resolve(apiKey);
+      }
+      else{
+        unique_api_key()
+         .then(function (key) {
+           resolve(key);
+         })
+         .catch(function (err) {
+           reject(err);
+         });
+      }
+    })
+    .catch(function(err){
+      reject(err);
+    });
+  });
+  return p;
+}
 
 //Passwords
 function create_hash (password) {
