@@ -312,17 +312,29 @@ app.post('/login', function(request, response) {
   db.one(query, login)
     .then (function(stored_pass){
       // hash user input
+      console.log('db.one called')
       return check_pass(stored_pass.password, password)
     })
     .then (function(pass_success){
+      console.log('pass_success')
       if (pass_success) {
         request.session.user = login;
         response.redirect('/console');
       }
       else if (!pass_success){
+        console.log('not pass_success')
         context = {title: 'Login', fail: true}
         response.render('login.hbs', context)
       }
+    })
+    .catch(function(err){
+      if (err.name == "QueryResultError" && err.code == "0"){
+        context = {title: "Login", invalid: true}
+        response.render('login.hbs', context)
+      }
+      else {
+        console.error(err);
+      };
     })
 })
 

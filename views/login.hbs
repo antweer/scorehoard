@@ -3,7 +3,7 @@
 </head>
   <div class="container-fluid bg-1">
   {{#if fail}}<p class='fail'>Username and password did not match. Please try again.</p>{{/if}}
-  {{#if not_email}}<p>Please enter a valid email address</p>{{/if}}
+  {{#if invalid}}<p class='fail'>Please enter a valid email address</p>{{/if}}
   <div class="container">
    <form action="/login" method="POST">
    <div class="row">
@@ -11,7 +11,7 @@
         <label>Email Address</label>
     </div>
     <div class="col-md-6">
-        <input type="text" name="login">
+        <input type="email" name="login">
     </div>
    </div>
    <div class="row">
@@ -21,12 +21,12 @@
     <div class="col-md-6">
      <input name='password' type='password'><br>
     </div>
-   </div> 
+   </div>
    <div class="row">
     <div class="col-lg-12">
       <button class="btn btn-primary" type="submit">Log In</button>
     </div>
-   </div> 
+   </div>
     </form>
     <div class="row">
      <div class="col-lg-12">
