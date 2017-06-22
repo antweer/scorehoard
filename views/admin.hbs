@@ -1,102 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <title>ScoreHoard Admin</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link href="static/main.css" rel="stylesheet">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  </head>
-  <body>
-<!--MASTHEAD-->
-
-  <div class="masthead"></div>
-<!--NAVIGATION -->
-  <nav class="navbar navbar-inverse">
-    <div class="container-fluid">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>                        
-        </button>
-        <img src="static/images/monkey-47384_640.png" width="64" height="64" alt="scorehoard gorilla logo">
-        <a class="navbar-brand" href="#">ScoreHoard</a>
-      </div>
-      <div class="collapse navbar-collapse" id="myNavbar">
-        <ul class="nav navbar-nav"></ul>
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="/">Main</a></li>
-            <li class="active"><a href="#">Services</a></li>
-            <li><a href="/downloads">Downloads</a></li>
-            <li><a href="/about">About</a></li>
-            <li><a href="/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-<!--JUMBOTRON-->
-  <div class='jumbotron'>
+  <div class="container-fluid bg-1">
       <h1>{{company.name}}</h1>
       <p>Logged in as: {{account}}</p>
   </div>
-    <div class="container-fluid bg-1 text-center">
-
+    <div class="container-fluid bg-2 text-center">
       <form method='post'>
         <label>Add new game:</label>
         <input type='text' name='name'>
         <input type='submit'>
       </form>
     </div>
-
-{{#each games}}
-  <div class='game'>
-    {{@index}}: {{name}}
-    <br>
-    {{#if key_present}}
-    API key: {{api_key}}
-    <br>
-    This game's API link is <a href="http://scorehoard.com/add/{{api_key}}?user=USERNAME&score=SCORE">here</a>. Only pass the username and score into the URL upon the player finishing the game to store the data.
-    <br>[[other stats]]
-    {{else}}
-    <form method="POST" action="/admin" name="new_api">
-      <input type='hidden' name='api_key_generate' value='true'>
-      <input type='hidden' name='game_id' value='{{id}}'>
-      <input type='submit' value='Generate API key'>
-    </form>
-    {{/if}}
-  </div>
-  <hr>
-{{/each}}
-  <hr>
-  <div class="game">
-    Add new game:
-    <form method="POST" action="/admin" name="new_game">
-      <input type='text' name='name'>
-      <input type='submit'>
-    </form>
-  </div>
-<hr>
-
-    <a href='/'>Main Page</a>
     <div class="container-fluid bg-2 text-center">    
-        <h3 class="margin">Your Games</h3><br>
+      <ul class="admin">  
         {{#each games}}
-        <div class="row">
-          <div class="col-sm-2">
-            <p><strong>{{name}}</strong></p>
-          </div>
-          <div class="col-sm-6"> 
-            <p><strong>API Key: </strong>{{api_key}}</p>
-          </div>
-          <div class="col-sm-4"> 
-            <p><strong>Stats: </strong>[[other stats]]</p>
-          </div>
+          <li>INDEX: {{@index}}<br>
+          NAME: {{name}}<br>
+          API KEY: {{api_key}}<br> 
+          STATS: [[other stats]]<br>
+          <form method="POST" action="/admin" name="new_api">
+              <input type='hidden' name='api_key_generate' value='true'>
+              <input type='hidden' name='game_id' value='{{id}}'>
+              <input type='submit' value='Generate API key'>
+            </form></li>
         {{/each}}
-        </div>
-      </div>
-
-  </body>
-</html>
+      </ul>
+    </div>
