@@ -133,7 +133,7 @@ app.post('/admin', function(request, response, next){
     let id = request.session.company.id;
     let game_id = request.body.game_id;
     let query = "UPDATE game SET api_key = $1 WHERE id = $2";
-    
+
     unique_api_key()
       .then(function(key){
         db.none(query, [key, game_id])
@@ -156,7 +156,7 @@ app.post('/admin', function(request, response, next){
             response.redirect('/admin');
         })
       })
-  
+
   }
   else if (request.body.delete_game) {
     let name = request.body.name
@@ -271,13 +271,15 @@ function check_pass (stored_pass, password){
 
 // HOME
 app.get('/', function(request, response){
-  context = {};
+  account = request.session.user || null;
+  context = {account: account};
   response.render('home.hbs', context)
 })
 
  // PAYMENT
 app.get('/payment', function(request, response){
-  context = {title: 'ScoreHoard Payment'};
+  account = request.session.user || null;
+  context = {account: account, title: 'ScoreHoard Payment'};
   response.render('payment.hbs', context)
 })
 
