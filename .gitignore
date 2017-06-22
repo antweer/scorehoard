@@ -1,4 +1,4 @@
 node_modules
 scorehoard.sql
 SECRETS.ENV
-
+secrets.env
