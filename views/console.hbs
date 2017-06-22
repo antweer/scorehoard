@@ -24,11 +24,11 @@
         </div>
         <div class="col-md-6 text-right">
           <h5>Active</h5>
-           <i class="fa fa-thumbs-o-up fa-lg"></i>
-           <span class="fa-stack fa-lg">
+           {{#unless api_key_valid}}<i class="fa fa-thumbs-o-up fa-2x"></i>{{/unless}}
+           {{#if api_key_valid}}<span class="fa-stack fa-lg">
            <i class="fa fa-thumbs-o-up fa-stack-1x"></i>
            <i class="fa fa-ban fa-stack-2x text-danger"></i>
-           </span>
+           </span>{{/if}}
         </div>
        </div>
        <div class="row">
