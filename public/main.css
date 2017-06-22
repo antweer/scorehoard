@@ -50,7 +50,6 @@ p.lead{
 .form-buttons{
   display: flex;
   font-family: 'Roboto', sans-serif;
-  justify-content: center;
 }
 .art-work{
   display: flex;
@@ -241,19 +240,37 @@ p{
 }
 
 .bg-2 {
-  padding: 10px;
-  background-color: #206F9C;
-  color: white;
+  height: 100px;
+  padding: 30px;
+  background-color: white;
+  color: black;
 
 }
-label {
-  padding: 10px;
-}
-.admin li {
-  list-style: none;
-  padding: 20px;
-  text-align: left;
-}
-.admin li:nth-child(odd) {
+.bg-3 {
   background-color: #1D4E69;
+  color: white;
+  padding: 20px;
+  width: 80%;
+  border-bottom: thick solid white;
 }
+
+.bg-3:nth-child(odd) {
+  background-color: #206F9C;
+}
+
+.bg-3a {
+  background-color: white;
+}
+
+.bg-4 {
+  margin-top: 40px;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  width: 40%;
+  background-color: #bbbdbf;
+}
+
+.delete {
+  margin: 20px;
+}
+
