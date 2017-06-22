@@ -113,6 +113,7 @@ app.get('/console', function(request, response, next){
           }
         }
         context['games'] = resultsArray;
+        context['keys'] = resultsArray.length;
         response.render('console.hbs', context)
       })
       .catch (function(err){

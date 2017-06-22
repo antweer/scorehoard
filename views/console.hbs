@@ -4,7 +4,7 @@
 <body>
   <div class="container-fluid bg-1">
       <h1>{{company.name}}</h1>
-      <p>Active Keys: {{account}}</p>
+      <p>Active Keys: {{keys}}</p>
   </div>
   <div class="container-fluid bg-2 text-center">
       <form method='post'>
@@ -15,32 +15,31 @@
    </div>
   <div class="bg-3a">
   {{#each games}}
-  <div class="container-fluid bg-3 text-center"
-   <ul>
-      <l1>
+  <div class="container-fluid bg-3 text-center">
         <div class="row">
          <div class="col-md-6 text-left">
           <h2 id="adminName">{{name}}</h2>
         </div>
         <div class="col-md-6">
-          <i class="fa-window-close-o">Inactive</i>
-          <i class="fa-check-square-o">Active</i>
+          {{#unless api_key_valid}}<i class="fa fa-window-close-o fa-stack-2x">Inactive</i>{{/unless}}
+          {{#if api_key_valid}}<i class="fa fa-check-square-o fa-stack-2x">Active</i>{{/if}}
         </div>
        </div>
        <div class="row">
          <div class="col-md-12">
-          <h3>{{api_key}}</h3>
-          <form method="POST" action="/admin" name="new_api">
+          {{#if key_present}}<h3><span style='color:lightgrey'>API Key: </span>{{api_key}}</h3>{{/if}}
+          {{#unless key_present}}
+          <form method="POST" action="/console" name="new_api">
             <input type='hidden' name='api_key_generate' value='true'>
             <input type='hidden' name='game_id' value='{{id}}'>
-            <input type='submit' class="btn btn-sm btn-success"
-             value='Generate API key'>
+            <input type='submit' class="btn btn-sm btn-success" value='Generate API key'>
            </form>
+           {{/unless}}
         </div>
       </div>
       <div class="row delete">
-          <div class="col-md-12">  
-            <form method="POST" action="/admin" name="delete_game">
+          <div class="col-md-12">
+            <form method="POST" action="/console" name="delete_game">
               <input type='hidden' name='delete_game' value='true'>
               <input type="hidden" value="{{name}}" name="name">
               <input type="hidden" value="{{id}}" name="game_id">
@@ -48,8 +47,6 @@
             </form>
            </div>
           </div>
-      </li>
-   </ul>
   </div>
   {{/each}}
 </div>
