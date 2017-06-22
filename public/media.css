@@ -37,7 +37,7 @@
     display: none;
   }
 }
-@media(max-width: 991px){
+@media(max-width: 1115px){
   .form-buttons{
     margin-left: 25px;
   }
