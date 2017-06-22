@@ -47,8 +47,34 @@ app.use(session({
 
 
 // API Get requests
-app.get('/api/:name', function (request, response, next) {
-  var dbname = request.params.name;
+app.get('/api/:key', function (request, response, next) {
+  let apiKey = request.params.key;
+  let query = 'SELECT id FROM game WHERE api_key = $1';
+  db.one(query, apiKey)
+    .then(function(gameid){
+      console.log(gameid.id)
+      let query = 'SELECT * FROM g$1:value WHERE game_id = $1:value ORDER BY score DESC';
+      db.query(query, gameid.id)
+        .then(function(resultsArray){
+          console.log(resultsArray);
+          let scores = new Object;
+          console.log(resultsArray)
+          for (let i = 0; i < resultsArray.length; i++){
+            scores[i+1] = {};
+            scores[i+1].name = resultsArray[i].player_name;
+            console.log('resultsArray[i] is ',resultsArray[i].player_name)
+            scores[i+1].score = resultsArray[i].score;
+          }
+          console.log('scores is ', scores)
+          response.json(
+            scores
+          );
+        })
+      .catch(next);
+    })
+    .catch(next);
+  
+  /* Old API Call
   var valid_names = ['scores'];
   var scores = new Object;
   if (valid_names.indexOf(dbname) >= 0) {
@@ -68,6 +94,7 @@ app.get('/api/:name', function (request, response, next) {
       })
       .catch(next);
   }
+  */
 });
 
 // API for adding scores - Test this with new table creation logic
