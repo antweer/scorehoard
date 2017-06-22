@@ -4,10 +4,13 @@
     <h1 class 'brand'>ScoreHoard</h1>
     <p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet.</p>
     <div class='form-buttons'>
+        {{#unless account}}
         <a href='/login' class="btn btn-lg btn-success">Sign In</a>
-        <a href='/console' class="btn btn-lg btn-success">Console</a>
         <a href='/create_account' class="btn btn-lg btn-success">Sign Up</a>
-
+        {{/unless}}
+        {{#if account}}
+        <a href='/console' class="btn btn-lg btn-success">Access Your Console</a>
+        {{/if}}
     </div>
   </div>
 
