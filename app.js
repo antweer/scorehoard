@@ -73,16 +73,17 @@ app.get('/api/:name', function (request, response, next) {
 // API for adding scores - Test this with new table creation logic
 app.get('/add/:key', function(request, response, next){
   let key = request.params.key;
-  let query_game = 'SELECT id, name, api_key_valid FROM game WHERE api_key = $1';
+  let query_game = 'SELECT id, api_key_valid FROM game WHERE api_key = $1';
   db.one(query_game, key)     // get game info from api key
   .then (function(game){
     if (game.api_key_valid){
-      let name = game.name;
       let user = request.query.user;
       let score = request.query.score;
       let game_id = game.id;
-      let query_scores = 'INSERT INTO $1 (DEFAULT, game_id, player_name, score VALUES ($2, $3, $4)';
-      db.any(query_scores, [game, game_id, user, score]);
+      let table = "g"+game_id.toString();
+      let query_scores = "INSERT INTO $1:value (game_id, player_name, score) VALUES ($2:value, '$3:value', $4:value);"
+      db.any(query_scores, [table, game_id, user, score])
+      .catch(function(err){console.error(err)});
     }
     else if (game.api_key_valid == false) {
       console.warn('API key not valid')
@@ -161,10 +162,10 @@ app.post('/console', function(request, response, next){
   }
   else if (request.body.delete_game) {
     let name = request.body.name
-    let slug = slugify(name)
-    let game_id = request.body.game_id
+    let game_id = request.body.game_id;
+    let table = "g"+game_id;
     let query1 = "DROP TABLE $1:value;"
-    let promise1 = db.any(query1, slug)
+    let promise1 = db.any(query1, table)
     let query2 = "DELETE FROM game WHERE id = \'$1:value\';"
     let promise2 = db.any(query2, game_id)
     return Promise.all([promise1, promise2])
@@ -177,26 +178,28 @@ app.post('/console', function(request, response, next){
         response.redirect('/console');
       })
   }
-  else {
+  else {  // new game
     let name = request.body.name;
     let key = 'Pending';
-    let slug = slugify(name);
-    console.log(slug)
-    let query1 = 'INSERT INTO game VALUES (DEFAULT, \'$1#\', $2, FALSE, $3)'
-    let promise1 = db.any(query1, [name, key, company.id]) // adds game to game table
-    let query2 = 'CREATE TABLE \$1:value\(id SERIAL NOT NULL PRIMARY KEY, game_id INTEGER, player_name VARCHAR, score INTEGER);'
-    let promise2 = db.any(query2, slug) // creates table from game name slug
-    return Promise.all([promise1, promise2])
-      .then(function(promises){
-        if (account == null) {response.redirect('/login'); return}
-        response.redirect('/console')
-      })
+    let query1 = 'INSERT INTO game VALUES (DEFAULT, \'$1#\', $2, FALSE, $3) RETURNING id'
+    db.any(query1, [name, key, company.id]) // adds game to game table and returns id
+      .then(function(obj){
+        let table = "g" + obj[0].id.toString();
+        let query2 = 'CREATE TABLE $1:value (id SERIAL NOT NULL PRIMARY KEY, game_id INTEGER DEFAULT $2, player_name VARCHAR, score INTEGER);'
+        db.any(query2, [table, obj[0].id]) // creates table from game id
+          .then(function(){
+            if (account == null) {response.redirect('/login'); return}
+            response.redirect('/console')
+          })
+          .catch(function(err){
+            console.error(err)
+          })
+        })
       .catch(function(err){
         console.error(err)
-    })
-  }
-})
-
+      })
+    }
+  })
 
 //Generates a unique API key
 function unique_api_key(){
@@ -253,19 +256,6 @@ function unique_ver_key(){
   });
   return p;
 }
-
-// Slugifies text
-function slugify(text) {
-  return text.toString().toLowerCase()
-    .replace(/\s+/g, '_')           // Replace spaces with _
-    .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
-    .replace(/\-\-+/g, '_')         // Replace multiple - with single _
-    .replace(/^-+/, '')             // Trim - from start of text
-    .replace(/-+$/, '')             // Trim - from end of text
-    .replace(/^_+/, '')             // Trim _ from start of text
-    .replace(/_+$/, '');            // Trim _ from end of text
-};
-
 
 // Password creation and verification
 function create_hash (password) {
