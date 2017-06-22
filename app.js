@@ -156,9 +156,10 @@ app.post('/admin', function(request, response, next){
   }
   else if (request.body.delete_game) {
     let name = request.body.name
+    let slug = slugify(name)
     let game_id = request.body.game_id
     let query1 = "DROP TABLE $1:value;"
-    let promise1 = db.any(query1, name)
+    let promise1 = db.any(query1, slug)
     let query2 = "DELETE FROM game WHERE id = \'$1:value\';"
     let promise2 = db.any(query2, game_id)
     return Promise.all([promise1, promise2])
@@ -174,10 +175,12 @@ app.post('/admin', function(request, response, next){
   else {
     let name = request.body.name;
     let key = 'Pending';
+    let slug = slugify(name);
+    console.log(slug)
     let query1 = 'INSERT INTO game VALUES (DEFAULT, \'$1#\', $2, FALSE, $3)'
     let promise1 = db.any(query1, [name, key, company.id]) // adds game to game table
     let query2 = 'CREATE TABLE \$1:value\(id SERIAL NOT NULL PRIMARY KEY, game_id INTEGER, player_name VARCHAR, score INTEGER);'
-    let promise2 = db.any(query2, name) // creates table from game name
+    let promise2 = db.any(query2, slug) // creates table from game name slug
     return Promise.all([promise1, promise2])
       .then(function(promises){
         if (account == null) {response.redirect('/login'); return}
@@ -189,7 +192,16 @@ app.post('/admin', function(request, response, next){
   }
 })
 
-
+function slugify(text) {
+  return text.toString().toLowerCase()
+    .replace(/\s+/g, '_')           // Replace spaces with _
+    .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+    .replace(/\-\-+/g, '_')         // Replace multiple - with single _
+    .replace(/^-+/, '')             // Trim - from start of text
+    .replace(/-+$/, '')             // Trim - from end of text
+    .replace(/^_+/, '')             // Trim _ from start of text
+    .replace(/_+$/, '');            // Trim _ from end of text
+};
 
 //Passwords
 function create_hash (password) {
