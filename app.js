@@ -78,11 +78,14 @@ app.get('/add/:key', function(request, response, next){
   .then (function(game){
     if (game.api_key_valid){
       let name = game.name;
+      let slug = slugify(name);
       let user = request.query.user;
       let score = request.query.score;
       let game_id = game.id;
-      let query_scores = 'INSERT INTO $1 (DEFAULT, game_id, player_name, score VALUES ($2, $3, $4)';
-      db.any(query_scores, [game, game_id, user, score]);
+      console.log(name, slug, user, score, game_id)
+      let query_scores = "INSERT INTO $1:value (game_id, player_name, score) VALUES ($2:value, '$3:value', $4:value);"
+      db.any(query_scores, [slug, game_id, user, score])
+      .catch(function(err){console.error(err)});
     }
     else if (game.api_key_valid == false) {
       console.warn('API key not valid')
@@ -113,6 +116,7 @@ app.get('/console', function(request, response, next){
           }
         }
         context['games'] = resultsArray;
+        context['keys'] = resultsArray.length;
         response.render('console.hbs', context)
       })
       .catch (function(err){

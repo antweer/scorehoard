@@ -1,13 +1,19 @@
-<!-- Jumbotron -->
 <div class="main-title row row3">
   <div class="col-lg-6 col-md-12">
     <h1 class 'brand'>ScoreHoard</h1>
     <p class="lead">Cras justo odio, dapibus ac facilisis in, egestas eget quam. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet.</p>
     <div class='form-buttons'>
+        {{#unless account}}
+        <div class=>
         <a href='/login' class="btn btn-lg btn-success">Sign In</a>
-        <a href='/console' class="btn btn-lg btn-success">Console</a>
+      </div>
+      <div>
         <a href='/create_account' class="btn btn-lg btn-success">Sign Up</a>
-
+      </div>
+        {{/unless}}
+        {{#if account}}
+        <a href='/console' class="btn btn-lg btn-success">Access Your Console</a>
+        {{/if}}
     </div>
   </div>
 
@@ -42,13 +48,13 @@
     </ul>
     <!-- <p><a class="btn btn-primary" href="#" role="button" id='button1'>Sign up &raquo;</a></p> -->
     <form method="POST" name="new_api">
-      <input value='Sign up' type="submit" class="btn btn-lg btn-success">
+      <input value='Sign Up' type="submit" class="btn btn-lg btn-success">
     </form>
 
-    {{key}}
+
     <!-- <a href="/login">Login here</a> -->
   </div>
-    {{key}}
+
     <!-- <a href="/login">Login here</a> -->
   </div>
 </div>

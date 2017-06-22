@@ -2,11 +2,12 @@
   <title>Login -ScoreHoard</title>
 </head>
   <div class="container-fluid">
-  {{#if fail}}<p class='fail'>Username and password did not match. Please try again.</p>{{/if}}
-  {{#if not_email}}<p>Please enter a valid email address</p>{{/if}}
   <div class="container bg-4 text-center">
-   <form action="/login" method="POST">
-      <h3>Log In</h3>
+   <h3>Log In</h3>
+   {{#if fail}}<div class='alert alert-danger'>Email and password did not match. Please try again.</div>{{/if}}
+   {{#if invalid}}<div class='alert alert-danger'>Sorry, that email is not in our database. Create an account <a href='/create_account'>here.</a></div>{{/if}}
+
+   <form action="/login" method="POST">  
    <div class="row delete">
     <div class="col-lg-6">
         <label>Email Address</label>
