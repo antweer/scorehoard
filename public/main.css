@@ -34,18 +34,22 @@ h1{
   color:#fff;
   margin-bottom: 60px;
   margin-right: 165px;
-  padding-top: 50px
+  padding-top: 50px;
+  font-family: 'Roboto', sans-serif;
 }
 p.lead{
   color:#fff;
   margin-bottom: 60px;
+  font-family: 'Roboto', sans-serif;
 }
 .main-title .btn {
   padding: 14px 24px;
   font-size: 21px;
+  font-family: 'Roboto', sans-serif;
 }
 .form-buttons{
   display: flex;
+  font-family: 'Roboto', sans-serif;
 }
 .art-work{
   display: flex;
@@ -70,6 +74,8 @@ p.lead{
 .navbar-collapse#navbar-main{
   display: flex;
   justify-content: flex-end;
+  font-family: 'Roboto', sans-serif;
+  font-size: 15px;
 }
 
 .navbar-nav li a:hover {
@@ -82,6 +88,10 @@ h2.master-plan {
   background-color: #273547;
   color: #fff;
   margin-bottom: 60px;
+  font-family: 'Roboto', sans-serif;
+}
+.navbar-brand{
+  margin-left: 30px;
 }
 
 .C {
@@ -97,6 +107,7 @@ h2.free {
   background-color: #206F9C;
   color: #fff;
   margin-bottom: 60px;
+  font-family: 'Roboto', sans-serif;
 }
 
 #free {
@@ -104,7 +115,11 @@ h2.free {
   color: #fff;
   text-align: center;
   padding: 70px;
-
+}
+#free ul{
+display: inline-block;
+line-height: 3em;
+margin-bottom: 3em;
 }
 
 #button1 {
@@ -112,20 +127,6 @@ h2.free {
   justify-content: center;
 }
 
-h2.premium {
-  display: flex;
-  justify-content: center;
-  background-color: #206F9C;
-  color: #fff;
-  margin-bottom: 60px;
-}
-
-#premium {
-  background-color: #206F9C;
-  color: #fff;
-  text-align: center;
-  padding: 70px;
-}
 
 #button2 {
   display: flex;
@@ -137,6 +138,7 @@ h2.title2 {
   justify-content: center;
   background-color: #fff;
   color: #34495e;
+  font-family: 'Roboto', sans-serif;
 }
 
 .row.row2 {
@@ -155,6 +157,10 @@ h2.title3 {
   justify-content: center;
   background-color: #34495e;
   color: #fff;
+  font-family: 'Roboto', sans-serif;
+}
+p{
+  font-family: 'Roboto', sans-serif;
 }
 
 #used {
@@ -178,7 +184,7 @@ h2.title3 {
 .btn-success:hover {
   color: #b12828;
   background-color: #debd27;
-  border-color: #debd27;
+  border-color: #b12828;
 }
 
 /* STRIPE PAYMENT */

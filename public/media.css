@@ -29,3 +29,11 @@
     display:none
   }
 }
+@media(max-width: 991px){
+  .navbar-collapse#navbar-main{
+    display: none;
+  }
+  #nav-logo{
+    display: none;
+  }
+}
