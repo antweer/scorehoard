@@ -1,4 +1,4 @@
-#[Scorehoard](scorehoard.com)
+# [Scorehoard](scorehoard.com)
 
 ***
 
@@ -9,15 +9,15 @@ Game makers can use our API to avoid dealing with database management. Let us st
 
 ***
 
-##MVP
+## MVP
 
 ***
 
-##Stretch Goals
+## Stretch Goals
 
 ***
 
-##Contributors
+## Contributors
 
 *[Eric Schow](https://github.com/ericmschow)
 *[Gene Grilli](https://github.com/g-grilli)
