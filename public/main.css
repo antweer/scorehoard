@@ -80,6 +80,10 @@ p.lead{
   font-size: 12px;
   letter-spacing: 2px
 }
+.navbar-collapse#navbar-main{
+  display: flex;
+  justify-content: flex-end;
+}
 
 .navbar-nav li a:hover {
   color: #1abc9c;
