@@ -40,6 +40,7 @@ p.lead{
   color:#fff;
   margin-bottom: 60px;
   font-family: 'Roboto', sans-serif;
+  line-height: 2em;
 }
 .main-title .btn {
   padding: 14px 24px;
@@ -141,6 +142,7 @@ h2.title2 {
   background-color: #fff;
   color: #34495e;
   font-family: 'Roboto', sans-serif;
+  margin-bottom: 50px;
 }
 
 .row.row2 {
@@ -160,10 +162,13 @@ h2.title3 {
   background-color: #34495e;
   color: #fff;
   font-family: 'Roboto', sans-serif;
+  margin-bottom: 50px;
 }
 p{
   font-family: 'Roboto', sans-serif;
+  line-height: 2em;
 }
+
 
 #used {
   background-color: #34495e;
@@ -278,7 +283,7 @@ p{
 .bg-3a {
   background-color: white;
 }
-
+/*login.hbs*/
 .bg-4 {
   margin-top: 40px;
   padding-top: 40px;
@@ -286,6 +291,13 @@ p{
   width: 40%;
   background-color: #bbbdbf;
 }
+.btn-primary{
+  color: #fff;
+    background-color: #0275d8;
+    border-color: #0275d8;
+    margin: 20px 0 20px 0;
+}
+
 
 .delete {
   margin: 20px;

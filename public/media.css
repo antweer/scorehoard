@@ -38,6 +38,18 @@
   }
 }
 @media(max-width: 1115px){
+  p{
+    font-size: 15px;
+  }
+}
+@media(max-width: 600px){
+  p.lead{
+    font-size: 15px;
+  }
+}
+
+
+@media(max-width: 1115px){
   .form-buttons{
     margin-left: 33px;
   }
@@ -46,8 +58,14 @@
   }
 
 }
-@media(max-width: 792){
+@media(max-width: 792px){
   #free ul{
     line-height: 2em;
+  }
+}
+/*Login page*/
+@media(max-width:1200px){
+  .bg-4{
+    width: 100%;
   }
 }
