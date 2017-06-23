@@ -2,9 +2,12 @@
   <div class="container-fluid">
   <div class="container bg-4 text-center">
    <h3>Log In</h3>
+<!--Alert-->
    {{#if fail}}<div class='alert alert-danger'>Email and password did not match. Please try again.</div>{{/if}}
    {{#if invalid}}<div class='alert alert-danger'>Sorry, that email is not in our database. Create an account <a href='/create_account'>here.</a></div>{{/if}}
+
    <form action="/login" method="POST">  
+<!--Email-->   
    <div class="row delete">
     <div class="col-lg-6">
         <label>Email Address</label>
@@ -13,24 +16,51 @@
         <input type="text" name="login">
     </div>
    </div>
+<!--Password-->
    <div class="row delete">
     <div class="col-lg-6">
      <label>Password</label>
     </div>
     <div class="col-lg-6">
-     <input name='password' type='password'><br>
+     <input name='password' type='password'>
+     <a data-toggle="modal" data-target="#password">Forgot password?</a>
     </div>
    </div>
+<!--Log in button--> 
    <div class="row">
     <div class="col-lg-12">
       <button class="btn btn-primary" type="submit">Log In</button>
     </div>
-   </div>
+   </div> 
     </form>
+<!--Create Account Link-->
     <div class="row">
      <div class="col-lg-12">
-      <a href=''>No account? Create one here.</a>
+      <a href="/create_account">No account? Create one here.</a>
     </div>
    </div>
    </div>
  </div>
+</div>
+<!-- Modal -->
+<div id="password" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+<!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="submit" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Reset Pasword</h4>
+      </div>
+      <div class="modal-body">
+        <form action="/login" method="POST"> 
+         <label>Please enter your email address.</label>
+         <input type="text" name="login">
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Submit</button>
+      </div>
+    </div>
+
+  </div>
+</div>
