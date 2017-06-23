@@ -125,7 +125,10 @@ app.get('/add/:key', function(request, response, next){
 app.get('/console', function(request, response, next){
   let account = request.session.user || null;
   if (account == null) {response.redirect('/login'); return}    // redirect to login if not logged in
-  let context = {account: account};
+  let context = {
+    account: account,
+    title: 'ScoreHoard - Admin Console'
+  };
 
   db.one("SELECT * FROM company WHERE login = $1;", account)
     .then (function(company){
@@ -320,7 +323,10 @@ function check_pass (stored_pass, password){
 // Home view
 app.get('/', function(request, response){
   account = request.session.user || null;
-  context = {account: account};
+  context = {
+    account: account,
+    title: 'ScoreHoard - Score Tracking API'
+  };
   response.render('home.hbs', context)
 })
 
@@ -333,7 +339,7 @@ app.get('/payment', function(request, response){
 
 // Log in View
 app.get('/login', function(request, response){
-  context = {title: 'Login'}
+  context = {title: 'ScoreHoard - Log In'}
   response.render('login.hbs', context)
 });
 
@@ -380,7 +386,11 @@ app.get('/logout', function(request, response, next) {
 
 // Creating an account - We'll have to add verification
 app.get('/create_account', function(request, response) {
-  context = {title: 'Create account', login: request.session.user, anon: !request.session.user};
+  context = {
+    title: 'ScoreHoard - Create Account', 
+    login: request.session.user, 
+    anon: !request.session.user
+  };
   response.render('create_account.hbs', context)
 });
 
