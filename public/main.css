@@ -311,3 +311,41 @@ label {
 .delete {
   margin: 20px;
 }
+/*modals*/
+.btn btn-default{
+
+}
+.modal-dialog{
+  margin: 130px 0 0 400px;
+
+}
+.modal-content{
+  height: 420px;
+  width: 540px;
+  /*background-color: #206F9C;*/
+  border-style:solid;
+  border-width: 10px;
+  border-color: #206F9C;
+
+}
+.modal-header{
+  padding: 25px 176px 25px 10px;
+}
+
+.submit{
+  justify-content: center;
+}
+.modal-content .modal-footer{
+  justify-content: center;
+  margin: 30px 0 30px 0;
+
+}
+.modal-body {
+  display: flex;
+  justify-content: center;
+  padding: 90px;
+}
+.input-bar{
+  display: flex;
+  justify-content: center;
+}
