@@ -4,22 +4,14 @@
     <h3>Creat Account</h3>
   {{#if fail}}<div class="alert alert-danger">Your email address is already in the system. Please use a different email.</div>{{/if}}
   <form action="/create_account" method="POST">
-    <label>Email address:</label>
+    <label><strong>Email address:</strong></label>
     <input type="email" name="login">
     <br>
-    <label>Password:</label>
+    <label><strong>Password:</strong></label>
     <input name='password' type='password'>
     <br>
-    <label>Company name:</label>
+    <label><strong>Company name:</strong></label>
     <input type='text' name="name">
     <br>
-    <label>Public high scores (private tables are a premium option)</label>
-    <input type='checkbox' name='public' checked='true'>
-    <br><br>
     <button type="submit">Submit</button>
   </form>
-  <br>
-  <a href='/'>Back home</a>
-</div>
-</div>
-</div>
