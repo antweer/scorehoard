@@ -1,4 +1,4 @@
-# [ScoreHoard](scorehoard.com)
+# [ScoreHoard](https://scorehoard.com)
 ### An API that tracks scores and custom stats for game makers
 
 ## Description
