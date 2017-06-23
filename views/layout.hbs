@@ -34,6 +34,9 @@
             <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
             <i class="fa fa-download"></i>
           </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/faq">FAQ<span class="sr-only">(current)</span></a>
+          </li>
           {{#unless account}}
           <li class="nav-item">
             <a class="nav-link" href="/create_account">Sign Up</a>
@@ -42,10 +45,6 @@
             <a class="nav-link" href="/login">Log In<span class="sr-only">(current)</span></a>
           </li>
           {{/unless}}
-          <li class="nav-item">
-            <a class="nav-link" href="/faq">FAQ<span class="sr-only">(current)</span></a>
-          </li>
-        </li>
         {{#if account}}
         <li class="nav-item">
           <a class="nav-link" href="/console">Console<span class="sr-only">(current)</span></a>
