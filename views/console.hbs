@@ -3,6 +3,13 @@
       <h1>{{company.name}}</h1>
       <p>Active Keys: {{keys}}</p>
   </div>
+  {{#unless verified}}
+  <div>
+    Please verify your account.
+    Resend verification email?
+  </div>
+  {{/unless}}
+  {{#if verified}}
   <div class="container-fluid bg-2 text-center">
       <form method='post'>
         <label>Add new game:</label>
@@ -13,9 +20,8 @@
    </div>
   <div class="bg-3a">
   {{#each games}}
+  {{#if active}}
   <div class="container-fluid bg-3 text-center">
-   <ul>
-      <l1>
         <div class="row">
          <div class="col-md-6 text-left">
           <h2 id="adminName">{{name}}</h2>
@@ -42,7 +48,7 @@
         </div>
       </div>
       <div class="row delete">
-          <div class="col-md-12">  
+          <div class="col-md-12">
             <form method="POST" action="/console" name="delete_game">
               <input type='hidden' name='delete_game' value='true'>
               <input type="hidden" value="{{name}}" name="name">
@@ -51,9 +57,9 @@
             </form>
            </div>
           </div>
-      </li>
-   </ul>
   </div>
+  {{/if}}
   {{/each}}
 </div>
+{{/if}}
 </body>

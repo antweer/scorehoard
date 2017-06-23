@@ -122,17 +122,24 @@ app.get('/add/:key', function(request, response, next){
 
 // Console view
 app.get('/console', function(request, response, next){
+  let company = request.session.company;
   let account = request.session.user || null;
-  if (account == null) {response.redirect('/login'); return}    // redirect to login if not logged in
   let context = {
     account: account,
+    company: company,
     title: 'ScoreHoard - Admin Console'
   };
-
-  db.one("SELECT * FROM company WHERE login = $1;", account)
-    .then (function(company){
-      context['company'] = company;
-      request.session.company = company;
+  if (account == null) {response.redirect('/login'); return}    // redirect to login if not logged in
+  if (company.verified){
+    context['verified'] = true;
+  }
+  else {
+    context['verified'] = false;
+  };
+  // db.one("SELECT * FROM company WHERE login = $1;", account)
+  //   .then (function(company){
+  //     context['company'] = company;
+  //     request.session.company = company;
       db.any("SELECT * FROM game WHERE company_id = $1 ORDER BY name", company.id)
       .then (function(resultsArray){
         for (i = 0; i < resultsArray.length; i++){
@@ -151,7 +158,7 @@ app.get('/console', function(request, response, next){
         console.error(err);
       })
     })
-})
+// })
 
 // TODO rearchitect database using postgres jsonb format
 
@@ -171,12 +178,11 @@ app.post('/console', function(request, response, next){
         db.none(query, [key, game_id])
           .then(function(){
             let login = request.session.user
-            console.log('LOGIN IS ' +login);
             let mailOptions = {
               from:'"ScoreHoard" <donotreply@scorehoard.com>',
               to: login,
-              subject: 'Confirmation Email',
-              text: 'Thank you',
+              subject: 'ScoreHoard - Game Confirmation Email',
+              text: `Thank you for registering a game with ScoreHoard. May we fulfill your ScoreHoarding needs! Please click <a href="http://scorehoard.com/verify/${key}">here</a> to verify your game with us!`,
               html: `<p>Thank you for registering a game with ScoreHoard. May we fulfill your ScoreHoarding needs! Please click <a href="http://scorehoard.com/verify/${key}">here</a> to verify your game with us!</p>`
             };
             transporter.sendMail(mailOptions, (error, info) => {
@@ -193,12 +199,9 @@ app.post('/console', function(request, response, next){
   else if (request.body.delete_game) {
     let name = request.body.name
     let game_id = request.body.game_id;
-    let table = "g"+game_id;
-    let query1 = "DROP TABLE $1:value;"
-    let promise1 = db.any(query1, table)
-    let query2 = "DELETE FROM game WHERE id = \'$1:value\';"
-    let promise2 = db.any(query2, game_id)
-    return Promise.all([promise1, promise2])
+    let query = "UPDATE game SET active = FALSE WHERE id = \'$1:value\';"
+    let promise = db.query(query, game_id)
+    promise()
       .then (function(){
         if (account == null) {response.redirect('/login'); return}
         response.redirect('/console')
@@ -211,7 +214,7 @@ app.post('/console', function(request, response, next){
   else {  // new game
     let name = request.body.name;
     let key = 'Pending';
-    let query1 = 'INSERT INTO game VALUES (DEFAULT, \'$1#\', $2, FALSE, $3) RETURNING id'
+    let query1 = 'INSERT INTO game VALUES (DEFAULT, \'$1#\', $2, FALSE, $3, TRUE) RETURNING id'
     db.any(query1, [name, key, company.id]) // adds game to game table and returns id
       .then(function(obj){
         let table = "g" + obj[0].id.toString();
@@ -346,27 +349,28 @@ app.get('/login', function(request, response){
 app.post('/login', function(request, response) {
   let login = request.body.login;
   let password = request.body.password;
-  let query = "SELECT password FROM company WHERE login = $1"
+  let query = "SELECT * FROM company WHERE login = $1"
   db.one(query, login)
-    .then (function(stored_pass){
+    .then (function(company){
       // hash user input
       console.log('db.one called')
-      return check_pass(stored_pass.password, password)
+      return {pass_success: check_pass(company.password, password), company: company}
     })
-    .then (function(pass_success){
+    .then (function(obj){
       console.log('pass_success')
-      if (pass_success) {
+      if (obj.pass_success) {
+        request.session.company = obj.company;
         request.session.user = login;
         response.redirect('/console');
       }
-      else if (!pass_success){
+      else if (!obj.pass_success){
         console.log('not pass_success')
         context = {title: 'Login', fail: true}
         response.render('login.hbs', context)
       }
     })
     .catch(function(err){
-      if (err.name == "QueryResultError" && err.code == "0"){
+      if (err.name == "QueryResultError" && err.code == "0"){ // if no account in database
         context = {title: "Login", invalid: true}
         response.render('login.hbs', context)
       }
@@ -386,8 +390,8 @@ app.get('/logout', function(request, response, next) {
 // Creating an account - We'll have to add verification
 app.get('/create_account', function(request, response) {
   context = {
-    title: 'ScoreHoard - Create Account', 
-    login: request.session.user, 
+    title: 'ScoreHoard - Create Account',
+    login: request.session.user,
     anon: !request.session.user
   };
   response.render('create_account.hbs', context)
