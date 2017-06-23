@@ -8,7 +8,7 @@ var promise = require('bluebird');
 var pgp = require('pg-promise')({
   promiseLib: promise
 });
-var db = pgp({database: 'scorehoard', user:'postgres'});
+var db = pgp({database: process.env['DB_NAME'], user: process.env['DB_USER']});
 var apikey = require("apikeygen").apikey;
 
 // Crypto configuration
@@ -511,7 +511,7 @@ app.get('/verify/:key', function(request, response, next){
   }
 })
 
-//Listener -- Change for production
-app.listen(9010, function(){
+//Listener
+app.listen(process.env['PORT'], function(){
   console.log('I am now listening... I am now sentient... Hello')
 });
