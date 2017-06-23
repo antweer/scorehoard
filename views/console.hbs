@@ -51,17 +51,36 @@
       </div>
       <div class="row delete">
           <div class="col-md-12">
-            <form method="POST" action="/console" name="delete_game">
-              <input type='hidden' name='delete_game' value='true'>
-              <input type="hidden" value="{{name}}" name="name">
-              <input type="hidden" value="{{id}}" name="game_id">
-              <input type="submit" class="btn btn-sm btn-success" value="DELETE GAME">
-            </form>
+           <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#deleteGame">DELETE GAME</button>
            </div>
           </div>
   </div>
+<!-- Modal -->
+<div id="deleteGame" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+<!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="submit" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">WARNING</h4>
+      </div>
+      <div class="modal-body">
+        <h5>You are about to delete access to this game!</h5>
+      </div>
+      <div class="modal-footer">
+        <form method="POST" action="/console" name="delete_game">
+          <input type='hidden' name='delete_game' value='true'>
+          <input type="hidden" value="{{name}}" name="name">
+          <input type="hidden" value="{{id}}" name="game_id">
+          <input type="submit" class="btn btn-sm btn-success" value="DELETE GAME">
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
   {{/if}}
   {{/each}}
 </div>
 {{/if}}
 </body>
+          
