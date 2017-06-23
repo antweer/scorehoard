@@ -211,6 +211,7 @@ app.post('/console', function(request, response, next){
         response.redirect('/console');
       })
   }
+
   else {  // new game
     let name = request.body.name;
     let key = 'Pending';
@@ -233,6 +234,36 @@ app.post('/console', function(request, response, next){
       })
     }
   })
+
+app.get('/resend/', function(request, response){
+  let key = request.query.key;
+  let id = request.query.id;
+  let company = request.session.company || null;
+  if (company == null) {response.redirect('/login'); return};   // if not logged in, redirect back to login
+  if (key.length == 50){   // if game key
+    let login = company.login
+    let mailOptions = {
+      from:'"ScoreHoard" <donotreply@scorehoard.com>',
+      to: login,
+      subject: 'ScoreHoard - Game Confirmation Email',
+      text: `Thank you for registering a game with ScoreHoard. May we fulfill your ScoreHoarding needs! Please click <a href="http://scorehoard.com/verify/${key}">here</a> to verify your game with us!`,
+      html: `<p>Thank you for registering a game with ScoreHoard. May we fulfill your ScoreHoarding needs! Please click <a href="http://scorehoard.com/verify/${key}">here</a> to verify your game with us!</p>`
+    };
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        return console.error(error);
+      }
+      console.log('Message send: ', info.messageId, info.response);
+    });
+    response.redirect('/console');
+  } // end if game key
+  else if (key.length == 40){ // if company key
+
+  }
+  else {
+    response.redirect("/console")
+  }
+});
 
 //Generates a unique API key
 function unique_api_key(){
