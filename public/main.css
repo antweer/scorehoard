@@ -278,7 +278,7 @@ p{
 .bg-3a {
   background-color: white;
 }
-
+/*login.hbs*/
 .bg-4 {
   margin-top: 40px;
   padding-top: 40px;
@@ -286,6 +286,13 @@ p{
   width: 40%;
   background-color: #bbbdbf;
 }
+.btn-primary{
+  color: #fff;
+    background-color: #0275d8;
+    border-color: #0275d8;
+    margin: 20px 0 20px 0;
+}
+
 
 label {
   padding: 10px;
