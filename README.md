@@ -12,8 +12,10 @@ Game makers can use our API to avoid dealing with database management. Let us st
 
 ### Frontend:
 * Javascript
+
    [Handlebars.js](http://handlebarsjs.com/)  
 * CSS3
+
    [Bootstrap](http://getbootstrap.com/)  
 * HTML5
 
