@@ -5,8 +5,8 @@
   </div>
   {{#unless verified}}
   <div>
-    Please verify your account.
-    Resend verification email?
+    Please verify your account to view the console page.
+    <a href="/resend/?key={{company.verify_key}}&id={{company.id}}">Resend verification email?</a>
   </div>
   {{/unless}}
   {{#if verified}}

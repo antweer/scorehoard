@@ -245,8 +245,8 @@ app.get('/resend/', function(request, response){
     let mailOptions = {
       from:'"ScoreHoard" <donotreply@scorehoard.com>',
       to: login,
-      subject: 'ScoreHoard - Game Confirmation Email',
-      text: `Thank you for registering a game with ScoreHoard. May we fulfill your ScoreHoarding needs! Please click <a href="http://scorehoard.com/verify/${key}">here</a> to verify your game with us!`,
+      subject: 'ScoreHoard - Resending Game Confirmation',
+      text: 'Resending Key verification',
       html: `<p>Thank you for registering a game with ScoreHoard. May we fulfill your ScoreHoarding needs! Please click <a href="http://scorehoard.com/verify/${key}">here</a> to verify your game with us!</p>`
     };
     transporter.sendMail(mailOptions, (error, info) => {
@@ -257,8 +257,22 @@ app.get('/resend/', function(request, response){
     });
     response.redirect('/console');
   } // end if game key
-  else if (key.length == 40){ // if company key
-
+  else if (key.length == 40){ // **if company key
+    let login = company.login
+    let mailOptions = {
+      from:'"ScoreHoard" <donotreply@scorehoard.com>',
+      to: login,
+      subject: 'ScoreHoard - Resending Account Confirmation',
+      text: 'Resending Account verification',
+      html: `<p>Thank you for registering an account with ScoreHoard. May we fulfill your ScoreHoarding needs! Please click <a href="http://scorehoard.com/verify/${key}">here</a> to verify your account with us!</p>`
+    };
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        return console.error(error);
+      }
+      console.log('Message send: ', info.messageId, info.response);
+    });
+    response.redirect('/console');
   }
   else {
     response.redirect("/console")
