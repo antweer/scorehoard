@@ -1,4 +1,7 @@
 <div class='box'>
+  <div class="container-fluid">
+  <div class="container bg-4 text-center">
+    <h3>Creat Account</h3>
   {{#if fail}}<div class="alert alert-danger">Your email address is already in the system. Please use a different email.</div>{{/if}}
   <form action="/create_account" method="POST">
     <label>Email address:</label>
@@ -17,4 +20,6 @@
   </form>
   <br>
   <a href='/'>Back home</a>
+</div>
+</div>
 </div>
