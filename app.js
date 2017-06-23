@@ -140,7 +140,7 @@ app.get('/console', function(request, response, next){
   //   .then (function(company){
   //     context['company'] = company;
   //     request.session.company = company;
-      db.any("SELECT * FROM game WHERE company_id = $1 ORDER BY name", company.id)
+      db.any("SELECT * FROM game WHERE company_id = $1 AND active = true ORDER BY name", company.id)
       .then (function(resultsArray){
         for (i = 0; i < resultsArray.length; i++){
           if (resultsArray[i].api_key.length == 50){
@@ -163,8 +163,9 @@ app.get('/console', function(request, response, next){
 // TODO rearchitect database using postgres jsonb format
 
 app.post('/console', function(request, response, next){
-  let company = request.session.company;
+  let company = request.session.company || null;
   let account = request.session.user || null;
+  if (company == null || account == null) {response.redirect('/login')};
   if (company.verified){
     context[verified = true]
   }
@@ -172,18 +173,19 @@ app.post('/console', function(request, response, next){
     // console.log('body is ',request.body)
     let id = request.session.company.id;
     let game_id = request.body.game_id;
-    let query = "UPDATE game SET api_key = $1 WHERE id = $2";
+    let query = "UPDATE game SET api_key = $1 WHERE id = $2 RETURNING name";
     unique_api_key()
       .then(function(key){
-        db.none(query, [key, game_id])
-          .then(function(){
+        db.one(query, [key, game_id])
+          .then(function(obj){
             let login = request.session.user
+            let name = obj.name;
             let mailOptions = {
               from:'"ScoreHoard" <donotreply@scorehoard.com>',
               to: login,
-              subject: 'ScoreHoard - Game Confirmation Email',
-              text: `Thank you for registering a game with ScoreHoard. May we fulfill your ScoreHoarding needs! Please click <a href="http://scorehoard.com/verify/${key}">here</a> to verify your game with us!`,
-              html: `<p>Thank you for registering a game with ScoreHoard. May we fulfill your ScoreHoarding needs! Please click <a href="http://scorehoard.com/verify/${key}">here</a> to verify your game with us!</p>`
+              subject: `ScoreHoard - ${name} Confirmation Email`,
+              text: `Thank you for registering ${name} with ScoreHoard. May we fulfill your ScoreHoarding needs! Please click <a href="http://scorehoard.com/verify/${key}">here</a> to verify your game with us!`,
+              html: `<p>Thank you for registering ${name} with ScoreHoard. May we fulfill your ScoreHoarding needs! Please click <a href="http://scorehoard.com/verify/${key}">here</a> to verify your game with us!</p>`
             };
             transporter.sendMail(mailOptions, (error, info) => {
               if (error) {
@@ -192,7 +194,10 @@ app.post('/console', function(request, response, next){
               console.log('Message send: ', info.messageId, info.response);
             });
             response.redirect('/console');
-        })
+          })
+          .catch(function(err){
+            console.error(err)
+          })
       })
 
   }
@@ -200,8 +205,7 @@ app.post('/console', function(request, response, next){
     let name = request.body.name
     let game_id = request.body.game_id;
     let query = "UPDATE game SET active = FALSE WHERE id = \'$1:value\';"
-    let promise = db.query(query, game_id)
-    promise()
+    db.query(query, game_id)
       .then (function(){
         if (account == null) {response.redirect('/login'); return}
         response.redirect('/console')
@@ -242,12 +246,36 @@ app.get('/resend/', function(request, response){
   if (company == null) {response.redirect('/login'); return};   // if not logged in, redirect back to login
   if (key.length == 50){   // if game key
     let login = company.login
+    db.one('SELECT name FROM game WHERE api_key = $1', key)
+    .then(function(obj){
+      let name = obj.name
+      let mailOptions = {
+        from:'"ScoreHoard" <donotreply@scorehoard.com>',
+        to: login,
+        subject: `ScoreHoard - Resending ${name} Confirmation Email`,
+        text: `Thank you for registering ${name} with ScoreHoard. May we fulfill your ScoreHoarding needs! Please copy and paste http://scorehoard.com/verify/${key} into your browser's address bar and press enter to verify your game with us!`,
+        html: `<p>Thank you for registering ${name} with ScoreHoard. May we fulfill your ScoreHoarding needs! Please click <a href="http://scorehoard.com/verify/${key}">here</a> to verify your game with us!</p>`
+      };
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          return console.error(error);
+        }
+        console.log('Message send: ', info.messageId, info.response);
+      });
+      response.redirect('/console');
+    })
+    .catch(function(err){
+      console.error(err)
+    })
+  } // end if game key
+  else if (key.length == 40){ // **if company key
+    let login = company.login
     let mailOptions = {
       from:'"ScoreHoard" <donotreply@scorehoard.com>',
       to: login,
-      subject: 'ScoreHoard - Game Confirmation Email',
-      text: `Thank you for registering a game with ScoreHoard. May we fulfill your ScoreHoarding needs! Please click <a href="http://scorehoard.com/verify/${key}">here</a> to verify your game with us!`,
-      html: `<p>Thank you for registering a game with ScoreHoard. May we fulfill your ScoreHoarding needs! Please click <a href="http://scorehoard.com/verify/${key}">here</a> to verify your game with us!</p>`
+      subject: 'ScoreHoard - Resending Account Confirmation',
+      text: 'Resending Account verification',
+      html: `<p>Thank you for registering an account with ScoreHoard. May we fulfill your ScoreHoarding needs! Please click <a href="http://scorehoard.com/verify/${key}">here</a> to verify your account with us!</p>`
     };
     transporter.sendMail(mailOptions, (error, info) => {
       if (error) {
@@ -256,9 +284,6 @@ app.get('/resend/', function(request, response){
       console.log('Message send: ', info.messageId, info.response);
     });
     response.redirect('/console');
-  } // end if game key
-  else if (key.length == 40){ // if company key
-
   }
   else {
     response.redirect("/console")
@@ -268,11 +293,11 @@ app.get('/resend/', function(request, response){
 //Generates a unique API key
 function unique_api_key(){
   let apiKey = apikey(50);
-  console.log(apiKey);
+  //console.log(apiKey);
   var p = new Promise(function (resolve, reject) {
     db.query('SELECT count(api_key) FROM game WHERE api_key = $1', apiKey)
     .then(function(count){
-      console.log(count[0].count);
+    //  console.log(count[0].count);
       if(count[0].count == 0){
         resolve(apiKey);
       }
@@ -296,11 +321,11 @@ function unique_api_key(){
 //Generates a unique verification key -- Can this be combined with api_key function?
 function unique_ver_key(){
   let verKey = apikey(40);
-  console.log(verKey);
+  //console.log(verKey);
   var p = new Promise(function (resolve, reject) {
     db.query('SELECT count(verify_key) FROM company WHERE verify_key = $1', verKey)
     .then(function(count){
-      console.log(count[0].count);
+      //console.log(count[0].count);
       if(count[0].count == 0){
         resolve(verKey);
       }
@@ -344,11 +369,11 @@ function check_pass (stored_pass, password){
 
   var hash = key.toString('hex');
   if (hash === pass_parts[3]) {
-    console.log('Passwords Matched!');
+    //console.log('Passwords Matched!');
     return true
   }
   else {
-    console.log('No match')
+    //console.log('No match')
   }
   return false;
 }
@@ -384,19 +409,20 @@ app.post('/login', function(request, response) {
   db.one(query, login)
     .then (function(company){
       // hash user input
-      console.log('db.one called')
+      //console.log('db.one called')
       return {pass_success: check_pass(company.password, password), company: company}
     })
     .then (function(obj){
-      console.log('pass_success')
+      //console.log('pass_success')
       if (obj.pass_success) {
         request.session.company = obj.company;
         request.session.user = login;
         response.redirect('/console');
       }
       else if (!obj.pass_success){
-        console.log('not pass_success')
+        //console.log('not pass_success')
         context = {title: 'Login', fail: true, body_class: "blue"}
+
         response.render('login.hbs', context)
       }
     })
@@ -411,6 +437,7 @@ app.post('/login', function(request, response) {
     })
 })
 
+// Log out mechanics
 app.get('/logout', function(request, response, next) {
   request.session.destroy(function(err){
     if(err){console.error('Something went wrong: '+ err);}
@@ -418,7 +445,7 @@ app.get('/logout', function(request, response, next) {
   });
 })
 
-// Creating an account - We'll have to add verification
+// Creating an account
 app.get('/create_account', function(request, response) {
   context = {
     title: 'ScoreHoard - Create Account',
@@ -446,7 +473,7 @@ app.post('/create_account', function(request, response, next){
       text: 'Thank you',
       html: `<p>Thank you for registering an account with ScoreHoard. May we fulfill your ScoreHoarding needs! Please click <a href="http://scorehoard.com/verify/${verify_key}">here</a> to verify your account with us!</p>`
     };
-    console.log('options set')
+    //console.log('options set')
     let stored_pass = create_hash(password);
     // id, login, password, public (boolean), name
     let query = 'SELECT login FROM company WHERE login = $1';
@@ -477,6 +504,15 @@ app.post('/create_account', function(request, response, next){
       };
     })
   })
+  .catch(function(err){
+    if (err.name == "QueryResultError"){
+      context = {title: "Create Account", fail: true}
+      response.render('create_account.hbs', context)
+    }
+    else {
+      console.error(err);
+    };
+  })
 });
 // Verify account via verify key
 app.get('/verify/:key', function(request, response, next){
@@ -491,7 +527,6 @@ app.get('/verify/:key', function(request, response, next){
       .then(function(result){
         let login = result.login;
         let company = result;
-        console.log(company);
         request.session.company = company;
         context = {verified: true};
         let mailOptions = {
@@ -520,7 +555,6 @@ app.get('/verify/:key', function(request, response, next){
       let key = request.params.key;
       db.one(query2, key)
       .then(function(result){
-        console.log(result);
         let login = result.login;
         let company = result;
         request.session.company = company;
