@@ -514,5 +514,4 @@ app.get('/verify/:key', function(request, response, next){
 //Listener -- Change for production
 app.listen(9010, function(){
   console.log('I am now listening... I am now sentient... Hello')
-
 });
