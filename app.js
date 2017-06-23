@@ -453,14 +453,18 @@ app.get('/verify/:key', function(request, response, next){
     let query1 = 'UPDATE company SET verified = TRUE WHERE verify_key = $1';
     db.none(query1, key)
     .then(function() {
-      let query2 = 'SELECT login FROM company WHERE verify_key = $1';
+      let query2 = 'SELECT * FROM company WHERE verify_key = $1';
       let key = request.params.key;
       db.one(query2, key)
-      .then(function(login){
+      .then(function(result){
+        let login = result.login;
+        let company = result;
+        console.log(company);
+        request.session.company = company;
         context = {verified: true};
         let mailOptions = {
           from:'"ScoreHoard" <donotreply@scorehoard.com>',
-          to: login.login,
+          to: login,
           subject: 'Thank you for verifying your account',
           text: 'Thank you',
           html: `<p>Thank you, your account has been verified. May we fulfill your ScoreHoarding needs!</p>`
@@ -471,7 +475,7 @@ app.get('/verify/:key', function(request, response, next){
           }
           console.log('Message send: ', info.messageId, info.response);
         });
-        response.redirect('/')
+        response.redirect('/console')
       })
     })
   }
