@@ -512,11 +512,7 @@ app.get('/verify/:key', function(request, response, next){
 })
 
 //Listener -- Change for production
-<<<<<<< HEAD
-app.listen(8001, function(){
-  console.log('Listening on port 8000')
-=======
 app.listen(9010, function(){
   console.log('I am now listening... I am now sentient... Hello')
->>>>>>> master
+
 });

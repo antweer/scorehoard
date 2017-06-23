@@ -1,9 +1,16 @@
+/*Navbar*/
 @media (min-width: 768px) {
   .navbar-nav {
     display: -webkit-box;
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
+  }
+}
+
+@media (min-width: 768px) {
+  .navbar-nav .nav-item {
+    text-align: right;
   }
 }
 
