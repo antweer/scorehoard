@@ -2,7 +2,7 @@
 ### An API that tracks scores and custom stats for game makers
 
 ## Description
-ScoreHoard is an API that tracks scores for videogame makers. ScoreHoard allows gamers to send scores (and the usernames associated with the scores) directly into the ScoreHoard servers, quickly being integrated into our custom database. The ScoreHoard API allow you to receive your aggregate data in easily usable JSON. 
+ScoreHoard is an API that tracks scores for videogame makers. ScoreHoard allows gamers to send scores (and the usernames associated with the scores) directly into the ScoreHoard servers, quickly being integrated into our custom database. The ScoreHoard API allows you to receive your aggregate data in easily usable JSON. 
 
 Let ScoreHoard store your scoring data for you.  Game makers can use the ScoreHoard API to avoid the hassles of database management.  The ScoreHoard custom system allows direct access to style custom leaderboards and high scores table.  Let your imagination take root in the ScoreHoard API to create special tracking dashboards.  
 
