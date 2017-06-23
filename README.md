@@ -85,12 +85,12 @@ https://scorehoard.com/api/[key]
 * ~~Web UI feature that allows API key generation/verification/deletion for verified users~~
 * ~~Deploy Web UI~~
 * ~~Add SSL certification~~
-* FAQ/Documentation that provides an overview of how to use our API
+* ~~FAQ/Documentation that provides an overview of how to use our API~~
 * Logo
 
 ### Stretch Goals:
 
-* Responsive Design
+* ~~Responsive Design~~
 * Overhaul database architecture to be optimized
 * Allow users to modify the parameters for their leaderboards e.g. allow more game stats than username and score
 * Web UI feature that allows API key reset
