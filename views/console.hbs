@@ -6,7 +6,7 @@
   <div class="container-fluid bg-2 text-center">
     {{#unless verified}}
     <div class="alert alert-danger text-center">
-      Please verify your account to view the console page. 
+      Please verify your account to view the console page.
       <a href="/resend/?key={{company.verify_key}}&id={{company.id}}">Resend verification email?</a>
     </div>
     {{/unless}}
@@ -37,7 +37,8 @@
        </div>
        <div class="row">
          <div class="col-md-12">
-          {{#if key_present}}<h3><span style='color:lightgrey'>API Key: </span>{{api_key}}</h3>
+          {{#if key_present}}<h3><span style='color:#debd27'>API Key: </span>{{api_key}}</h3>
+          <h5>Please read <a style='color:white; text-decoration:underline' href='/faq'>our FAQ</a> for instructions.</h5>
           {{#unless api_key_valid}}<h5>Key awaiting validation. Please click the verification link in your email. <a style="color:white; text-decoration: underline" href="/resend?key={{api_key}}&id={{id}}">Click here to resend email.</a>{{/unless}}
           {{/if}}
           {{#unless key_present}}
