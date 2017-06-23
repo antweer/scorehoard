@@ -6,11 +6,11 @@
    {{#if fail}}<div class='alert alert-danger'>Email and password did not match. Please try again.</div>{{/if}}
    {{#if invalid}}<div class='alert alert-danger'>Sorry, that email is not in our database. Create an account <a href='/create_account'>here.</a></div>{{/if}}
 
-   <form action="/login" method="POST">  
-<!--Email-->   
+   <form action="/login" method="POST">
+<!--Email-->
    <div class="row delete">
     <div class="col-lg-6">
-        <label>Email Address</label>
+        <label><strong>Email Address</strong></label>
     </div>
     <div class="col-lg-6">
         <input type="text" name="login">
@@ -19,19 +19,19 @@
 <!--Password-->
    <div class="row delete">
     <div class="col-lg-6">
-     <label>Password</label>
+     <label><strong>Password</strong></label>
     </div>
     <div class="col-lg-6">
-     <input name='password' type='password'>
+     <input name='password' type='password'><br>
      <a data-toggle="modal" data-target="#password">Forgot password?</a>
     </div>
    </div>
-<!--Log in button--> 
+<!--Log in button-->
    <div class="row">
     <div class="col-lg-12">
       <button class="btn btn-primary" type="submit">Log In</button>
     </div>
-   </div> 
+   </div>
     </form>
 <!--Create Account Link-->
     <div class="row">
@@ -52,7 +52,7 @@
         <h4 class="modal-title">Reset Pasword</h4>
       </div>
       <div class="modal-body">
-        <form action="/login" method="POST"> 
+        <form action="/login" method="POST">
          <label>Please enter your email address.</label>
          <input type="text" name="login">
         </form>
