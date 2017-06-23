@@ -420,10 +420,10 @@ app.post('/create_account', function(request, response, next){
     let query = 'SELECT login FROM company WHERE login = $1';
     db.none(query, login)
     .then(function(){
-      let query = 'INSERT INTO company VALUES (DEFAULT, $1, $2, $3, $4, DEFAULT, $5)'
-      db.none(query, [login, stored_pass, pub, name, verify_key])
-        .then(function(){
-          console.log('company inserted')
+      let query = 'INSERT INTO company VALUES (DEFAULT, $1, $2, $3, $4, DEFAULT, $5) RETURNING *'
+      db.one(query, [login, stored_pass, pub, name, verify_key])
+        .then(function(company){
+          request.session.company = company;
           request.session.user = name
           transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
@@ -431,7 +431,7 @@ app.post('/create_account', function(request, response, next){
             }
             console.log('Message send: ', info.messageId, info.response);
           });
-          response.redirect('/');
+          response.redirect('/console');
         })
         .catch(function(err){next(err)})
       })
