@@ -44,7 +44,7 @@ https://scorehoard.com/add/[key]?user=[username]&score=[score]
  
 * Please substitute [key] with your unique API key, [username] with the username of the player you’re sending data for (don’t quote the username!), and [score] as the numerical score associated with the username that you sent in.
 
-### Using the API to request the data for your game
+### Using the API to request the data from your game
  
 #### If you’ve activated your unique API key and have used it to feed us data from your game, then you can start making Leaderboard Requests!
  
