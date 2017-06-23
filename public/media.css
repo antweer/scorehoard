@@ -75,9 +75,3 @@
     line-height: 2em;
   }
 }
-/*Login page*/
-@media(max-width:1200px){
-  .bg-4{
-    width: 100%;
-  }
-}

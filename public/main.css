@@ -290,7 +290,8 @@ p{
   margin-top: 40px;
   padding-top: 40px;
   padding-bottom: 40px;
-  width: 40%;
+  width: 100%;
+  max-width: 530px;
   background-color: #bbbdbf;
   border-radius: 25px;
   border-style: solid;
