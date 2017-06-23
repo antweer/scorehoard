@@ -372,7 +372,7 @@ app.get('/payment', function(request, response){
 
 // Log in View
 app.get('/login', function(request, response){
-  context = {title: 'ScoreHoard - Log In'}
+  context = {title: 'ScoreHoard - Log In', body_class: "blue"}
   response.render('login.hbs', context)
 });
 
@@ -396,13 +396,13 @@ app.post('/login', function(request, response) {
       }
       else if (!obj.pass_success){
         console.log('not pass_success')
-        context = {title: 'Login', fail: true}
+        context = {title: 'Login', fail: true, body_class: "blue"}
         response.render('login.hbs', context)
       }
     })
     .catch(function(err){
       if (err.name == "QueryResultError" && err.code == "0"){ // if no account in database
-        context = {title: "Login", invalid: true}
+        context = {title: "Login", invalid: true, body_class: "blue"}
         response.render('login.hbs', context)
       }
       else {
@@ -423,7 +423,8 @@ app.get('/create_account', function(request, response) {
   context = {
     title: 'ScoreHoard - Create Account',
     login: request.session.user,
-    anon: !request.session.user
+    anon: !request.session.user,
+    body_class: "blue"
   };
   response.render('create_account.hbs', context)
 });
