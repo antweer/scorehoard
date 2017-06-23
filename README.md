@@ -12,9 +12,9 @@ Game makers can use our API to avoid dealing with database management. Let us st
 
 ### Frontend:
 * Javascript
-⋅⋅⋅[Handlebars.js](http://handlebarsjs.com/)
+   [Handlebars.js](http://handlebarsjs.com/)  
 * CSS3
-⋅⋅⋅[Bootstrap](http://getbootstrap.com/)
+   [Bootstrap](http://getbootstrap.com/)  
 * HTML5
 
 ### Database:
@@ -23,14 +23,14 @@ Game makers can use our API to avoid dealing with database management. Let us st
 
 ## MVP
 
-~~* Datebase architecture
-* Functional API call that returns leaderboard
-* Functional API call that adds a username and the score associated with that user to the leaderboard
-* Each leaderboard is associated with a unique API key
-* Web UI that allows user account creation/verification 
-* Web UI feature that allows API key generation/verification/deletion for verified users
-* Deploy Web UI 
-* Add SSL certification~~
+* ~~Datebase architecture~~
+* ~~Functional API call that returns leaderboard~~
+* ~~Functional API call that adds a username and the score associated with that user to the leaderboard~~
+* ~~Each leaderboard is associated with a unique API key~~
+* ~~Web UI that allows user account creation/verification~~
+* ~~Web UI feature that allows API key generation/verification/deletion for verified users~~
+* ~~Deploy Web UI~~
+* ~~Add SSL certification~~
 * FAQ/Documentation that provides an overview of how to use our API
 * Logo
 
