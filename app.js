@@ -484,13 +484,17 @@ app.get('/verify/:key', function(request, response, next){
     let key = request.params.key;
     db.none(query1, key)
     .then(function(){
-      let query2 = 'SELECT login FROM company INNER JOIN game ON game.company_id = company.id WHERE game.api_key = $1';
+      let query2 = 'SELECT company.id, company.login, company.public, company.name, company.verified, company.verify_key FROM company INNER JOIN game ON game.company_id = company.id WHERE game.api_key = $1';
       let key = request.params.key;
       db.one(query2, key)
-      .then(function(login){
+      .then(function(result){
+        console.log(result);
+        let login = result.login;
+        let company = result;
+        request.session.company = company;
         let mailOptions = {
           from:'"ScoreHoard" <donotreply@scorehoard.com>',
-          to: login.login,
+          to: login,
           subject: 'Thank you for verifying your game',
           text: 'Thank you',
           html: `<p>Thank you, your game has been verified. May we fulfill your ScoreHoarding needs!</p>`
@@ -501,7 +505,7 @@ app.get('/verify/:key', function(request, response, next){
           }
           console.log('Message send: ', info.messageId, info.response);
         });
-        response.redirect('/')
+        response.redirect('/console')
       })
     })
   }
