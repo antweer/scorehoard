@@ -187,6 +187,19 @@ p{
   border-color: #b12828;
 }
 
+.btn-success.btn-success2 {
+   background-color: #b12828;
+   border-color: #debd27;
+   border-width: 3px;
+   margin: auto;
+ }
+ 
+ .btn-success.btn-success2:hover {
+   color: #b12828;
+   background-color: #debd27;
+   border-color: #b12828;
+ }
+
 /* STRIPE PAYMENT */
 .StripeElement {
   background-color: white;
