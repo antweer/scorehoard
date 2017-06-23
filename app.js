@@ -47,8 +47,34 @@ app.use(session({
 
 
 // API Get requests
-app.get('/api/:name', function (request, response, next) {
-  var dbname = request.params.name;
+app.get('/api/:key', function (request, response, next) {
+  let apiKey = request.params.key;
+  let query = 'SELECT id FROM game WHERE api_key = $1';
+  db.one(query, apiKey)
+    .then(function(gameid){
+      console.log(gameid.id)
+      let query = 'SELECT * FROM g$1:value WHERE game_id = $1:value ORDER BY score DESC';
+      db.query(query, gameid.id)
+        .then(function(resultsArray){
+          console.log(resultsArray);
+          let scores = new Object;
+          console.log(resultsArray)
+          for (let i = 0; i < resultsArray.length; i++){
+            scores[i+1] = {};
+            scores[i+1].name = resultsArray[i].player_name;
+            console.log('resultsArray[i] is ',resultsArray[i].player_name)
+            scores[i+1].score = resultsArray[i].score;
+          }
+          console.log('scores is ', scores)
+          response.json(
+            scores
+          );
+        })
+      .catch(next);
+    })
+    .catch(next);
+
+  /* Old API Call
   var valid_names = ['scores'];
   var scores = new Object;
   if (valid_names.indexOf(dbname) >= 0) {
@@ -68,21 +94,23 @@ app.get('/api/:name', function (request, response, next) {
       })
       .catch(next);
   }
+  */
 });
 
 // API for adding scores - Test this with new table creation logic
 app.get('/add/:key', function(request, response, next){
   let key = request.params.key;
-  let query_game = 'SELECT id, name, api_key_valid FROM game WHERE api_key = $1';
+  let query_game = 'SELECT id, api_key_valid FROM game WHERE api_key = $1';
   db.one(query_game, key)     // get game info from api key
   .then (function(game){
     if (game.api_key_valid){
-      let name = game.name;
       let user = request.query.user;
       let score = request.query.score;
       let game_id = game.id;
-      let query_scores = 'INSERT INTO $1 (DEFAULT, game_id, player_name, score VALUES ($2, $3, $4)';
-      db.any(query_scores, [game, game_id, user, score]);
+      let table = "g"+game_id.toString();
+      let query_scores = "INSERT INTO $1:value (game_id, player_name, score) VALUES ($2:value, '$3:value', $4:value);"
+      db.any(query_scores, [table, game_id, user, score])
+      .catch(function(err){console.error(err)});
     }
     else if (game.api_key_valid == false) {
       console.warn('API key not valid')
@@ -94,14 +122,24 @@ app.get('/add/:key', function(request, response, next){
 
 // Console view
 app.get('/console', function(request, response, next){
+  let company = request.session.company;
   let account = request.session.user || null;
+  let context = {
+    account: account,
+    company: company,
+    title: 'ScoreHoard - Admin Console'
+  };
   if (account == null) {response.redirect('/login'); return}    // redirect to login if not logged in
-  let context = {account: account};
-
-  db.one("SELECT * FROM company WHERE login = $1;", account)
-    .then (function(company){
-      context['company'] = company;
-      request.session.company = company;
+  if (company.verified){
+    context['verified'] = true;
+  }
+  else {
+    context['verified'] = false;
+  };
+  // db.one("SELECT * FROM company WHERE login = $1;", account)
+  //   .then (function(company){
+  //     context['company'] = company;
+  //     request.session.company = company;
       db.any("SELECT * FROM game WHERE company_id = $1 ORDER BY name", company.id)
       .then (function(resultsArray){
         for (i = 0; i < resultsArray.length; i++){
@@ -113,13 +151,14 @@ app.get('/console', function(request, response, next){
           }
         }
         context['games'] = resultsArray;
+        context['keys'] = resultsArray.length;
         response.render('console.hbs', context)
       })
       .catch (function(err){
         console.error(err);
       })
     })
-})
+// })
 
 // TODO rearchitect database using postgres jsonb format
 
@@ -139,12 +178,11 @@ app.post('/console', function(request, response, next){
         db.none(query, [key, game_id])
           .then(function(){
             let login = request.session.user
-            console.log('LOGIN IS ' +login);
             let mailOptions = {
               from:'"ScoreHoard" <donotreply@scorehoard.com>',
               to: login,
-              subject: 'Confirmation Email',
-              text: 'Thank you',
+              subject: 'ScoreHoard - Game Confirmation Email',
+              text: `Thank you for registering a game with ScoreHoard. May we fulfill your ScoreHoarding needs! Please click <a href="http://scorehoard.com/verify/${key}">here</a> to verify your game with us!`,
               html: `<p>Thank you for registering a game with ScoreHoard. May we fulfill your ScoreHoarding needs! Please click <a href="http://scorehoard.com/verify/${key}">here</a> to verify your game with us!</p>`
             };
             transporter.sendMail(mailOptions, (error, info) => {
@@ -160,13 +198,10 @@ app.post('/console', function(request, response, next){
   }
   else if (request.body.delete_game) {
     let name = request.body.name
-    let slug = slugify(name)
-    let game_id = request.body.game_id
-    let query1 = "DROP TABLE $1:value;"
-    let promise1 = db.any(query1, slug)
-    let query2 = "DELETE FROM game WHERE id = \'$1:value\';"
-    let promise2 = db.any(query2, game_id)
-    return Promise.all([promise1, promise2])
+    let game_id = request.body.game_id;
+    let query = "UPDATE game SET active = FALSE WHERE id = \'$1:value\';"
+    let promise = db.query(query, game_id)
+    promise()
       .then (function(){
         if (account == null) {response.redirect('/login'); return}
         response.redirect('/console')
@@ -176,26 +211,28 @@ app.post('/console', function(request, response, next){
         response.redirect('/console');
       })
   }
-  else {
+  else {  // new game
     let name = request.body.name;
     let key = 'Pending';
-    let slug = slugify(name);
-    console.log(slug)
-    let query1 = 'INSERT INTO game VALUES (DEFAULT, \'$1#\', $2, FALSE, $3)'
-    let promise1 = db.any(query1, [name, key, company.id]) // adds game to game table
-    let query2 = 'CREATE TABLE \$1:value\(id SERIAL NOT NULL PRIMARY KEY, game_id INTEGER, player_name VARCHAR, score INTEGER);'
-    let promise2 = db.any(query2, slug) // creates table from game name slug
-    return Promise.all([promise1, promise2])
-      .then(function(promises){
-        if (account == null) {response.redirect('/login'); return}
-        response.redirect('/console')
-      })
+    let query1 = 'INSERT INTO game VALUES (DEFAULT, \'$1#\', $2, FALSE, $3, TRUE) RETURNING id'
+    db.any(query1, [name, key, company.id]) // adds game to game table and returns id
+      .then(function(obj){
+        let table = "g" + obj[0].id.toString();
+        let query2 = 'CREATE TABLE $1:value (id SERIAL NOT NULL PRIMARY KEY, game_id INTEGER DEFAULT $2, player_name VARCHAR, score INTEGER);'
+        db.any(query2, [table, obj[0].id]) // creates table from game id
+          .then(function(){
+            if (account == null) {response.redirect('/login'); return}
+            response.redirect('/console')
+          })
+          .catch(function(err){
+            console.error(err)
+          })
+        })
       .catch(function(err){
         console.error(err)
-    })
-  }
-})
-
+      })
+    }
+  })
 
 //Generates a unique API key
 function unique_api_key(){
@@ -253,19 +290,6 @@ function unique_ver_key(){
   return p;
 }
 
-// Slugifies text
-function slugify(text) {
-  return text.toString().toLowerCase()
-    .replace(/\s+/g, '_')           // Replace spaces with _
-    .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
-    .replace(/\-\-+/g, '_')         // Replace multiple - with single _
-    .replace(/^-+/, '')             // Trim - from start of text
-    .replace(/-+$/, '')             // Trim - from end of text
-    .replace(/^_+/, '')             // Trim _ from start of text
-    .replace(/_+$/, '');            // Trim _ from end of text
-};
-
-
 // Password creation and verification
 function create_hash (password) {
   var salt = crypto.randomBytes(20).toString('hex');
@@ -301,7 +325,10 @@ function check_pass (stored_pass, password){
 // Home view
 app.get('/', function(request, response){
   account = request.session.user || null;
-  context = {account: account};
+  context = {
+    account: account,
+    title: 'ScoreHoard - Score Tracking API'
+  };
   response.render('home.hbs', context)
 })
 
@@ -314,7 +341,7 @@ app.get('/payment', function(request, response){
 
 // Log in View
 app.get('/login', function(request, response){
-  context = {title: 'Login'}
+  context = {title: 'ScoreHoard - Log In'}
   response.render('login.hbs', context)
 });
 
@@ -322,27 +349,28 @@ app.get('/login', function(request, response){
 app.post('/login', function(request, response) {
   let login = request.body.login;
   let password = request.body.password;
-  let query = "SELECT password FROM company WHERE login = $1"
+  let query = "SELECT * FROM company WHERE login = $1"
   db.one(query, login)
-    .then (function(stored_pass){
+    .then (function(company){
       // hash user input
       console.log('db.one called')
-      return check_pass(stored_pass.password, password)
+      return {pass_success: check_pass(company.password, password), company: company}
     })
-    .then (function(pass_success){
+    .then (function(obj){
       console.log('pass_success')
-      if (pass_success) {
+      if (obj.pass_success) {
+        request.session.company = obj.company;
         request.session.user = login;
         response.redirect('/console');
       }
-      else if (!pass_success){
+      else if (!obj.pass_success){
         console.log('not pass_success')
         context = {title: 'Login', fail: true}
         response.render('login.hbs', context)
       }
     })
     .catch(function(err){
-      if (err.name == "QueryResultError" && err.code == "0"){
+      if (err.name == "QueryResultError" && err.code == "0"){ // if no account in database
         context = {title: "Login", invalid: true}
         response.render('login.hbs', context)
       }
@@ -361,7 +389,11 @@ app.get('/logout', function(request, response, next) {
 
 // Creating an account - We'll have to add verification
 app.get('/create_account', function(request, response) {
-  context = {title: 'Create account', login: request.session.user, anon: !request.session.user};
+  context = {
+    title: 'ScoreHoard - Create Account',
+    login: request.session.user,
+    anon: !request.session.user
+  };
   response.render('create_account.hbs', context)
 });
 
@@ -388,10 +420,10 @@ app.post('/create_account', function(request, response, next){
     let query = 'SELECT login FROM company WHERE login = $1';
     db.none(query, login)
     .then(function(){
-      let query = 'INSERT INTO company VALUES (DEFAULT, $1, $2, $3, $4, DEFAULT, $5)'
-      db.none(query, [login, stored_pass, pub, name, verify_key])
-        .then(function(){
-          console.log('company inserted')
+      let query = 'INSERT INTO company VALUES (DEFAULT, $1, $2, $3, $4, DEFAULT, $5) RETURNING *'
+      db.one(query, [login, stored_pass, pub, name, verify_key])
+        .then(function(company){
+          request.session.company = company;
           request.session.user = name
           transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
@@ -399,7 +431,7 @@ app.post('/create_account', function(request, response, next){
             }
             console.log('Message send: ', info.messageId, info.response);
           });
-          response.redirect('/');
+          response.redirect('/console');
         })
         .catch(function(err){next(err)})
       })
@@ -472,6 +504,11 @@ app.get('/verify/:key', function(request, response, next){
 })
 
 //Listener -- Change for production
+<<<<<<< HEAD
 app.listen(8001, function(){
   console.log('Listening on port 8000')
+=======
+app.listen(9010, function(){
+  console.log('I am now listening... I am now sentient... Hello')
+>>>>>>> master
 });
