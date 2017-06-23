@@ -8,15 +8,17 @@ Game makers can use our API to avoid dealing with database management. Let us st
 ## Built With
 
 ### Backend:
-* [Express.js](https://expressjs.com/)
+* Javascript
+   * [Node.js](https://nodejs.org/en/)  
+   * [Express.js](https://expressjs.com/)  
 
 ### Frontend:
 * Javascript
 
-   [Handlebars.js](http://handlebarsjs.com/)  
+   * [Handlebars.js](http://handlebarsjs.com/)  
 * CSS3
 
-   [Bootstrap](http://getbootstrap.com/)  
+   * [Bootstrap](http://getbootstrap.com/)  
 * HTML5
 
 ### Database:
