@@ -40,6 +40,7 @@ p.lead{
   color:#fff;
   margin-bottom: 60px;
   font-family: 'Roboto', sans-serif;
+  line-height: 2em;
 }
 .main-title .btn {
   padding: 14px 24px;
@@ -167,6 +168,7 @@ p{
   font-family: 'Roboto', sans-serif;
   line-height: 2em;
 }
+
 
 #used {
   background-color: #34495e;
