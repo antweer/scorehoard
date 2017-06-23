@@ -205,8 +205,7 @@ app.post('/console', function(request, response, next){
     let name = request.body.name
     let game_id = request.body.game_id;
     let query = "UPDATE game SET active = FALSE WHERE id = \'$1:value\';"
-    let promise = db.query(query, game_id)
-    promise()
+    db.query(query, game_id)
       .then (function(){
         if (account == null) {response.redirect('/login'); return}
         response.redirect('/console')
@@ -247,20 +246,27 @@ app.get('/resend/', function(request, response){
   if (company == null) {response.redirect('/login'); return};   // if not logged in, redirect back to login
   if (key.length == 50){   // if game key
     let login = company.login
-    let mailOptions = {
-      from:'"ScoreHoard" <donotreply@scorehoard.com>',
-      to: login,
-      subject: 'ScoreHoard - Resending Game Confirmation',
-      text: 'Resending Key verification',
-      html: `<p>Thank you for registering a game with ScoreHoard. May we fulfill your ScoreHoarding needs! Please click <a href="http://scorehoard.com/verify/${key}">here</a> to verify your game with us!</p>`
-    };
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        return console.error(error);
-      }
-      console.log('Message send: ', info.messageId, info.response);
-    });
-    response.redirect('/console');
+    db.one('SELECT name FROM game WHERE api_key = $1', key)
+    .then(function(obj){
+      let name = obj.name
+      let mailOptions = {
+        from:'"ScoreHoard" <donotreply@scorehoard.com>',
+        to: login,
+        subject: `ScoreHoard - Resending ${name} Confirmation Email`,
+        text: `Thank you for registering ${name} with ScoreHoard. May we fulfill your ScoreHoarding needs! Please copy and paste http://scorehoard.com/verify/${key} into your browser's address bar and press enter to verify your game with us!`,
+        html: `<p>Thank you for registering ${name} with ScoreHoard. May we fulfill your ScoreHoarding needs! Please click <a href="http://scorehoard.com/verify/${key}">here</a> to verify your game with us!</p>`
+      };
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          return console.error(error);
+        }
+        console.log('Message send: ', info.messageId, info.response);
+      });
+      response.redirect('/console');
+    })
+    .catch(function(err){
+      console.error(err)
+    })
   } // end if game key
   else if (key.length == 40){ // **if company key
     let login = company.login
