@@ -125,10 +125,9 @@ h3{
 }
 #free ul{
 display: inline-block;
-line-height: 4em;
+line-height: 3em;
 margin-bottom: 3em;
 }
-/*buttons*/
 
 #button1 {
   display: flex;
@@ -201,18 +200,17 @@ p{
 }
 
 .btn-success.btn-success2 {
-  background-color: #b12828;
-  border-color: #debd27;
-  border-width: 3px;
-  margin: auto;
-}
-
-.btn-success.btn-success2:hover {
-  color: #b12828;
-  background-color: #debd27;
-  border-color: #b12828;
-}
-
+   background-color: #b12828;
+   border-color: #debd27;
+   border-width: 3px;
+   margin: auto;
+ }
+ 
+ .btn-success.btn-success2:hover {
+   color: #b12828;
+   background-color: #debd27;
+   border-color: #b12828;
+ }
 
 /* STRIPE PAYMENT */
 .StripeElement {
@@ -309,6 +307,8 @@ p{
 label {
   padding: 10px;
 }
+
 .delete {
   margin: 20px;
 }
+

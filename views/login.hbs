@@ -1,25 +1,23 @@
-<head>
-  <title>Login -ScoreHoard</title>
-</head>
+
   <div class="container-fluid">
   <div class="container bg-4 text-center">
+   <h3>Log In</h3>
    {{#if fail}}<div class='alert alert-danger'>Email and password did not match. Please try again.</div>{{/if}}
    {{#if invalid}}<div class='alert alert-danger'>Sorry, that email is not in our database. Create an account <a href='/create_account'>here.</a></div>{{/if}}
-   <h3>Log In</h3>
-   <form action="/login" method="POST">
-   <div class="row">
-    <div class="col-md-6">
-        <label><strong>Email Address</strong></label>
+   <form action="/login" method="POST">  
+   <div class="row delete">
+    <div class="col-lg-6">
+        <label>Email Address</label>
     </div>
-    <div class="col-md-6">
-        <input type="email" name="login">
+    <div class="col-lg-6">
+        <input type="text" name="login">
     </div>
    </div>
-   <div class="row">
-    <div class="col-md-6">
-     <label><strong>Password</strong></label>
+   <div class="row delete">
+    <div class="col-lg-6">
+     <label>Password</label>
     </div>
-    <div class="col-md-6">
+    <div class="col-lg-6">
      <input name='password' type='password'><br>
     </div>
    </div>
