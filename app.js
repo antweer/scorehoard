@@ -577,6 +577,12 @@ app.get('/verify/:key', function(request, response, next){
   }
 })
 
+//FAQ View
+app.get('/faq', function(request, response){
+  context = {}
+  response.render('faq.hbs', context)
+});
+
 //Listener
 app.listen(process.env['PORT'], function(){
   console.log('I am now listening... I am now sentient... Hello')
