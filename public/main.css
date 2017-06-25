@@ -364,3 +364,18 @@ label {
   border-width: 3px;
   border-style:inset;
 }
+
+.faqQuestion {
+  font-weight: bolder;
+  font-size: 1.1em;
+  top-margin: 5px;
+  padding-bottom: 5px;
+  line-height: 1.5em;
+}
+.faqAnswer {
+  line-height: 1.5em;
+}
+
+.faqSection {
+  bottom-margin: 10px;
+}
