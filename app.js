@@ -117,7 +117,7 @@ app.get('/add/:key', function(request, response, next){
       return 0
     }
   })
-  response.redirect('/')
+  response.json();
 });
 
 // Console view
