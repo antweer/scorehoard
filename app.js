@@ -1,5 +1,6 @@
 var express = require('express');
 var app = express();
+var cors = require('cors')
 var body_parser = require('body-parser');
 var session = require('express-session');
 var axios = require('axios');
@@ -10,6 +11,8 @@ var pgp = require('pg-promise')({
 });
 var db = pgp({database: process.env['DB_NAME'], user: process.env['DB_USER']});
 var apikey = require("apikeygen").apikey;
+
+app.use(cors());
 
 // Crypto configuration
 var pbkdf2 = require('pbkdf2');
@@ -117,7 +120,7 @@ app.get('/add/:key', function(request, response, next){
       return 0
     }
   })
-  response.redirect('/')
+  response.json();
 });
 
 // Console view
@@ -204,16 +207,17 @@ app.post('/console', function(request, response, next){
   else if (request.body.delete_game) {
     let name = request.body.name
     let game_id = request.body.game_id;
+    console.log(game_id);
     let query = "UPDATE game SET active = FALSE WHERE id = \'$1:value\';"
     db.query(query, game_id)
       .then (function(){
-        if (account == null) {response.redirect('/login'); return}
-        response.redirect('/console')
+        if (account === null) {response.redirect('/login'); return}
+        response.redirect('/console');
       })
       .catch(function(err){
         console.error(err);
         response.redirect('/console');
-      })
+      });
   }
 
   else {  // new game
