@@ -207,7 +207,6 @@ app.post('/console', function(request, response, next){
   else if (request.body.delete_game) {
     let name = request.body.name
     let game_id = request.body.game_id;
-    console.log(game_id);
     let query = "UPDATE game SET active = FALSE WHERE id = \'$1:value\';"
     db.query(query, game_id)
       .then (function(){
