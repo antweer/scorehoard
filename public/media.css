@@ -75,3 +75,15 @@
     line-height: 2em;
   }
 }
+/*@media(max-width: 780px){
+#sub-frame-error{
+  width: 200px;
+  height: 200px;
+}
+}*/
+@@media(max-width: 400px) {
+  p.faqQuestion{
+
+  }
+
+}

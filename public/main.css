@@ -343,7 +343,7 @@ label {
 
 }
 .modal-header{
-  padding: 25px 176px 25px 10px;
+  padding: 25px 20px 25px 10px;
 }
 
 .submit{
@@ -371,6 +371,14 @@ label {
   border-style:inset;
 }
 /*faq.hbs */
+.faq-page {
+  word-wrap:break-word;
+}
+
+.faq-page .row {
+  margin: 0;
+}
+
 .faqQuestion {
   font-weight: bolder;
   font-size: 1.1em;
@@ -384,6 +392,10 @@ label {
 }
 .qa{
   padding-left: 45px;
+}
+
+.faqSection {
+  padding-right: 0;
 }
 
 .faqSection2 {
@@ -423,4 +435,7 @@ label {
         transform: scaleX(-1);
         filter: FlipH;
         -ms-filter: "FlipH";
+}
+.row10{
+  margin:0;
 }
