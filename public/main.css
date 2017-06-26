@@ -123,6 +123,7 @@ h2.free {
 h3{
   margin-bottom: 30px;
 }
+
 #free {
   background-color: #206F9C;
   color: #fff;
@@ -364,7 +365,7 @@ label {
   border-width: 3px;
   border-style:inset;
 }
-
+/*faq.hbs */
 .faqQuestion {
   font-weight: bolder;
   font-size: 1.1em;
@@ -373,9 +374,33 @@ label {
   line-height: 1.5em;
 }
 .faqAnswer {
-  line-height: 1.5em;
+  line-height: 25px;
 }
 
-.faqSection {
+.faqSection2 {
   bottom-margin: 10px;
+  background-color: #273547;
+  color:#fff;
+}
+.faqSection3{
+  background-color: #206F9C;
+  color: #fff;
+}
+.faqSection4{
+  background-color: #206F9C;
+  color: #fff;
+  width: 100%;
+  height: 10em;
+}
+.faq1 {
+  color: black;
+  line-height: 3em;
+}
+#faq-header{
+  display: flex;
+  justify-content: center;
+  background-color: #206F9C;
+  color: #fff;
+  margin: 0;
+  padding: 30px;
 }
