@@ -55,26 +55,47 @@ app.get('/api/:key', function (request, response, next) {
   let query = 'SELECT id FROM game WHERE api_key = $1';
   db.one(query, apiKey)
     .then(function(gameid){
-      console.log(gameid.id)
+      // console.log(gameid.id)
       let query = 'SELECT * FROM g$1:value WHERE game_id = $1:value ORDER BY score DESC';
       db.query(query, gameid.id)
-        .then(function(resultsArray){
-          console.log(resultsArray);
-          let scores = new Object;
-          console.log(resultsArray)
-          for (let i = 0; i < resultsArray.length; i++){
-            scores[i+1] = {};
-            scores[i+1].name = resultsArray[i].player_name;
-            console.log('resultsArray[i] is ',resultsArray[i].player_name)
-            scores[i+1].score = resultsArray[i].score;
-          }
-          console.log('scores is ', scores)
-          response.json(
-            scores
-          );
-        })
-      .catch(next);
-    })
+      .then(function(resultsArray){
+        //  console.log(resultsArray);
+         let scores = new Object;
+         console.log(resultsArray)
+         for (let i = 0; i < resultsArray.length; i++){
+           scores[i+1] = {};
+           scores[i+1].name = resultsArray[i].player_name;
+           console.log('resultsArray[i] is ',resultsArray[i].player_name)
+           scores[i+1].score = resultsArray[i].score;
+         }
+         console.log('scores is ', scores)
+         response.json(
+           scores
+         );
+       })
+     .catch(next);
+   })
+    //     .then(function(resultsArray){
+    //       // console.log(resultsArray);
+    //       let scores = new Object;
+    //       let names = new Array;
+    //       let values = new Array;
+    //       // console.log(resultsArray)
+    //       for (let i = 0; i < resultsArray.length; i++){
+    //         // scores[i+1] = {};
+    //         names[i] = resultsArray[i].player_name;
+    //         // console.log('resultsArray[i] is ',resultsArray[i].player_name)
+    //         values[i] = resultsArray[i].score;
+    //       }
+    //       scores.names = names;
+    //       scores.values = values;
+    //       // console.log('scores is ', scores)
+    //       response.json(
+    //         scores
+    //       );
+    //     })
+    //   .catch(next);
+    // })
     .catch(next);
 
   /* Old API Call
@@ -207,6 +228,7 @@ app.post('/console', function(request, response, next){
   else if (request.body.delete_game) {
     let name = request.body.name
     let game_id = request.body.game_id;
+    console.log(game_id);
     let query = "UPDATE game SET active = FALSE WHERE id = \'$1:value\';"
     db.query(query, game_id)
       .then (function(){
