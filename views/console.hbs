@@ -35,7 +35,7 @@
           {{#if api_key_valid}}<i class="fa fa-thumbs-o-up fa-2x"></i>{{/if}}
         </div>
        </div>
-       <div class="row">
+       <div class="row row-api">
          <div class="col-md-12">
           {{#if key_present}}<h3><span style='color:#debd27'>API Key: </span>{{api_key}}</h3>
           <h5>Please read <a style='color:white; text-decoration:underline' href='/faq'>our FAQ</a> for instructions.</h5>
@@ -45,21 +45,21 @@
           <form method="POST" action="/console" name="new_api">
             <input type='hidden' name='api_key_generate' value='true'>
             <input type='hidden' name='game_id' value='{{id}}'>
-            <input type='submit' class="btn btn-sm btn-success"value='Generate API key'>
+            <input type='submit' class="btn btn-sm btn-success-api"value='Generate API key'>
            </form>
            {{/unless}}
         </div>
       </div>
       <div class="row delete">
           <div class="col-md-12">
-           <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#delete{{id}}">DELETE GAME</button>
+           <button type="button" class="btn btn-sm btn-success-delete" data-toggle="modal" data-target="#delete{{id}}">DELETE GAME</button>
            </div>
           </div>
       </div>
 
   {{/if}}
   {{/each}}
-  
+
   {{#each games}}
     <!-- Modal -->
     <div id="delete{{id}}" class="modal fade" role="dialog">
@@ -67,8 +67,8 @@
     <!-- Modal content-->
         <div class="modal-content">
           <div class="modal-header">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">&times;</button>
             <h4 class="modal-title">WARNING</h4>
-            <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-remove fa-2x"></i></button>
           </div>
           <div class="modal-body">
             <h5>You are about to delete access to {{name}}</h5>
