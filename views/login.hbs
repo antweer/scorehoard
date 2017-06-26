@@ -62,13 +62,16 @@
       <div class="modal-body">
         <form action="/login" method="POST">
           <div class='input-bar'>
-         <input type="text" name="login"><br>
-       </div>
+            <input type='hidden' name='reset_pass' value='true'>
+            <input type="email" name="login"><br>
+           </div>
          <label><strong>Please enter your email address.</strong></label><br>
+         
+         <input type="submit" class="btn btn-primary" value='Submit'>
+         
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-dismiss="modal">Submit</button>
       </div>
     </div>
 
