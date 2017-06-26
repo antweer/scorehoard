@@ -374,17 +374,20 @@ label {
   line-height: 1.5em;
 }
 .faqAnswer {
-  line-height: 25px;
+  line-height: 30px;
 }
 
 .faqSection2 {
   bottom-margin: 10px;
   background-color: #273547;
   color:#fff;
+  padding: 40px;
+  line-height:
 }
 .faqSection3{
   background-color: #206F9C;
   color: #fff;
+  padding: 40px;
 }
 .faqSection4{
   background-color: #206F9C;
@@ -402,7 +405,7 @@ label {
   background-color: #206F9C;
   color: #fff;
   margin: 0;
-  padding: 30px;
+  padding: 95px;
 }
 #glogo {
         -moz-transform: scaleX(-1);
