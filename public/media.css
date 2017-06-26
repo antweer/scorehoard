@@ -31,8 +31,8 @@
   }
 }
 
-@media (max-width: 991px){
-  .test-img{
+@media (max-width: 1234px){
+  #glogo{
     display:none
   }
 }
