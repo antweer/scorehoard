@@ -57,11 +57,10 @@
 </div>
 <div class="row2">
   <div class="col-md-12" id='demo'>
-    <h2 class="title2" id="#demohead">Try Our Demo</h2>
-    <p>Below is a simple Pong game. Try your best to beat the computer, and then enter your high score!</p>
-    <iframe id="game" src="http://127.0.0.1:8000/index.html" width=500, height=400 style="border: 10x solid navy;"></iframe>
+    <h2 class="title2">Try Our Demo</h2>
+    <p>Try to get a high score in the below game, and see ScoreHoard in action!</p>
+    <iframe src="http://localhost:8000" height=500 width=600 id="demo_frame" name="demo_frame"></iframe>
   </div>
-
 </div>
 <div class="row3">
   <div class="col-md-12" id='used'>
@@ -71,18 +70,13 @@
 
 </div>
 <div class='floaty'></div>
-<script>
-  $(document).ready(function(e) {
-    var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
-    var eventer = window[eventMethod];
-    var messageEvent = eventMethod == "attachEvent" ? "onmessage" : "message";
 
-    // Listen to message from child window
-    eventer(messageEvent,function(e) {
-        var key = e.message ? "message" : "data";
-        var data = e[key];
-        $("#demohead").text(score);
-        //run function//
-    },false);
-});
+<script>
+window.addEventListener("message", receiveMessage, false);
+
+function receiveMessage(event){
+  if (event.origin !== "http://127.0.0.1:8000")
+    return;
+  console.log(event.data)
+}
 </script>
