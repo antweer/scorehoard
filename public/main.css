@@ -324,7 +324,12 @@ label {
 
 }
 .modal-dialog{
-  margin: 130px 0 0 400px;
+  display: flex;
+  justify-content: center;
+  margin-top: 160px;
+  margin-left: auto;
+  margin-right: auto;
+
 
 }
 .modal-content{
@@ -372,9 +377,13 @@ label {
   top-margin: 5px;
   padding-bottom: 5px;
   line-height: 1.5em;
+  padding: 0;
 }
 .faqAnswer {
   line-height: 30px;
+}
+.qa{
+  padding-left: 45px;
 }
 
 .faqSection2 {
