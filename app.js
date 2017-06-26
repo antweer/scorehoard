@@ -406,38 +406,75 @@ app.get('/login', function(request, response){
 
 // Log in mechanics
 app.post('/login', function(request, response) {
-  let login = request.body.login;
-  let password = request.body.password;
-  let query = "SELECT * FROM company WHERE login = $1"
-  db.one(query, login)
-    .then (function(company){
-      // hash user input
-      //console.log('db.one called')
-      return {pass_success: check_pass(company.password, password), company: company}
-    })
-    .then (function(obj){
-      //console.log('pass_success')
-      if (obj.pass_success) {
-        request.session.company = obj.company;
-        request.session.user = login;
-        response.redirect('/console');
+  // Sends user a link to reset their password
+  console.log(request.body.reset_pass)
+  if(request.body.reset_pass){
+    console.log('reset')
+    let email = request.body.login;
+    let query = 'SELECT * FROM company WHERE login = $1';
+    db.one(query, email)
+    .then(function(result){
+      let login = result.login;
+      let key = result.verify_key;
+      let mailOptions = {
+      from:'"ScoreHoard" <donotreply@scorehoard.com>',
+      to: email,
+      subject: 'ScoreHoard - Password Reset',
+      text: 'Password Reset',
+      html: `To reset your password, go to https://scorehoard.com/reset/${key}`
+    };
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        return console.error(error);
       }
-      else if (!obj.pass_success){
-        //console.log('not pass_success')
-        context = {title: 'Login', fail: true, body_class: "blue"}
-
-        response.render('login.hbs', context)
-      }
+      console.log('Message send: ', info.messageId, info.response);
+      });
+      response.redirect('/');
     })
     .catch(function(err){
-      if (err.name == "QueryResultError" && err.code == "0"){ // if no account in database
-        context = {title: "Login", invalid: true, body_class: "blue"}
-        response.render('login.hbs', context)
-      }
-      else {
-        console.error(err);
-      };
+        if (err.name == "QueryResultError" && err.code == "0"){ // if no account in database
+          context = {title: "Login", invalid: true, body_class: "blue"}
+          response.render('login.hbs', context)
+        }
+        else {
+          console.error(err);
+        };
     })
+  } else {
+    let login = request.body.login;
+    let password = request.body.password;
+    // Normal Log In
+    let query = "SELECT * FROM company WHERE login = $1"
+    db.one(query, login)
+      .then (function(company){
+        // hash user input
+        //console.log('db.one called')
+        return {pass_success: check_pass(company.password, password), company: company}
+      })
+      .then (function(obj){
+        //console.log('pass_success')
+        if (obj.pass_success) {
+          request.session.company = obj.company;
+          request.session.user = login;
+          response.redirect('/console');
+        }
+        else if (!obj.pass_success){
+          //console.log('not pass_success')
+          context = {title: 'ScoreHoard - Login', fail: true, body_class: "blue"}
+    
+          response.render('login.hbs', context)
+        }
+      })
+      .catch(function(err){
+        if (err.name == "QueryResultError" && err.code == "0"){ // if no account in database
+          context = {title: "Login", invalid: true, body_class: "blue"}
+          response.render('login.hbs', context)
+        }
+        else {
+          console.error(err);
+        };
+      })
+    }
 })
 
 // Log out mechanics
@@ -579,6 +616,48 @@ app.get('/verify/:key', function(request, response, next){
     })
   }
 })
+
+
+// Reset password
+app.get('/reset/:key', function(request, response){
+  let key = request.params.key;
+  context = {
+    key: key,
+    title: 'ScoreHoard - Reset Password',
+    fail: false
+  };
+  response.render('resetpass.hbs', context);
+});
+
+app.post('/reset/:key', function(request, response){
+  let key = request.params.key;
+  let login = request.body.login;
+  let password = request.body.newpassword;
+  if(request.body.passwordreset){
+    let stored_pass = create_hash(password);
+    let query = 'SELECT * FROM company WHERE verify_key=$1'
+    db.one(query, key)
+    .then(function(result){
+      if(result.login == login && request.body.newpassword == request.body.confirmpassword){
+        let query = 'UPDATE company SET password=$1 WHERE login=$2'
+        db.query(query, [stored_pass, login])
+        .then(function(){
+          response.redirect('/login');
+        })
+      }else{
+        context = {
+          key: key,
+          title: 'ScoreHoard - Login', 
+          fail: true}
+        response.render('resetpass.hbs', context);
+      }
+      
+    })
+    .catch(function(error){
+      console.log(error);
+    })
+  }
+});
 
 //FAQ View
 app.get('/faq', function(request, response){
