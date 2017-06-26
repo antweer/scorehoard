@@ -52,34 +52,38 @@
       </div>
       <div class="row delete">
           <div class="col-md-12">
-           <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#deleteGame">DELETE GAME</button>
+           <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#delete{{id}}">DELETE GAME</button>
            </div>
           </div>
-  </div>
-<!-- Modal -->
-<div id="deleteGame" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-<!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="btn btn-primary" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">WARNING</h4>
       </div>
-      <div class="modal-body">
-        <h5>You are about to delete access to this game!</h5>
-      </div>
-      <div class="modal-footer">
-        <form method="POST" action="/console" name="delete_game">
-          <input type='hidden' name='delete_game' value='true'>
-          <input type="hidden" value="{{name}}" name="name">
-          <input type="hidden" value="{{id}}" name="game_id">
-          <input type="submit" class="btn btn-primary" value="DELETE GAME">
-        </form>
+
+  {{/if}}
+  {{/each}}
+  
+  {{#each games}}
+    <!-- Modal -->
+    <div id="delete{{id}}" class="modal fade" role="dialog">
+      <div class="modal-dialog">
+    <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">WARNING</h4>
+          </div>
+          <div class="modal-body">
+            <h5>You are about to delete access to {{name}}</h5>
+          </div>
+          <div class="modal-footer">
+            <form method="POST" action="/console" name="delete_game">
+              <input type='hidden' name='delete_game' value='true'>
+              <input type="hidden" value="{{name}}" name="name">
+              <input type="hidden" value="{{id}}" name="game_id">
+              <input type="submit" class="btn btn-primary" value="DELETE GAME">
+            </form>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
-  {{/if}}
   {{/each}}
 </div>
 {{/if}}

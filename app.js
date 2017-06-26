@@ -604,7 +604,11 @@ app.get('/verify/:key', function(request, response, next){
 
 //FAQ View
 app.get('/faq', function(request, response){
-  context = {}
+  account = request.session.user || null;
+  context = {
+    account: account,
+    title: 'ScoreHoard - FAQ'
+  }
   response.render('faq.hbs', context)
 });
 
