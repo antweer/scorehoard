@@ -1,5 +1,6 @@
 var express = require('express');
 var app = express();
+var cors = require('cors')
 var body_parser = require('body-parser');
 var session = require('express-session');
 var axios = require('axios');
@@ -10,6 +11,8 @@ var pgp = require('pg-promise')({
 });
 var db = pgp({database: process.env['DB_NAME'], user: process.env['DB_USER']});
 var apikey = require("apikeygen").apikey;
+
+app.use(cors());
 
 // Crypto configuration
 var pbkdf2 = require('pbkdf2');
