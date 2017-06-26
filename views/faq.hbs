@@ -1,0 +1,103 @@
+<div class ="container">
+	<h2>Frequently Asked Questions</h2>
+
+	<div class="faqSection">
+		<h5>How do I create an account?</h5>
+
+		<p class="faqAnswer">Go to <a href="https://scorehoard.com/">https://scorehoard.com/</a><br>
+		Locate the “Sign Up” button on the top navigation bar or located on the main page.<br>
+
+		Please fill out the email address, password and company name. Click submit and our monkeys get to work.<br>
+
+		You will receive a confirmation email shortly; our monkeys work around the clock.<br>
+
+		Click on the confirmation link in your email.<br>
+
+		Tada! You are now the proud owner of a shiny new account at ScoreHoard.</p>
+	</div>
+	<div class="faqSection">
+
+		<h5>I haven’t received a confirmation email!</h5>
+
+		<p class="faqAnswer">First, check your spam folder.<br>
+
+		If you’re still unable to find the confirmation email, please return to <a href="https://scorehoard.com">https://scorehoard.com</a> and log back in. <br>
+
+		After logging in, you will be redirected to the Console page.<br>
+
+		If your account has not been verified yet, you will see a link to resend a confirmation email.</p>
+	</div>
+	<div class="faqSection">
+
+		<h5>How do I receive an API key?</h5>
+
+		<p class="faqAnswer">In order to receive an API key, you must first add the game that needs an API key into our database.<br>
+
+		Go to <a href="https://scorehoard.com/">https://scorehoard.com/</a> <br>
+
+		Click on Log In, after a successful login you be on the Console tab.<br>
+
+		Locate the ”Add new game:” section.<br>
+
+		Type in the name of your game and click “Submit”<br>
+
+		Congratulations, your game is now in our database<br>
+
+		Now that you’ve added your game into our database, you can generate an API key for it:<br>
+
+		Locate and click on the “Generate API key” button located inside the panel displaying the game title you want to create an API key for.<br>
+
+		Once your API key has been generated, it will be displayed in the panel specific to your game and a confirmation email will be sent to you for verification.<br>
+
+		Your API key will be inactive until it has been verified through the link sent to you in the confirmation email.<br>
+
+		Once your API key is active, you may start making API calls to it!<br>
+	</div>
+	<div class="faqSection">
+		<h5>I don’t see where to add the game!</h5>
+
+		<p class="faqAnswer">First check to see if you are logged in.<br>
+
+		If you are logged in and still don’t see the form to submit games to our database, then your account is not yet verified.<br>
+
+		Make sure you clicked on the verification link in the email we sent to you after your account was registered.<br>
+
+		If you didn’t receive the confirmation email, please see <strong>I haven’t received a confirmation email!</p>
+	</div>
+	<div class="faqSection">
+		<h5>I have a new API key, now what?</h5>
+
+		<p class="faqAnswer">Now that you have activated your API key, you can start using it to send ScoreHoard data from your game by making Add Requests!<br>
+
+		A sample Add Request:</p>
+
+		<p class="faqQuestion">https://scorehoard.com/add/[key]?user=[username]&amp;score=[score]</p>
+
+		<p class="faqAnswer">Please substitute [key] with your unique API key, [username] with the username of the player you’re sending data for (don’t quote the username!), and [score] as the numerical score associated with the username that you sent in.</p>
+
+		<p class="faqQuestion">https://scorehoard.com/add/FohtG5up4VcqeQYMaM3Gwziyrf21IHPGVVAJ82ewl8xxjGuWDs?user=StudMuffin24&amp;score=48650023</p>
+
+		<p>(This API key will fail if you try to use it, so don’t use it. <i class="fa fa-smile-o" aria-hidden="true"></i>)</p>
+
+		<p class="faqAnswer">Currently, free users can only send in a username and score. Premium users will have the option to add more parameters to their API calls. If you would like to inquire about premium features, contact us at <a href="mailto:premium@scorehoard.com">premium@scorehoard.com</a></p>
+	</div>
+	<div class="faqSection">
+		<h5>How do I request data for my game?</h5>
+
+		<p class="faqAnswer">Using the API to request the data for your game
+
+		If you’ve activated your unique API key and have used it to feed us data from your game, then you can start making Leaderboard Requests!<br>
+
+		<strong>A sample Leaderboard Request:</strong><br>
+	
+		<p class="faqQuestion">https://scorehoard.com/api/[key]</p>
+
+		<p class="faqAnswer">Please substitute [key] with your unique API key. This API call will return all data that has been sent to us through Add Requests associated with your unique API key in JSON format. The data will be ordered by descending scores. <strong>https://scorehoard.com/api/FohtG5up4VcqeQYMaM3Gwziyrf21IHPGVVAJ82 ewl8xxjGuWDs</strong></p>
+
+		<p>(This API key will fail if you try to use it, so don’t use it. <i class="fa fa-smile-o" aria-hidden="true"></i>)</p>	
+
+		<h5>Yeah, the leaderboards awesome, but I need more!</h5>
+
+		<p class="faqAnswer">Custom leaderboards with different parameters is a premium feature. If you would like to inquire about premium features, please contact the ScoreHoard team at <a href="mailto:premium@scorehoard.com">premium@scorehoard.com</a>.</p>
+	</div>
+</div>
