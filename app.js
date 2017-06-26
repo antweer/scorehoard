@@ -207,16 +207,17 @@ app.post('/console', function(request, response, next){
   else if (request.body.delete_game) {
     let name = request.body.name
     let game_id = request.body.game_id;
+    console.log(game_id);
     let query = "UPDATE game SET active = FALSE WHERE id = \'$1:value\';"
     db.query(query, game_id)
       .then (function(){
-        if (account == null) {response.redirect('/login'); return}
-        response.redirect('/console')
+        if (account === null) {response.redirect('/login'); return}
+        response.redirect('/console');
       })
       .catch(function(err){
         console.error(err);
         response.redirect('/console');
-      })
+      });
   }
 
   else {  // new game
