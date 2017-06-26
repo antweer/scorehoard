@@ -58,7 +58,8 @@
 <div class="row2">
   <div class="col-md-12" id='demo'>
     <h2 class="title2">Try Our Demo</h2>
-    <p>"Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit..."</p>
+    <p>Try to get a high score in the below game, and see ScoreHoard in action!</p>
+    <iframe src="http://localhost:8000" height=500 width=600 id="demo_frame" name="demo_frame"></iframe>
   </div>
 
 </div>
@@ -70,3 +71,13 @@
 
 </div>
 <div class='floaty'></div>
+
+<script>
+window.addEventListener("message", receiveMessage, false);
+
+function receiveMessage(event){
+  if (event.origin !== "http://127.0.0.1:8000")
+    return;
+  console.log(event.data)
+}
+</script>
