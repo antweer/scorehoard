@@ -350,17 +350,3 @@ label {
   color: #fff;*/
 
 }
-.modal-body {
-  display: flex;
-  justify-content: center;
-  padding: 90px;
-}
-.input-bar{
-  display: flex;
-  justify-content: center;
-}
-
-.input-bar input {
-  border-width: 3px;
-  border-style:inset;
-}
