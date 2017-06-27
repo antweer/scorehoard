@@ -15,7 +15,7 @@
         <label>Add new game:</label>
         <input type='text' name='name'>
         <input type="hidden" value="{{id}}" name="game_id">
-        <input type='submit' class="btn btn-sm btn-success" >
+        <input type='submit' class="btn btn-sm btn-primary" >
       </form>
    </div>
   <div class="bg-3a">
@@ -67,11 +67,11 @@
     <!-- Modal content-->
         <div class="modal-content">
           <div class="modal-header">
-            <button type="button" class="btn btn-primary" data-dismiss="modal">&times;</button>
             <h4 class="modal-title">WARNING</h4>
+            <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-remove fa-2x"></i></button>
           </div>
           <div class="modal-body">
-            <h5>You are about to delete access to {{name}}</h5>
+            <h5>You are about to delete API access to {{name}}</h5>
           </div>
           <div class="modal-footer">
             <form method="POST" action="/console" name="delete_game">
