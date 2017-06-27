@@ -642,11 +642,14 @@ app.get('/verify/:key', function(request, response, next){
 
 // Reset password
 app.get('/reset/:key', function(request, response){
+  account = request.session.user || null;
   let key = request.params.key;
   context = {
+    account: account,
     key: key,
     title: 'ScoreHoard - Reset Password',
-    fail: false
+    fail: false,
+    body_class: "blue"
   };
   response.render('resetpass.hbs', context);
 });
