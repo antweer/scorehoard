@@ -86,7 +86,7 @@ https://scorehoard.com/api/[key]
 * ~~Deploy Web UI~~
 * ~~Add SSL certification~~
 * ~~FAQ/Documentation that provides an overview of how to use our API~~
-* Logo
+* ~~Logo~~
 
 ### Stretch Goals:
 
