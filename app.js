@@ -576,6 +576,7 @@ app.post('/create_account', function(request, response, next){
     };
   })
 });
+
 // Verify account via verify key
 app.get('/verify/:key', function(request, response, next){
   let key = request.params.key;
@@ -642,7 +643,7 @@ app.get('/verify/:key', function(request, response, next){
 
 // Reset password
 app.get('/reset/:key', function(request, response){
-  account = request.session.user || null;
+  let account = request.session.user || null;
   let key = request.params.key;
   context = {
     account: account,
@@ -672,9 +673,118 @@ app.post('/reset/:key', function(request, response){
       }else{
         context = {
           key: key,
-          title: 'ScoreHoard - Login', 
-          fail: true}
+          title: 'ScoreHoard - Reset Password', 
+          fail: true,
+          body_class: "blue"
+        }
         response.render('resetpass.hbs', context);
+      }
+      
+    })
+    .catch(function(error){
+      console.log(error);
+    })
+  }
+});
+
+// Change password
+app.get('/changepass/:key', function(request, response){
+  let company = request.session.company || null;
+  let account = request.session.user || null;
+  let key = request.params.key;
+  if (company == null || account == null) {
+    response.redirect('/login')
+  } else {
+    context = {
+      account: account,
+      key: key,
+      title: 'ScoreHoard - Change Your Password',
+      fail: false,
+      body_class: "blue"
+    };
+    response.render('changepass.hbs', context);
+  }
+});
+
+app.post('/changepass/:key', function(request, response){
+  let account = request.session.user || null;
+  let key = request.params.key;
+  let currentpassword = request.body.currentpassword;
+  let newpassword = request.body.newpassword;
+  if(request.body.passwordchange){
+    let stored_pass = create_hash(newpassword);
+    let query = 'SELECT * FROM company WHERE verify_key=$1'
+    db.one(query, key)
+    .then(function(result){
+      if(check_pass(result.password, currentpassword) && request.body.newpassword == request.body.confirmpassword){
+        let login = result.login;
+        let query = 'UPDATE company SET password=$1 WHERE login=$2';
+        db.query(query, [stored_pass, login])
+        .then(function(){
+          response.redirect('/login');
+        })
+      }else{
+        context = {
+          account: account,
+          key: key,
+          title: 'ScoreHoard - Change Your Password', 
+          fail: true,
+          body_class: "blue"
+        }
+        response.render('changepass.hbs', context);
+      }
+      
+    })
+    .catch(function(error){
+      console.log(error);
+    })
+  }
+});
+
+// Change email
+app.get('/changelogin/:key', function(request, response){
+  let company = request.session.company || null;
+  let account = request.session.user || null;
+  let key = request.params.key;
+  if (company == null || account == null) {
+    response.redirect('/login')
+  } else {
+    context = {
+      account: account,
+      key: key,
+      title: 'ScoreHoard - Change Your Email Address',
+      fail: false,
+      body_class: "blue"
+    };
+    response.render('changelogin.hbs', context);
+  }
+});
+
+app.post('/changelogin/:key', function(request, response){
+  let account = request.session.user || null;
+  let key = request.params.key;
+  let currentemail = request.body.currentaddress;
+  let newemail = request.body.newaddress;
+  let password = request.body.password;
+  if(request.body.loginchange){
+    let query = 'SELECT * FROM company WHERE verify_key=$1'
+    db.one(query, key)
+    .then(function(result){
+      if(check_pass(result.password, password)){
+        let query = 'UPDATE company SET login=$1 WHERE verify_key=$2';
+        db.query(query, [newemail, key])
+        .then(function(){
+          response.redirect('/login');
+        })
+      }else{
+        context = {
+          account: account,
+          key: key,
+          title: 'ScoreHoard - Change Your Email Address', 
+          fail: true,
+          body_class: "blue"
+        }
+        response.render('changelogin.hbs', context);
       }
       
     })
