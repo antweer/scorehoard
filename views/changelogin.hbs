@@ -1,0 +1,40 @@
+{{#if fail}}<div class='alert alert-danger'>Incorrect email address or password. Please try again.</div>{{/if}}
+<div class="container-fluid">
+<div class="container bg-4 text-center">
+  <h3>Change Your Email Address</h3>
+  <form method="POST" action="/changelogin/{{key}}" name="changelogin">
+    <input type='hidden' name='loginchange' value='true'>
+    <div class="row delete">
+    <div class="col-lg-6">
+        <label><strong>Current Email Address </strong></label>
+    </div>
+    <div class="col-lg-6">
+      <div class='input-bar'>
+        <input type="email" name="currentaddress" style='width 276px;'>
+      </div>
+    </div>
+   </div>
+   <div class="row delete">
+    <div class="col-lg-6">
+        <label><strong>New Email Address </strong></label>
+    </div>
+    <div class="col-lg-6">
+      <div class='input-bar'>
+        <input type="email" name="newaddress" style='width 276px;'>
+      </div>
+    </div>
+   </div>
+   <div class="row delete">
+    <div class="col-lg-6">
+        <label><strong>Password </strong></label>
+    </div>
+    <div class="col-lg-6">
+      <div class='input-bar'>
+        <input type="password" name="password" style='width 276px;'>
+      </div>
+    </div>
+   </div>
+    <input type='submit' class="btn btn-primary" value='Submit'>
+  </form>
+</div>
+</div>
