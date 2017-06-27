@@ -1,4 +1,4 @@
-# [ScoreHoard](https://scorehoard.com) <img src="/public/images/scorehoard-logo-with-text-cleaned.png" width="200">
+<a href="https://scorehoard.com/" alt="ScoreHoard Logo - Golden Gorilla"><img src="/public/images/scorehoard-logo-with-text-cleaned.png" width="200"></a>
 ### An API that tracks scores and custom stats for game makers
 
 ## Description
