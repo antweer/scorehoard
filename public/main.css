@@ -59,6 +59,7 @@ p.lead{
   font-family: 'Roboto', sans-serif;
   justify-content: center;
   margin-left: 40px;
+  margin-top: 50px;
 }
 .art-work{
   display: flex;
@@ -480,4 +481,11 @@ label {
   margin-bottom: 40px;
   background-color: rgba(255, 0, 0, 0.3);
 
+}
+#demo_frame {
+  margin: 0;
+  margin-left: 0;
+  padding: 0;
+  padding-left: 0;
+  margin: auto;
 }

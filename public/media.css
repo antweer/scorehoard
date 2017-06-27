@@ -32,8 +32,13 @@
 }
 
 @media (max-width: 1234px){
-  #glogo{
+  .glogo-col{
     display:none
+  }
+
+  .desc-col {
+    max-width: 90%;
+    flex: 0 0 90%;
   }
 }
 @media(max-width: 991px){
@@ -52,6 +57,12 @@
 @media(max-width: 600px){
   p.lead{
     font-size: 15px;
+  }
+}
+@media(max-width: 1234px){
+  .main-title{
+    display: flex;
+    justify-content: center;
   }
 }
 
