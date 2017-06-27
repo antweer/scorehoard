@@ -32,8 +32,13 @@
 }
 
 @media (max-width: 1234px){
-  #glogo{
+  .glogo-col{
     display:none
+  }
+
+  .desc-col {
+    max-width: 90%;
+    flex: 0 0 90%;
   }
 }
 @media(max-width: 991px){

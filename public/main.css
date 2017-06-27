@@ -59,6 +59,7 @@ p.lead{
   font-family: 'Roboto', sans-serif;
   justify-content: center;
   margin-left: 40px;
+  margin-top: 50px;
 }
 .art-work{
   display: flex;
