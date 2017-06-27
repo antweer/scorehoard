@@ -1,4 +1,4 @@
-# [ScoreHoard](https://scorehoard.com) ![ScoreHoard Logo](/public/images/scorehoard-logo-with-text-cleaned.png "ScoreHoard Logo"){:height="300px" width="200px"}
+# [ScoreHoard](https://scorehoard.com) <img src="/public/images/scorehoard-logo-with-text-cleaned.png" width="200">
 ### An API that tracks scores and custom stats for game makers
 
 ## Description
